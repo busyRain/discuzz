@@ -1,6 +1,7 @@
 module.exports = {
-  publicPath: "/",
+  publicPath: "./",
   outputDir: "dist",
+  assetsDir: "assets",
   productionSourceMap: false,
   devServer: {
     https: false, // https:{type:Boolean}
@@ -10,12 +11,14 @@ module.exports = {
     hot: true,
     proxy: {
       "/api": {
-        target: "http://124.156.160.86",
+        target: "http://api.feileyuan.club",
+        //target: "http://124.156.160.86",
+        //target: "http://150.109.48.154",
         changeOrigin: true,
         secure: false,
         ws: true,
         pathRewrite: {
-          "^/api": "/api"
+          "^/api": ""
         }
       }
     }

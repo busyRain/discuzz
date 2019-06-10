@@ -14,20 +14,22 @@
 				<el-input class="fl" prefix-icon="el-icon-search" placeholder="请输入您要搜索的关键字" v-model="keywords"></el-input>
 			</div>
       <div class="user fr ov" v-if="islogin">
-				<router-link to="" class="ov">
-					<img src="@/assets/images/head_img.png" class="fl" alt="">
-					<div class="fl">
-						<h4 class="username">{{username}}</h4>
-						<div class="userlevel">
+				<router-link to="" class="ov user-link">
+          <div class="user-avatar fl">
+					  <img src="@/assets/images/head_img.png" class="fl" alt="">
+          </div>
+					<div class="user-info fl">
+						<h4 class="user-name">{{uName}}</h4>
+						<div class="user-level">
 							<img src="@/assets/images/level_8.png" alt="" class="inline">
 							<span class="inline">经验：2328</span>
 						</div>
 					</div>
 				</router-link>
-				<router-link to=""><img src="@/assets/images/chat.png" alt="" class="icon"></router-link>
-				<router-link to=""><img src="@/assets/images/friend.png" alt="" class="icon"></router-link>
-				<router-link to=""><img src="@/assets/images/setting.png" alt="" class="icon"></router-link>
-				<img @click='logout' src="@/assets/images/quit.png" alt="" class="icon cursor">
+				<router-link to="" class="user-link"><img src="@/assets/images/chat.png" alt="" class="icon"></router-link>
+				<router-link to="" class="user-link"><img src="@/assets/images/friend.png" alt="" class="icon"></router-link>
+				<router-link to="" class="user-link"><img src="@/assets/images/setting.png" alt="" class="icon"></router-link>
+				<img @click='logout' src="@/assets/images/quit.png" alt="" class="icon cursor out">
 			</div>
       <div class="user fr ov" v-else>
         <router-link to='/login' tag="el-button" class="el-button--primary">登录</router-link>
@@ -47,13 +49,45 @@ export default {
     }
   },
   methods:{
-    logout(){
+    refresh() {
+				this.$delCookie("uInfo");
+				this.uName = "";
+				this.islogin = false;
+			},
+    logout() {
+      try {
+        let that = this;
+        if (that.uName) {
+          that.$axios.post('/users/logout').then(res => {
+            if (res.code == 0) {
+              that.refresh();
+              that.$message({
+                message: '退出成功',
+                type: "success",
+                duration: 2000,
+                onClose() {
+                  that.$router.go(0);
+                }
+              });
+            }
+          })
+        } else {
+          that.$router.go(0);
+        }
+      } catch (e) {}
     },
     goPath(){
     }
   },
-  mounted(){
-    
+  mounted() {
+    let userInfo = this.$getCookie('uInfo');
+    if (userInfo) {
+      let uInfo = JSON.parse(userInfo);
+      this.uName = uInfo.loginName;
+    }
+
+    this.keywords = this.$route.query.keyword;
+    userInfo ? this.islogin = true : this.islogin = false;
   }
 };
 </script>
@@ -101,6 +135,53 @@ export default {
   padding: 18px 30px;
 }
 .user {
-  padding: 18px 0 18px;
+		padding: 16px 0 16px;
+		.user-link {
+			display: inline-block;
+			line-height: 45px;
+			float: left;
+			>img{
+				vertical-align: middle;
+			}
+		}
+		.user-avatar {
+			border-radius: 100%;
+			border: solid 3px #0077ff;
+			height: 45px;
+			width: 45px;
+			overflow: hidden;
+			box-sizing: border-box;
+
+			>img {
+				width: 100%;
+				height: 100%;
+			}
+
+			~.user-info {
+				margin-left: 10px;
+				line-height: 1.5;
+			}
+		}
+
+		.user-info {
+			.user-name {
+				color: #409EFF;
+				margin-bottom: 5px;
+			}
+
+			.user-level>* {
+				vertical-align: top;
+				display: inline-block;
+				font-size: 12px;
+				line-height: 15px;
+			}
+		}
+	}
+  .icon {
+    display: inline-block;
+    margin-left: 20px;
+}
+.out{
+  margin-top:5px;
 }
 </style>

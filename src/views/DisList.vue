@@ -4,7 +4,7 @@
             <display-block></display-block>
         </div>
         <div>
-            <block-list></block-list>
+            <!-- <block-list></block-list> -->
         </div>
     </div>
 </template>

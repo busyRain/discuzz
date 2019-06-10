@@ -1,7 +1,7 @@
 import request from "@/utils/request";
 
 export function getSwiperList() {
-  return request("/", {
+  return request("/topic/getbannerlist", {
     method: "get"
   });
 }
@@ -15,4 +15,9 @@ export function getNewTopicList() {
     method: "get"
   });
 }
-export function getList() {}
+
+export function getSection() {
+  return request("/section/list", {
+    method: "post"
+  });
+}

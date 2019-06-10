@@ -2,8 +2,8 @@
     <div class="swiper-wrapper">
     <swiper :options="swiperOption">
       <swiper-slide v-for="(swiperItem, index) in swiperList" :key="index">
-        <a  :href="swiperItem.toUrl || 'javascript:;'" target="__blank">
-          <img class="swiper-img" :src="swiperItem.imgUrl" alt="">
+        <a :href="swiperItem.topicurl || 'javascript:;'" target="__blank">
+          <img class="swiper-img" :src="$IMG_URL+swiperItem.imgurl" alt="">
         </a>
       </swiper-slide>
       <div class="swiper-pagination" slot="pagination"></div>
@@ -33,28 +33,18 @@ export default {
         },
       swiperImg: '/img/home/banner/banner1.png',
       swiperList: [
-        {
-          'id': "12",
-          'imgUrl' : "http://img.javaex.cn/FgxRNuOn15Dj6eci1i-N1jGWCDwH",
-          'toUrl':'http://baidu.com'
-        },
-        {
-          'id': "13",
-          'imgUrl' : "http://img.javaex.cn/FsUD0pljbp5XkgO7W2oMoYaR34Dc",
-          'toUrl':'http://baidu.com'
-        },{
-          'id':'14',
-          'imgUrl':'http://ossweb-img.qq.com/upload/adw/image/20180922/dc23d82a4f1560ca505bc31ee48478b2.jpg',
-          'toUrl':'http://baidu.com'
-        }
+        
       ]
     };
   },
   methods: {
     async getSwiperList() {
-      // await api.getSwiperList().then(res=>{
-
-      // })
+      await api.getSwiperList().then(res=>{
+        const {data} =res
+        if(res.code ==0){
+          this.swiperList=data
+        }
+      })
     }
   },
   mounted() {

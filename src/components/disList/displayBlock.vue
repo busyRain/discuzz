@@ -1,28 +1,29 @@
 <template>
+<div>
     <div class="board-box">
         <div class="board-bg" style="background: url(http://img.javaex.cn/FsjZILLbMNWFO_iFJNNneW-cmE0G) no-repeat;background-size: cover;"></div>
         <div class="team-desc clearfix">
             <div class="desc-left fl">
                 <div class="circle-img fl">
-                    <img class="board-icon" src="http://img.javaex.cn/Fnol7Gy7_ztiulsQLGpJDSQUzshj"/>
+                    <img class="board-icon" :src="$IMG_URL+blockTop.imgurl"/>
                     <a href="javascrip:;" class="join-circle">板块统计</a>
                 </div>
                 <div class="circle-name fl">
-                    <div class="club-name">游戏讨论/综合讨论</div>
-                    <div class="club-desc">新鲜资讯一手掌握！</div>
+                    <div class="club-name">{{blockTop.name}}</div>
+                    <div class="club-desc">{{blockTop.synopsis}}</div>
                     <div class="club-desc-line"></div>
                     <div class="club-fan">
                         <p class="fan-numb">
-                            <span class="fan-text">主题</span>
-                            <b>3</b>
+                            <span class="fan-text">级别</span>
+                            <b>{{blockTop.level}}</b>
                         </p>
                         <p class="fan-numb">
                             <span class="fan-text">贴数</span>
-                            <b>4</b>
+                            <b>{{blockTop.topiccount}}</b>
                         </p>
                         <p class="fan-numb">
                             <span class="fan-text">今日</span>
-                            <b>1</b>
+                            <b>{{blockTop.commentcount}}</b>
                         </p>
                     </div>
                 </div>
@@ -32,7 +33,7 @@
             </div>
         </div>
         <!--版主信息-->
-        <div class="master-header clearfix">
+        <!-- <div class="master-header clearfix">
             <div class="master-intro clearfix">
                 <h4 class="title clearfix">版主</h4>
                 <p class="m-list fl">
@@ -48,7 +49,7 @@
                     <a href="" target="_black">w35343243</a>
                 </p>
             </div>
-        </div>
+        </div> -->
         <!--筛选-->
         <div class="classify-list " style="margin-left:20px;">
             <div class="classify-item">
@@ -82,53 +83,110 @@
             </div>
         </div>
     </div>
+    <block-list :list="blockList" @getPage="getPage" :count="count"></block-list>
+</div>
 </template>
 <script>
 import * as api from "@/api/list"
+import blockList from '@/components/disList/blockList'
+import { mapGetters } from 'vuex';
+
 export default {
     name:"displayBlock",
+    components:{
+      blockList,
+    },
     data(){
         return{
             isessence:false,
             orderbytype:4,
-            id:"112",
             page:1,
             limit:10,
-            sectionid:2,
-            blockList:{}
+            sectionid:'',
+            blockList:{},
+            blockTop:{},
+            count:0,
+            loginStatus:false,
         }
     },
+    computed:{
+        ...mapGetters({
+            isShowAdd:'isShowAdd'
+        })
+    },
     methods:{
+        getPage(val){
+            this.page=val
+            this.getBlockList()
+        },
         toggleTab(type){
             this.isessence = type
-            this.getBlock()
+            this.page =1
+            this.getBlockList()
         },  
         toggleSort(sort){
             this.orderbytype = sort 
-            this.getBlock()
+            this.page =1
+            this.getBlockList()
         },
         openDialog(){
-
+            if(this.loginStatus){
+                this.$store.dispatch("getIsShowAdd",true)
+            }else{
+                this.$router.push({path:'/login'}) 
+            }
+            
         },
-        async getBlock(){
-            await api.getBlockTop({
-                id:this.id,
-                page:1,
+        async getBlockList(){
+            await api.getBlockList({
+                //id:this.id,
+                page:this.page,
                 limit:10,
                 orderbytype:this.orderbytype,
                 isessence:this.isessence,
                 sectionid:this.sectionid
             }).then(res=>{
-                const { data } =res
+                const { data } = res
                 if(res.code == 0){
                     this.blockList = data
+                    this.count = res.count
+                  
                 }
             })
+        },
+        async getBlockTop(id){
+            console.log(id)
+            await api.getBlockTop(id).then(res=>{
+                const { data } = res
+                if(res.code == 0 ){
+                    this.blockTop = data
+                    let list =[];
+                    list.push({url:this.$route.path,name:this.blockTop.name})
+                    sessionStorage.setItem('navList',JSON.stringify(list))
+                    console.log(JSON.parse(sessionStorage.getItem('navList')))
+                }
+            })
+        },
+        init(){
+            let cookie = this.$getCookie('uInfo');
+            let userInfo = JSON.parse(cookie);
+            if (userInfo && userInfo.token) {
+                this.loginStatus = true;
+            } else {
+                this.loginStatus = false;
+            }
         }
     },
+    mounted() {
+        this.init();
+    },
     created(){
-        let id = this.$route.params.id
-        this.getBlock()
+        sessionStorage.removeItem('navList')
+        this.sectionid = this.$route.params.id
+        //console.log( this.$route.params.id)
+        this.getBlockList()
+        this.getBlockTop(this.$route.params.id)
+        //this.init();
     }
 }
 </script>
@@ -244,12 +302,11 @@ export default {
             cursor: pointer;
         }
     }
-    
 }
-.master-header{
+.master-header {
     padding:5px 30px;
 }
-.master-intro{
+.master-intro {
     .title{
         margin: -5px 10px 0 0;
         height: auto;

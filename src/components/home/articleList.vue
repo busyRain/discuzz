@@ -1,62 +1,32 @@
 <template>
     <div class="list">
         <ul class="listConUl">
-            <li class="board-box">
-                <h2>游戏讨论</h2>
+            <li class="board-box" v-for="(item,index) in sectionList " :key="index">
+                <h2>{{item.name}}</h2>
                 <ul class="listUl">
-                    <li class="listLi">
+                    <li class="listLi" v-for="(childItem,childIndex) in item.childList" :key="childIndex">
                         <div class="board">
                             <div class="board-img">
                                 <a href="" target="_blank">
-                                    <img class="fl" src="http://img.javaex.cn/Fnol7Gy7_ztiulsQLGpJDSQUzshj"/>
+                                  <el-image
+                                    style="width: 80px; height:80px;float:left"
+                                    :src="$IMG_URL+childItem.imgurl"
+                                    :fit="'contain'"
+                                  >
+                                  </el-image>
+                                    <!-- <img class="fl" src="http://img.javaex.cn/Fnol7Gy7_ztiulsQLGpJDSQUzshj"/> -->
                                 </a>
                             </div>
                             <dl>
                                 <dt>
-                                    <router-link :to="{path:`discuzz/disList/${id}`}" tag="a" target="_blank">综合讨论</router-link>
-                                    </dt>
+                                    <router-link :to="{path:`discuzz/disList/${childItem.id}`}" tag="a" target="_blank" >{{childItem.name}}</router-link>
+                                </dt>
                                 <dd>
-                                    <em>主题：2</em>
+                                    <em>主题：{{childItem.topiccount}}</em>
                                     <span class="pipe">|</span>
-                                    <em>贴数：2</em>
+                                    <em>贴数：{{childItem.commentcount}}</em>
                                 </dd>
-                                <dd>新鲜资讯一手掌握！</dd>
-                            </dl>
-                        </div>
-                    </li>
-                    <li class="listLi">
-                        <div class="board">
-                            <div class="board-img">
-                                <a href="" target="_blank">
-                                    <img class="fl" src="http://img.javaex.cn/Fnol7Gy7_ztiulsQLGpJDSQUzshj"/>
-                                </a>
-                            </div>
-                            <dl>
-                                <dt><a href="">综合讨论</a></dt>
-                                <dd>
-                                    <em>主题：2</em>
-                                    <span class="pipe">|</span>
-                                    <em>贴数：2</em>
-                                </dd>
-                                <dd>新鲜资讯一手掌握！</dd>
-                            </dl>
-                        </div>
-                    </li>
-                    <li class="listLi">
-                        <div class="board">
-                            <div class="board-img">
-                                <a href="" target="_blank">
-                                    <img class="fl" src="http://img.javaex.cn/Fnol7Gy7_ztiulsQLGpJDSQUzshj"/>
-                                </a>
-                            </div>
-                            <dl>
-                                <dt><a href="">综合讨论</a></dt>
-                                <dd>
-                                    <em>主题：2</em>
-                                    <span class="pipe">|</span>
-                                    <em>贴数：2</em>
-                                </dd>
-                                <dd>新鲜资讯一手掌握！</dd>
+                                <dd>{{childItem.synopsis}}</dd>
                             </dl>
                         </div>
                     </li>
@@ -68,10 +38,10 @@
 <script>
 import * as api from "@/api/home"
 export default {
-  name:"articleList",
+  name:"sectionList",
   data() {
     return {
-      list:{},
+      sectionList:{},
       id:"",
       page:1,
       limit:10,
@@ -79,21 +49,19 @@ export default {
     }
   },
   methods: {
-    async getList () {
-        // await api.getList({
-        //     id:this.id,
-
-        // }).then(res=>{
-        //     const { data} = res
-        //     if(res.code == 0){
-        //         this.list = data
-        //     }
-        // })
-    }
+    async getSection () {
+      await api.getSection().then(res=>{
+        const { data} = res
+        if(res.code == 0){
+            this.sectionList = data
+        }
+      })
+    },
+   
   },
   created() {
     let id = this.$route.params.id
-    this.getList()
+    this.getSection()
   }
 };
 </script>

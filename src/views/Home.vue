@@ -28,6 +28,9 @@ export default {
     newsList,
     articleList,
     friend
+  },
+  created(){
+    sessionStorage.removeItem('navList')
   }
 };
 </script>

@@ -1,11 +1,20 @@
 import axios from "axios";
 import { Message } from "element-ui";
 import { GetCookies } from "@/utils/setCookies.js";
-
-const service = axios.create({
+// axios.defaults.transformRequest = [
+//   function(data) {
+//     let ret = "";
+//     for (let it in data) {
+//       ret += encodeURIComponent(it) + "=" + encodeURIComponent(data[it]) + "&";
+//     }
+//     return ret;
+//   }
+// ];
+let service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
   timeout: 10000,
   headers: {
+    // "Content-Type": "application/x-www-form-urlencoded"
     "X-Requested-With": "XMLHttpRequest",
     "Content-Type": "application/json;charset=utf-8"
   }
@@ -36,7 +45,6 @@ error => {
   return Promise.reject(error);
 };
 //响应
-
 service.interceptors.response.use(
   response => {
     const res = response.data;

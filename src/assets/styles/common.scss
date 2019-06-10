@@ -230,3 +230,31 @@ body{
 .cursor {
   cursor: pointer;
 }
+.el-image{
+  .image-slot{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: #f5f7fa;
+    color: #909399;
+    font-size: 30px;
+  }
+}
+.el-pagination{
+  text-align: center;
+}
+.el-form-item__label{
+  text-align: left;
+}

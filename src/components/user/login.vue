@@ -109,20 +109,21 @@ export default {
                         passWord: that.loginForm.passWord
                     }).then(res => {
                         that.loading = false;
-                        if (res.data.code == 0) {
+                        if (res.code == 0) {
                             // 登陆成功
                             let userInfo = {
-                                token: res.data.data,
+                                token: res.data,
                                 loginName: that.loginForm.userName,
                             }
                             that.$setCookie("uInfo", JSON.stringify(userInfo));
                             that.$router.back();
                         } else {
                             var _msg = "";
-                            if (res.data.status == 200) {
-                                _msg = res.data.msg;
+                           
+                            if (res.status == 200) {
+                                _msg = res.msg;
                             } else {
-                                _msg = res.data.message;
+                                _msg = res.message;
                             }
                             that.$alert(_msg, {
                                 confirmButtonText: '确定'

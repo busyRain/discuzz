@@ -1,46 +1,56 @@
 <template>
   <div class="board-box">
     <div class="main">
-      <ul class="post-list">
-        <li>
+      <ul class="post-list" >
+        <li v-for="(item,index) in list" :key="index">
           <!--主题标题-->
           <div class="post-title cleardis">
-            <router-link :to="{path:'/discuzz/disDetail/19'}" tag="a" target="_blank">测试置顶</router-link>
-            <span class="uscat_pt">
+            <router-link :to="{path:`/discuzz/disDetail/${item.id}`}" tag="a" target="_blank">{{item.title}}</router-link>
+            <span class="uscat_pt" v-if="item.isrecommend">
               置顶
             </span>
-            <span class="uscat_pt">
+            <span class="uscat_pt" v-if="item.isessence">
               精
             </span>
           </div>
+          <!-- <div class="info1 cleardis">
+            {{item.signTxt}}
+          </div> -->
           <div class="info2 cleardis">
             <span class="fr">
               发布于 
-              <i class="change-time">2019-05-06 21:43:39</i>
+              <i class="change-time">{{$formatDate(item.ctime,"yyyy-MM-dd hh:mm:ss")}}</i>
             </span>
             <a href="javascript:;" class="usre-avatar fl" target="_blank">
-              <img src="http://img.javaex.cn/72419aa803684ae59d1bfa28c67ee71d" style="display: inline;">
-                <span class="author">admin</span>
+              <el-image
+                style="width: 30px; height:30px"
+                :src="$IMG_URL+ item.userImgUrl"
+                :fit="'contain'">
+                <div slot="error" class="image-slot">
+                  <i class="el-icon-picture-outline"></i>
+                </div>
+              </el-image>
+              <!-- <img :src="$IMG_URL+item.userImgUrl" style="display: inline;"> -->
+                <span class="author">{{item.nickName}}</span>
             </a>
           </div>
           <div class="price">
-            <strong>17</strong>浏览
-            <strong>1</strong>回复
+            <strong>{{item.viewcount}}</strong>浏览
+            <strong>{{item.replycount}}</strong>回复
           </div>
         </li>
+        <!-- <div class="bankuai" >版块主题</div> -->
       </ul>
-      <div class="bankuai">版块主题</div>
+      
       <!--普通贴子-->
-      <ul class="post-list">
+      <!-- <ul class="post-list">
         <li>
-          <!--主题标题-->
           <div class="post-title cleardis">
             <font color="#0087e0">[</font>
             <font color="#0087e0">普通帖子</font>
             <font color="#0087e0">]</font>
             <router-link :to="{path:'/discuzz/disDetail/19'}" tag="a" target="_blank">测试标题</router-link>
           </div>
-          <!-- 主题摘要 -->
           <div class="info1 cleardis">
             sfsdfsdfsfsdfs
           </div>
@@ -58,45 +68,89 @@
               <strong>1</strong>回复
             </div>
         </li>
-      </ul>
+      </ul> -->
       <div class="page">
-        <el-button type="primary">发表</el-button>
+        <el-row :gutter="20">
+          <el-col :span="4">
+            <el-button type="primary" @click="addBlock" size="mini">发表</el-button>
+          </el-col>
+          <el-col :span="16">
+            <el-pagination
+              background
+              @current-change="handleCurrentChange"
+              layout="prev,pager,next,jumper"
+              :page-size="limit"
+              :total="count"
+            >
+            </el-pagination>
+          </el-col>
+        </el-row>
       </div>
     </div>
+    <show-add :show="isShowAdd" :id="id" @cancel="cancel"></show-add>
   </div>
 </template>
 <script>
 import * as api from "@/api/list"
+import { mapGetters, mapActions } from 'vuex'
+import showAdd from "@/components/common/showAdd"
+
 export default {
     name:"blockList",
+    props:['list','count'],
     data(){
-        return {
-            id:"",
-            page:1,
-            limit:10,
-            orderbytype:1,
-            blockList:{}
-
-        }
+      return {
+        id:'',
+        page:1,
+        limit:10,
+        orderbytype:1,
+        isShowAdd:false,
+        loginStatus:false,
+        // count:0,
+      }
+    },
+    components:{
+      showAdd,
+  
+    },
+    computed:{
+      // ...mapGetters({
+      //  blocklist:'disList'
+      // }),
     },
     methods:{
-        async getBlockList(){
-            // await api.getBlockList({
-            //     id:this.id,
-            //     page:1,
-            //     limit:10,
-            //     orderbytype:1
-            // }).then(res=>{
-            //     const { data } =res
-            //     if(res.code == 0){
-            //         this.blockList = data
-            //     }
-            // })
+      init(){
+          let cookie = this.$getCookie('uInfo');
+          let userInfo = JSON.parse(cookie);
+          if (userInfo && userInfo.token) {
+              this.loginStatus = true;
+          } else {
+              this.loginStatus = false;
+          }
+      },
+      handleCurrentChange(val){
+        console.log(val)
+        this.$emit("getPage",val)
+      },
+      cancel(val){
+        this.$store.dispatch("getIsShowAdd",val)
+        this.$emit("getPage",1)
+      },
+      addBlock(){
+        if(this.loginStatus){
+          this.id=this.$route.params.id
+          this.$store.dispatch("getIsShowAdd",true)
+        }else{
+          this.$router.push({path:'/login'}) 
         }
+        
+      }
     },
-    created(){
-        let id = this.$route.params.id
-        this.getBlockList()
+    mounted(){
+      // console.log(this.blocklist)
+    },
+    created(){        
+        this.init();
     }
 }
 </script>
