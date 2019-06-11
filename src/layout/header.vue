@@ -6,8 +6,11 @@
 			</router-link>
       <!-- <div class="default-nav fl cb"> -->
       <el-menu :default-active="$route.path" :router=true class="fl" mode="horizontal">
-        <el-menu-item index="/">首页</el-menu-item>
-        <el-menu-item index="/discuzz">论坛</el-menu-item>
+        <a class="el-menu-item" href="http://www.feileyuan.com/" target="_blank">首页</a>
+        <a class="el-menu-item" href="http://www.feileyuan.com/#/news" target="_blank">资讯</a>
+        <el-menu-item index="/">论坛</el-menu-item>
+        <a class="el-menu-item" href="http://www.feileyuan.com/#/topic" target="_blank">专题</a>
+        <a class="el-menu-item" href="http://www.feileyuan.com/#/activity" target="_blank">活动</a>
       </el-menu>
 			<!-- </div> -->
       <div class="search fl ov">
@@ -33,7 +36,7 @@
 			</div>
       <div class="user fr ov" v-else>
         <router-link to='/login' tag="el-button" class="el-button--primary">登录</router-link>
-				<router-link to="/register" tag="el-button">注册</router-link>
+				<router-link to="/user/register" tag="el-button">注册</router-link>
 			</div>
     </div>
   </div>
@@ -182,6 +185,6 @@ export default {
     margin-left: 20px;
 }
 .out{
-  margin-top:5px;
+  margin-top:10px;
 }
 </style>

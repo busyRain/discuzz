@@ -11,7 +11,7 @@ import { formatDate } from "@/utils/formatDate";
 import baseFilter from "@/utils/date";
 import { SetCookies, GetCookies, DelCookies } from "@/utils/setCookies.js";
 // import "./registerServiceWorker";
-const IMG_URL = "http://www.feileyuan.com";
+const IMG_URL = "http://www.feileyuan.com/";
 
 Vue.prototype.$setCookie = SetCookies;
 Vue.prototype.$getCookie = GetCookies;

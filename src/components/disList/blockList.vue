@@ -5,7 +5,7 @@
         <li v-for="(item,index) in list" :key="index">
           <!--主题标题-->
           <div class="post-title cleardis">
-            <router-link :to="{path:`/discuzz/disDetail/${item.id}`}" tag="a" target="_blank">{{item.title}}</router-link>
+            <router-link :to="{path:`/disDetail/${item.id}`}" tag="a" target="_blank">{{item.title}}</router-link>
             <span class="uscat_pt" v-if="item.isrecommend">
               置顶
             </span>

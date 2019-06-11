@@ -12,7 +12,7 @@
                     <li v-for="(item,index) in hotList.slice(0,6)" :key="index">
                         <i v-text="index"></i>
                         <span>[{{item.sectionName}}]</span>
-                        <router-link :to="{path:`/discuzz/disDetail/${item.id}`}" tag="a" target="_blank">{{item.title}}</router-link>
+                        <router-link :to="{path:`/disDetail/${item.id}`}" tag="a" target="_blank">{{item.title}}</router-link>
                         <em class="time">{{$formatDate(item.lasttime,"yyyy-MM-dd")}}</em>
                     </li>  
                 </ul>       
@@ -22,7 +22,7 @@
                     <li v-for="(item,index) in newList.slice(0,6)" :key="index">
                         <i v-text="index"></i>
                         <span>[{{item.sectionName}}]</span>
-                        <router-link :to="{path:`/discuzz/disDetail/${item.id}`}" tag="a" target="_blank">{{item.title}}</router-link>
+                        <router-link :to="{path:`/disDetail/${item.id}`}" tag="a" target="_blank">{{item.title}}</router-link>
                         <em class="time">{{$formatDate(item.lasttime,"yyyy-MM-dd")}}</em>
                     </li>  
                 </ul> 
