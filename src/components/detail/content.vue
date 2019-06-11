@@ -26,11 +26,11 @@
           <ul class="otherinfo">
             <li>
               <label class="fl">组别</label>
-              <span class="admin" >{{detail.vip?'管理员':"游客"}}</span>
+              <span class="admin" >{{detail.vip?'管理员':"用户"}}</span>
             </li>
             <li>
-              <label  class="fl">Vip等级</label>
-              <span>{{detail.vipLvl}}</span>
+              <label  class="fl">用户等级</label>
+              <span>{{detail.userLvl}}</span>
             </li>
             <li>
               <label  class="fl">用户积分</label>
@@ -328,6 +328,11 @@ export default {
       } else {
           this.loginStatus = false;
       }
+    },
+    async updateCount (id){
+      await api.updateCount(id).then(res=>{
+        console.log(res)
+      })
     }
   },
   mounted(){
@@ -338,6 +343,7 @@ export default {
     })
   },
   created(){
+    this.updateCount(this.$route.params.id)
     this.init()
     this.getDetail(this.$route.params.id)
     this.getDetailReply(this.$route.params.id)

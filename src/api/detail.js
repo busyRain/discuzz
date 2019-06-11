@@ -34,3 +34,9 @@ export function deleteDis(data) {
     data
   });
 }
+export function updateCount(data){
+//更新贴子点击数
+return request(`/topic/update/count/${data}`,{
+  method:"post"
+})
+}

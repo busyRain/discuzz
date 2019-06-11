@@ -9,7 +9,7 @@
             </div>
             <div class="tabList"  v-show="tabIndex==1">
                 <ul >
-                    <li v-for="(item,index) in hotList.slice(0,6)" :key="index">
+                    <li v-for="(item,index) in hotList.slice(0,7)" :key="index">
                         <i v-text="index+1"></i>
                         <span>[{{item.sectionName}}]</span>
                         <router-link :to="{path:`/disDetail/${item.id}`}" tag="a" target="_blank">{{item.title}}</router-link>
@@ -19,8 +19,8 @@
             </div>
             <div class="tabList" v-show="tabIndex==2">
                 <ul>
-                    <li v-for="(item,index) in newList.slice(0,6)" :key="index">
-                        <i v-text="index"></i>
+                    <li v-for="(item,index) in newList.slice(0,7)" :key="index">
+                        <i v-text="index+1"></i>
                         <span>[{{item.sectionName}}]</span>
                         <router-link :to="{path:`/disDetail/${item.id}`}" tag="a" target="_blank">{{item.title}}</router-link>
                         <em class="time">{{$formatDate(item.lasttime,"yyyy-MM-dd")}}</em>
