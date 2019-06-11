@@ -2,6 +2,7 @@ module.exports = {
   publicPath: "./",
   outputDir: "dist",
   assetsDir: "assets",
+  lintOnSave: false,
   productionSourceMap: false,
   devServer: {
     https: false, // https:{type:Boolean}
@@ -10,7 +11,7 @@ module.exports = {
     port: 8080,
     hot: true,
     proxy: {
-      "/": {
+      "/api": {
         target: "http://api.feileyuan.com",
         //target: "http://124.156.160.86",
         //target: "http://150.109.48.154",

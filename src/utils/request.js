@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Message } from "element-ui";
-import { GetCookies } from "@/utils/setCookies.js";
+import { GetCookies,DelCookies } from "@/utils/setCookies.js";
 // axios.defaults.transformRequest = [
 //   function(data) {
 //     let ret = "";
@@ -51,6 +51,14 @@ service.interceptors.response.use(
     switch (res.code) {
       case 0:
         return response.data;
+      case 403:
+        Message({
+          message:'用户未登录，请先登录',
+          type:'error',
+          duration:5000
+        })
+        DelCookies("uInfo");
+        this.$store.dispatch('getIsLogin',false)
       default:
         Message({
           message: res.msg,

@@ -5,9 +5,9 @@
         <i class="el-icon-map-location"></i>
         首页
       </el-breadcrumb-item>
-      <span v-if="navList.length>1">
+      <span v-if="navList.length==2">
         <el-breadcrumb-item :to="{path:navList[0].url}">{{navList[0].name}}</el-breadcrumb-item>
-        <!-- <el-breadcrumb-item :to="{path:navList[1].url}">{{navList[1].name}}</el-breadcrumb-item> -->
+        <el-breadcrumb-item :to="{path:navList[1].url}">{{navList[1].name}}</el-breadcrumb-item>
       </span>
       <span v-else>
         <el-breadcrumb-item :to="{path:navList[0].url}">{{navList[0].name}}</el-breadcrumb-item>

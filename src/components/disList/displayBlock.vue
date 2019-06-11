@@ -32,25 +32,7 @@
                 <a href="javascript:;" @click="openDialog" class="send-post">发新贴</a>
             </div>
         </div>
-        <!--版主信息-->
-        <!-- <div class="master-header clearfix">
-            <div class="master-intro clearfix">
-                <h4 class="title clearfix">版主</h4>
-                <p class="m-list fl">
-                    <a href="" target="_black">123456</a>
-                </p>
-                <p class="m-list fl">
-                    <a href="" target="_black">张三张三</a>
-                </p>
-                <p class="m-list fl">
-                    <a href="" target="_black">李四李四</a>
-                </p>
-                <p class="m-list fl">
-                    <a href="" target="_black">w35343243</a>
-                </p>
-            </div>
-        </div> -->
-        <!--筛选-->
+        
         <div class="classify-list " style="margin-left:20px;">
             <div class="classify-item">
                 <span class="classify-title">看贴：</span>
@@ -101,7 +83,7 @@ export default {
             isessence:false,
             orderbytype:4,
             page:1,
-            limit:10,
+            limit:80,
             sectionid:'',
             blockList:{},
             blockTop:{},
@@ -141,7 +123,7 @@ export default {
             await api.getBlockList({
                 //id:this.id,
                 page:this.page,
-                limit:10,
+                limit:this.limit,
                 orderbytype:this.orderbytype,
                 isessence:this.isessence,
                 sectionid:this.sectionid

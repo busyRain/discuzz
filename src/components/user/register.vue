@@ -14,8 +14,8 @@
 						</li>
 					</ul>
 					<div class="tab1" v-if='tab == 1'>
-						<el-form :model="formMobile" :rules="rulesMobile" ref="formMobile">
-							<el-form-item prop="userPhone" inline-message="true">
+						<el-form :model="formMobile" :rules="rulesMobile" ref="formMobile"  class="form-login">
+							<el-form-item prop="userPhone">
 								<div class="phone">
 									<img src="@/assets/images/icon-phone.png" alt="">
 									<input v-model="formMobile.userPhone" type="tel" maxlength="11" placeholder="请输入的你的手机号码" />
@@ -37,14 +37,14 @@
 								<div class="phone code">
 									<input class="code-input" v-model="formMobile.vCode" type="text" placeholder="输入验证码" />
 									<div class="get-code cursor">
-										<span>点击获取验证码</span>
+										<span @click="sendMobileMessage" v-text="formMobile.counter.text"></span>
 									</div>
 								</div>
 							</el-form-item>
 						</el-form>
 					</div>
 					<div class="tab1" v-if='tab == 2'>
-						<el-form :model="formEmail" :rules="rulesEmail" ref="formEmail">
+						<el-form :model="formEmail" :rules="rulesEmail" ref="formEmail" class="form-login">
 							<el-form-item prop="userEmail" inline-message="true">
 								<div class="phone">
 									<img src="@/assets/images/icon-phone.png" alt="">
@@ -63,10 +63,10 @@
 									<input v-model="formEmail.surePassword" type="password" placeholder="请重复密码" />
 								</div>
 							</el-form-item>
-							<el-form-item prop="emailCode" inline-message="true">
+							<el-form-item prop="vCode" inline-message="true">
 								<div class="phone">
 									<img class="email" src="@/assets/images/icon-email.png" alt="">
-									<input v-model="formEmail.emailCode" type="text" placeholder="输入邮箱验证码" />
+									<input v-model="formEmail.vCode" type="text" placeholder="输入邮箱验证码" />
 								</div>
 							</el-form-item>
 						</el-form>
@@ -112,12 +112,23 @@
 					passWord: "",
 					surePassword: "",
 					vCode: "",
+					counter: {
+						text: "发送手机验证码",
+						seconds: 120,
+						func: null
+					},
+
 				},
 				formEmail: {
 					userEmail: "",
 					passWord: "",
 					surePassword: "",
-					emailCode: "",
+					vCode: "",
+					counter: {
+						text: "发送邮箱验证码",
+						seconds: 120,
+						func: null
+					},
 				},
 				rulesMobile: {
 					userPhone: [{
@@ -220,17 +231,49 @@
 			}
 		},
 		methods: {
+			sendMobileMessage(){
+				var that = this;
+				if (that.formMobile.counter.seconds == 0 || that.formMobile.counter.seconds == 120) {
+					that.$refs.formMobile.validateField("userPhone", function(err) {
+						if (!err) {
+							that.loading = true;
+							//that.loading.msg = "正在发送手机验证码~";
+							that.$post('users/sendPhoneVerificationCode', {
+								userPhone: that.formMobile.userPhone
+							}).then(respone => {
+								if (respone.code == 0) {
+									that.$alert("手机验证码发送成功", {
+										confirmButtonText: '确定',
+										callback: function(action) {
+											that.loading= false;
+											that.formMobile.counter.func = setInterval(function() {												
+												if (that.formMobile.counter.seconds == 0) {													
+													clearInterval(that.formMobile.counter.func);													
+													that.formMobile.counter.text = "重新发送验证码";
+													that.formMobile.counter.seconds = 120;
+												}
+												that.formMobile.counter.text = "重新发送验证码(" + that.formMobile.counter.seconds + ")";
+												that.formMobile.counter.seconds--;
+											}, 1000)
+										}
+									});
+								}
+							})
+						}
+					})
+				}
+			},
 			onSuccess(type, respone) {
 				var that = this;
-				if (respone.data.code == 0) {
+				if (respone.code == 0) {
 					// 注册成功
 					let userInfo = {
-						token: respone.data.data,
+						token: respone.data,
 						loginName: type == 1 ? this.formMobile.userPhone : this.formEmail.userEmail,
 					}
 					that.$setCookie("uInfo", JSON.stringify(userInfo));
 					that.$message({
-						message: respone.data.msg,
+						message: respone.msg,
 						type: "success",
 						duration: 3000,
 						onClose() {
@@ -240,10 +283,10 @@
 				} else {
 					that.loading = false;
 					var _msg = "";
-					if (res.data.status == 200) {
-						_msg = res.data.msg;
+					if (respone.status == 200) {
+						_msg = respone.msg;
 					} else {
-						_msg = res.data.message;
+						_msg = respone.message;
 					}
 					that.$alert(_msg, {
 						confirmButtonText: '确定'
@@ -256,7 +299,7 @@
 					this.$refs.formMobile.validate((valid) => {
 						if (valid) {
 							that.loading = true;
-							this.$axios.post('/users/register/mobile', {
+							this.$post('/users/register/mobile', {
 								userPhone: that.formMobile.userPhone,
 								passWord: that.formMobile.passWord,
 								vCode: that.formMobile.vCode,
@@ -272,10 +315,10 @@
 					this.$refs.formEmail.validate((valid) => {
 						if (valid) {
 							that.loading = true;
-							this.$axios.post('/users/register/email', {
+							this.$post('/users/register/email', {
 								userEmail: that.formEmail.userEmail,
 								passWord: that.formEmail.passWord,
-								emailCode: that.formEmail.emailCode,
+								vCode: that.formEmail.vCode,
 							}).then(res => {
 								that.onSuccess(2, res);
 							})
@@ -299,9 +342,8 @@
 					this.formEmail.userEmail = "";
 					this.formEmail.passWord = "";
 					this.formEmail.surePassword = "";
-					this.formEmail.emailCode = "";
+					this.formEmail.vCode = "";
 					setTimeout(() => {
-
 						this.$refs.formEmail.resetFields();
 					}, 10)
 				}
@@ -310,234 +352,274 @@
 	}
 </script>
 <style scoped lang="scss"> 
-@media (max-height:768px) {
-    .bg-wrap {
-        padding: 6% 0;
-    } 
-}
-@media (min-height:768px) and (max-height:799px) {
-    .bg-wrap {
-        position: absolute;
-        bottom: 0;
-        top:75px;
-    }
-    .con-wrap {
-        bottom: 10%;
-        position: absolute;
-    }
-}
-@media (min-height:800px) {
-    .bg-wrap {
-        position: absolute;
-        bottom: 0;
-        top:75px;
-    }
-    .con-wrap {
-        bottom: 100px;
-        position: absolute;
-    }
-}
-.bg-wrap {
-    background: url(../../assets/images/footer-bg.png) no-repeat bottom center;
-    width: 100%;
-    min-height: 415px;
-    background-size: 100%;
-    .con-wrap {
-        width: 100%;
-        .con-inner {
-            margin: 0 auto;
-            width: 1400px;
-            display: flex;
-            justify-content: center;
-            box-sizing: border-box;
-            background: url(../../assets/images/block-bg.png) no-repeat center center;
-            background-size: 100% 100%;
-            padding: 20px 180px 50px 200px;
-            .left {
-                width: 50%;
-                padding-right: 30px;
-                position: relative;
-                .title {
-                    font-size: 24px;
-                    color: #FFFFFF;
-                    font-weight: 600;
-                    text-align: center;
-                    padding: 18px 0 38px 0;
-                }
-                .tab {
-                    display: flex;
-                    justify-content: center;
-                    text-align: center;
-                    color: #fff;
-                    font-size: 16px;
-                    >li {
-                        border-bottom: 1px solid #fff;
-                        text-align: center;
-                        width: 230px;
-                        padding: 15px 0px;
-                    }
-                    .active {
-                        font-weight: 600;
-                        border-bottom: 2px solid #fff;
-                    }
-                }
-                .tab1 {
-                    padding-top: 35px;
-                    text-align: center;
-                }
-                .phone {
-                    width: 90%;
-                    height: 48px;
-                    background: rgba(255, 255, 255, .1);
-                    border: 1px solid rgba(255, 255, 255, 1);
-                    border-radius: 24px;
-                    padding: 9px 10px 9px 24px;
-                    box-sizing: border-box;
-                    display: flex;
-                    align-items: center;
-                    margin: 0 auto 10px;
-                    &.code {
-                        justify-content: space-around;
-                    }
-                    >div {
-                        border-right: 1px solid #fff;
-                        img {
-                            width: 17px;
-                            height: 25px;
-                            margin-right: 17px;
-                        }
-                        .password {
-                            width: 19px;
-                            height: 22px;
-                        }
-                        .email {
-                            width: 19px;
-                            height: 15px;
-                        }
-                    }
-                    .get-code {
-                        border-right: none;
-                        border-left: 1px solid #fff;
-                        padding-left: 9px;
-                        font-size: 14px;
-                        color: #fff;
-                    }
-                    input {
-                        width: 95%;
-                        padding-left: 17px;
-                        background: rgba(255, 255, 255, 0);
-                        height: 100%;
-                        outline: none;
-                        border: 0;
-                        color: #fff;
-                        font-size: 16px;
-                    }
-                    .code-input {
-                        width: 200px;
-                    }
-                    .eye {
-                        padding-left: 20px;
-                    }
-                }
-                .phone:last-child {
-                    padding-bottom: 11px;
-                }
-                .login-btn {
-                    width: 90%;
-                    height: 48px;
-                    border-radius: 24px;
-                    background: #fff;
-                    color: #0077FF;
-                    font-size: 20px;
-                    line-height: 48px;
-                    text-align: center;
-                    margin: 35px auto 10px;
-                }
-                .already {
-                    text-align: center;
-                    color: #fff;
-                    font-size: 16px;
-                    line-height: 1.5;
-                    span {
-                        color: #FFC766;
-                    }
-                }
-                &:after {
-                    width: 1px;
-                    display: block;
-                    content: '';
-                    background: #fff;
-                    position: absolute;
-                    top: 30%;
-                    bottom: 20%;
-                    right: 0;
-                }
-            }
-            .right {
-                width: 50%;
-                .other-login {
-                    text-align: center;
-                    font-size: 20px;
-                    color: #fff;
-                    margin: 118px 0 60px 0;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    .left-line {
-                        width: 150px;
-                        height: 1px;
-                        background: linear-gradient(-90deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
-                    }
-                    .right-line {
-                        width: 150px;
-                        height: 1px;
-                        background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
-                    }
-                }
-                .other-icon {
-                    color: #fff;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    margin-bottom: 60px;
-                    .qq {
-                        margin-right: 50px;
-                        width: 56px;
-                        height: 56px;
-                        border-radius: 50%;
-                        background: rgba(255, 255, 255, 0);
-                        border: 1px solid #fff;
-                        text-align: center;
-                        line-height: 56px;
-                        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.14);
-                        span {
-                            font-size: 36px;
-                        }
-                    }
-                    .qq:last-child {
-                        margin-right: 0;
-                    }
-                }
-                .qr {
-                    width: 120px;
-                    height: 120px;
-                    background: #fff;
-                    margin: 0 auto;
-                    margin-bottom: 15px;
-                    display: none;
-                }
-                .ewm {
-                    text-align: center;
-                    color: #fff;
-                    display: none;
-                    font-size: 16px;
-                }
-            }
-        }
-    }
-}
-input::-webkit-input-placeholder {
-    color: #fff;
-    font-size: 14px;
-}
+
+	@media (max-height:768px) {
+		.bg-wrap {
+			padding: 6% 0;
+		} 
+	}
+
+	@media (min-height:768px) and (max-height:799px) {
+		.bg-wrap {
+			position: absolute;
+			bottom: 0;
+			top:75px;
+		}
+
+		.con-wrap {
+			bottom: 10%;
+			position: absolute;
+		}
+	}
+
+	@media (min-height:800px) {
+		.bg-wrap {
+			position: absolute;
+			bottom: 0;
+			top:75px;
+		}
+
+		.con-wrap {
+			bottom: 100px;
+			position: absolute;
+		}
+	}
+
+	.bg-wrap {
+		background: url(../../assets/images/footer-bg.png) no-repeat bottom center;
+		width: 100%;
+		min-height: 415px;
+		background-size: 100%;
+
+		.con-wrap {
+			width: 100%;
+
+			.con-inner {
+				margin: 0 auto;
+				width: 1400px;
+				display: flex;
+				justify-content: center;
+				box-sizing: border-box;
+				background: url(../../assets/images/block-bg.png) no-repeat center center;
+				background-size: 100% 100%;
+				padding: 20px 180px 50px 200px;
+
+				.left {
+					width: 50%;
+					padding-right: 30px;
+					position: relative;
+
+					.title {
+						font-size: 24px;
+						color: #FFFFFF;
+						font-weight: 600;
+						text-align: center;
+						padding: 18px 0 38px 0;
+					}
+
+					.tab {
+						display: flex;
+						justify-content: center;
+						text-align: center;
+						color: #fff;
+						font-size: 16px;
+
+						>li {
+							border-bottom: 1px solid #fff;
+							text-align: center;
+							width: 230px;
+							padding: 15px 0px;
+						}
+
+						.active {
+							font-weight: 600;
+							border-bottom: 2px solid #fff;
+						}
+					}
+
+					.tab1 {
+						padding-top: 35px;
+						text-align: center;
+					}
+
+					.phone {
+						width: 90%;
+						height: 48px;
+						background: rgba(255, 255, 255, .1);
+						border: 1px solid rgba(255, 255, 255, 1);
+						border-radius: 24px;
+						padding: 9px 10px 9px 24px;
+						box-sizing: border-box;
+						display: flex;
+						align-items: center;
+						margin: 0 auto 10px;
+
+						&.code {
+							justify-content: space-around;
+						}
+
+						>div {
+							border-right: 1px solid #fff;
+
+							img {
+								width: 17px;
+								height: 25px;
+								margin-right: 17px;
+							}
+
+							.password {
+								width: 19px;
+								height: 22px;
+							}
+
+							.email {
+								width: 19px;
+								height: 15px;
+							}
+						}
+
+						.get-code {
+							border-right: none;
+							border-left: 1px solid #fff;
+							padding-left: 9px;
+							font-size: 14px;
+							color: #fff;
+						}
+
+						input {
+							width: 95%;
+							padding-left: 17px;
+							background: rgba(255, 255, 255, 0);
+							height: 100%;
+							outline: none;
+							border: 0;
+							color: #fff;
+							font-size: 16px;
+						}
+
+						.code-input {
+							width: 200px;
+						}
+
+						.eye {
+							padding-left: 20px;
+						}
+					}
+
+					.phone:last-child {
+						padding-bottom: 11px;
+					}
+
+					.login-btn {
+						width: 90%;
+						height: 48px;
+						border-radius: 24px;
+						background: #fff;
+						color: #0077FF;
+						font-size: 20px;
+						line-height: 48px;
+						text-align: center;
+						margin: 35px auto 10px;
+					}
+
+					.already {
+						text-align: center;
+						color: #fff;
+						font-size: 16px;
+						line-height: 1.5;
+
+						span {
+							color: #FFC766;
+						}
+					}
+
+					&:after {
+						width: 1px;
+						display: block;
+						content: '';
+						background: #fff;
+						position: absolute;
+						top: 30%;
+						bottom: 20%;
+						right: 0;
+					}
+				}
+
+				.right {
+					width: 50%;
+
+					.other-login {
+						text-align: center;
+						font-size: 20px;
+						color: #fff;
+						margin: 118px 0 60px 0;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+
+						.left-line {
+							width: 150px;
+							height: 1px;
+							background: linear-gradient(-90deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+						}
+
+						.right-line {
+							width: 150px;
+							height: 1px;
+							background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+						}
+					}
+
+					.other-icon {
+						color: #fff;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						margin-bottom: 60px;
+
+						.qq {
+							margin-right: 50px;
+							width: 56px;
+							height: 56px;
+							border-radius: 50%;
+							background: rgba(255, 255, 255, 0);
+							border: 1px solid #fff;
+							text-align: center;
+							line-height: 56px;
+							box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.14);
+
+							span {
+								font-size: 36px;
+							}
+						}
+
+						.qq:last-child {
+							margin-right: 0;
+						}
+					}
+
+					.qr {
+						width: 120px;
+						height: 120px;
+						background: #fff;
+						margin: 0 auto;
+						margin-bottom: 15px;
+						display: none;
+					}
+
+					.ewm {
+						text-align: center;
+						color: #fff;
+						display: none;
+						font-size: 16px;
+					}
+				}
+			}
+		}
+	}
+
+	input::-webkit-input-placeholder {
+		color: #fff;
+		font-size: 14px;
+	}
 </style>

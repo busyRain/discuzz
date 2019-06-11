@@ -1,12 +1,14 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import * as api from "@/api/list";
+import { stat } from "fs";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     disList: {},
     isShowAdd:false,
+    islogin:false,
   },
   mutations: {
     GET_DISLIST: (state, params) => {
@@ -15,6 +17,9 @@ export default new Vuex.Store({
     },
     GET_ISSHOWADD:(state,params) =>{
       state.isShowAdd = params
+    },
+    GET_ISLOGIN:(state,params) =>{
+      state.islogin = params
     }
   },
   actions: {
@@ -29,6 +34,9 @@ export default new Vuex.Store({
     },
     getIsShowAdd({commit},params) {
       commit("GET_ISSHOWADD",params)
+    },
+    getIsLogin({commit},params) {
+      commit("GET_ISLOGIN",params)
     }
   },
   getters: {
@@ -38,6 +46,9 @@ export default new Vuex.Store({
     },
     isShowAdd: state => {
       return state.isShowAdd;
+    },
+    islogin : state =>{
+      return state.islogin
     }
   }
 });

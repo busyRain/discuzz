@@ -365,6 +365,7 @@ export default {
     overflow: hidden;
     width: 180px;
     min-width: 180px;
+    padding: 0 0 22px 0;
     //background: #E6E6E6;
     .detailLeft_top {
       text-align: center;
@@ -411,7 +412,7 @@ export default {
   }
   .detailRight {
     width:1019px;
-    min-height: 330px;
+    min-height: 355px;
     border-left: 1px solid #CDCDCD;
     .detailRight_info {
       margin-bottom:40px;
@@ -508,7 +509,7 @@ export default {
     border-top: 4px solid #c3c3c3;
   }
   .detailRight{
-    min-height: 294px;
+    min-height: 320px;
   }
   .detailRight_info{
   border-top: 4px solid #e6e6e6;

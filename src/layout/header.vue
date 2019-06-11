@@ -4,7 +4,6 @@
       <router-link class="logo-wrapper fl cursor" to="/" tag="div">
 			  <img src="@/assets/images/logo.png" alt>
 			</router-link>
-      <!-- <div class="default-nav fl cb"> -->
       <el-menu :default-active="$route.path" :router=true class="fl" mode="horizontal">
         <a class="el-menu-item" href="http://www.feileyuan.com/" target="_blank">首页</a>
         <a class="el-menu-item" href="http://www.feileyuan.com/#/news" target="_blank">资讯</a>
@@ -12,7 +11,6 @@
         <a class="el-menu-item" href="http://www.feileyuan.com/#/topic" target="_blank">专题</a>
         <a class="el-menu-item" href="http://www.feileyuan.com/#/activity" target="_blank">活动</a>
       </el-menu>
-			<!-- </div> -->
       <div class="search fl ov">
 				<el-input class="fl" prefix-icon="el-icon-search" placeholder="请输入您要搜索的关键字" v-model="keywords"></el-input>
 			</div>
@@ -42,20 +40,27 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 export default {
   name:"headerTop",
   data(){
     return {
-      islogin:false,
+      // islogin:false,
       keywords:"",
       uName:""
     }
   },
+  computed:{
+    ...mapGetters({
+      islogin:'islogin'
+    })
+  },
   methods:{
     refresh() {
 				this.$delCookie("uInfo");
-				this.uName = "";
-				this.islogin = false;
+        this.uName = "";
+        this.$store.dispatch('getIsLogin',false)
+				//this.islogin = false;
 			},
     logout() {
       try {
@@ -90,7 +95,7 @@ export default {
     }
 
     this.keywords = this.$route.query.keyword;
-    userInfo ? this.islogin = true : this.islogin = false;
+    userInfo ?  this.$store.dispatch('getIsLogin',true) : this.$store.dispatch('getIsLogin',false);
   }
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="board-box">
+  <div class="board-box" ref="boardBox">
     <div class="main">
       <ul class="post-list" >
         <li v-for="(item,index) in list" :key="index">
@@ -23,7 +23,11 @@
             </span>
             <a href="javascript:;" class="usre-avatar fl" target="_blank">
               <el-image
-                style="width: 30px; height:30px"
+                style="width: 30px; 
+                height:30px;
+                border-radius: 50%;
+                margin-right: 10px;
+                cursor: pointer;"
                 :src="$IMG_URL+ item.userImgUrl"
                 :fit="'contain'">
                 <div slot="error" class="image-slot">
@@ -102,7 +106,7 @@ export default {
       return {
         id:'',
         page:1,
-        limit:10,
+        limit:80,
         orderbytype:1,
         isShowAdd:false,
         loginStatus:false,
@@ -130,6 +134,9 @@ export default {
       },
       handleCurrentChange(val){
         console.log(val)
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
+        this.$refs.boardBox.scrollTop=0
+        console.log( this.$refs.boardBox.scrollTop)
         this.$emit("getPage",val)
       },
       cancel(val){
@@ -140,6 +147,9 @@ export default {
         if(this.loginStatus){
           this.id=this.$route.params.id
           this.$store.dispatch("getIsShowAdd",true)
+          this.$refs.boardBox.scrollTop = 0
+          
+         // document.body.scrollTop = document.documentElement.scrollTop = 0;
         }else{
           this.$router.push({path:'/login'}) 
         }
@@ -164,7 +174,7 @@ export default {
   ul.post-list{
     >li{
       padding: 18px 0 0;
-      border-bottom: 1px dashed #e5e5e5;
+      border-bottom: 1px dashed #c3c3c3;
       position: relative;
       margin-top: 10px;
       padding-bottom: 10px;
@@ -202,7 +212,7 @@ export default {
           position: absolute;
         }
       }
-      .usre-avatar img{
+      .usre-avatar .el-image__inner{
         width: 30px;
         height: 30px;
         border-radius: 50%;
