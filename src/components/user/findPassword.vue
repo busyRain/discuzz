@@ -72,6 +72,7 @@
 </template>
 
 <script>
+import * as api from '@/api/login'
 	export default {
 		data() {
 			return {
@@ -203,70 +204,84 @@
 			}
 		},
 		methods: {
+            async sendPhoneCode(data){ 
+                let that = this;
+                await api.sendPhoneCode(data).then(
+                    res =>{
+                        if (res.code == 0) {
+                            that.$alert("手机验证码发送成功", {
+                                confirmButtonText: '确定',
+                                callback: function(action) {
+                                    that.loading.status = false;
+                                    that.formMobile.counter.func = setInterval(function() {												
+                                        if (that.formMobile.counter.seconds == 0) {													
+                                            clearInterval(that.formMobile.counter.func);													
+                                            that.formMobile.counter.text = "重新发送验证码";
+                                            that.formMobile.counter.seconds = 120;
+                                        }
+                                        that.formMobile.counter.text = "重新发送验证码(" + that.formMobile.counter.seconds + ")";
+                                        that.formMobile.counter.seconds--;
+                                    }, 1000)
+                                }
+                            });
+                        }
+                    }
+                )
+            },
 			sendMobileMessage: function() {
-				var that = this;
+				let that = this;
 				if (that.formMobile.counter.seconds == 0 || that.formMobile.counter.seconds == 120) {
 					that.$refs.formMobile.validateField("userPhone", function(err) {
 						if (!err) {
 							that.loading.status = true;
-							that.loading.msg = "正在发送手机验证码~";
-							that.$post('users/sendPhoneVerificationCode', {
-								userPhone: that.formMobile.userPhone
-							}).then(respone => {
-								if (respone.code == 0) {
-									that.$alert("手机验证码发送成功", {
-										confirmButtonText: '确定',
-										callback: function(action) {
-											that.loading.status = false;
-											that.formMobile.counter.func = setInterval(function() {												
-												if (that.formMobile.counter.seconds == 0) {													
-													clearInterval(that.formMobile.counter.func);													
-													that.formMobile.counter.text = "重新发送验证码";
-													that.formMobile.counter.seconds = 120;
-												}
-												that.formMobile.counter.text = "重新发送验证码(" + that.formMobile.counter.seconds + ")";
-												that.formMobile.counter.seconds--;
-											}, 1000)
-										}
-									});
-								}
-							})
+                            that.loading.msg = "正在发送手机验证码~";
+                            that.sendPhoneCode({
+                                userPhone: that.formMobile.userPhone
+                            })
+							
 						}
 					})
 				}
-			},
+            },
+            async sendEmalCode(data){
+                let that = this
+                await api.sendEmalCode(data).then(
+                    res =>{
+                        if (res.code == 0) {
+                            that.$alert("邮箱验证码发送成功", {
+                                confirmButtonText: '确定',
+                                callback: function(action) {
+                                    that.loading.status = false;
+                                    that.formEmail.counter.func = setInterval(function() {												
+                                        if (that.formEmail.counter.seconds == 0) {
+                                            clearInterval(that.formEmail.counter.func);
+                                        }
+                                        that.formEmail.counter.text = "重新发送验证码(" + that.formEmail.counter.seconds + ")";
+                                        that.formEmail.counter.seconds--;
+                                    }, 1000)
+                                }
+                            });
+                        }
+                    }
+                )
+            },
 			sendEmailMessage: function() {
-				var that = this;
+				let that = this;
 				if (that.formEmail.counter.seconds == 0 || that.formEmail.counter.seconds == 120) {
 					that.$refs.formEmail.validateField("userEmail", function(err) {
 						if (!err) {
 							that.loading.status = true;
-							that.loading.msg = "正在发送邮箱验证码~";
-							that.$post('users/sendEmailVerificationCode', {
-								userEmail: that.formEmail.userEmail
-							}).then(respone => {
-								if (respone.code == 0) {
-									that.$alert("邮箱验证码发送成功", {
-										confirmButtonText: '确定',
-										callback: function(action) {
-											that.loading.status = false;
-											that.formEmail.counter.func = setInterval(function() {												
-												if (that.formEmail.counter.seconds == 0) {
-													clearInterval(that.formEmail.counter.func);
-												}
-												that.formEmail.counter.text = "重新发送验证码(" + that.formEmail.counter.seconds + ")";
-												that.formEmail.counter.seconds--;
-											}, 1000)
-										}
-									});
-								}
-							})
+                            that.loading.msg = "正在发送邮箱验证码~";
+                            that.sendEmalCode({
+                                userEmail: that.formEmail.userEmail
+                            })
+							
 						}
 					})
 				}
 			},
 			onSuccess(type, respone) {
-				var that = this;
+				let that = this;
 				if (respone.code == 0) {
 					// 注册成功
 					let userInfo = {
@@ -277,44 +292,70 @@
 					that.$message({
 						message: respone.msg,
 						type: "success",
-						duration: 3000 
-					});
+                        duration: 3000 ,
+                        onClose() {
+                            that.$router.back();
+                        }
+                    });
+                   
 				} else {
 					that.loading.status = false;
-					var _msg = "";
+					let _msg = "";
 					if (respone.status == 200) {
 						_msg = respone.msg;
 					} else {
 						_msg = respone.message;
 					}
-					that.$alert(_msg, {
-						confirmButtonText: '确定'
+					that.$message({
+						message: _msg,
+						type: 'error',
+						duration: 3000,
 					});
 				}
-			},
+            },
+            async forgetPassWordMobile(data){
+                let that = this;
+                await api.forgetPassWordMobile(data).then(
+                    res => {
+                        that.loading.status = false  
+                        that.onSuccess(1, res);
+                    },
+                    res =>{
+                        that.loading.status = false;
+                        that.$alert(res.response.message, {
+                            confirmButtonText: '确定'
+                        });
+                    }
+                )
+            },
+            async forgetPasswordEmail(data) {
+                let that = this;
+                await api.forgetPasswordEmail(data).then(
+                    res => {
+                        that.loading.status = false;
+                        that.onSuccess(2, res);
+                    },
+                    res =>{
+                        that.loading.status = false;
+                        that.$alert(res.response.message, {
+                            confirmButtonText: '确定'
+                        });
+                    }
+                )
+            },
 			doSubmit() {
-				var that = this;
+				let that = this;
 				if (this.tab == 1) {
 					this.$refs.formMobile.validate((valid) => {
 						if (valid) {
                             that.loading.status = true;
                             that.loading.msg = '密码正在重置~'
-							this.$post('/users/forgetPassWord', {
-								userPhone: that.formMobile.userPhone,
-								newPassWord: that.formMobile.passWord,
-								vCode: that.formMobile.vCode,
-							}).then(
-                                res => {
-                                    that.loading.status = false  
-                                    that.onSuccess(1, res);
-                                },
-                                res =>{
-                                    that.loading.status = false;
-                                    that.$alert(res.response.message, {
-										confirmButtonText: '确定'
-									});
-                                }
-                            )
+                            that.forgetPassWordMobile({
+                                userPhone: that.formMobile.userPhone,
+                                newPassWord: that.formMobile.passWord,
+                                vCode: that.formMobile.vCode,
+                            })
+							
 						} else {
 							return false;
 						}
@@ -325,23 +366,12 @@
 						if (valid) {
                             that.loading.status = true;
                             that.loading.msg = '密码正在重置~'
-							this.$post('/users/forgetPassWordFromEmail', {
-								userEmail: that.formEmail.userEmail,
-								newPassWord: that.formEmail.passWord,
-								vCode: Number(that.formEmail.vCode),
-							}).then(
-                                res => {
-                                    that.loading.status = false;
-                                    that.onSuccess(2, res);
-                                },
-                                res =>{
-                                    that.loading.status = false;
-                                    that.$alert(res.response.message, {
-										confirmButtonText: '确定'
-									});
-                                }
-                        
-                            )
+                            that.forgetPasswordEmail({
+                                userEmail: that.formEmail.userEmail,
+                                newPassWord: that.formEmail.passWord,
+                                vCode: Number(that.formEmail.vCode)
+                            })
+							
 						} else {
 							return false;
 						}

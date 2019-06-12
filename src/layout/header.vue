@@ -4,10 +4,10 @@
       <router-link class="logo-wrapper fl cursor" to="/" tag="div">
 			  <img src="@/assets/images/logo.png" alt>
 			</router-link>
-      <el-menu :default-active="$route.path" :router=true class="fl" mode="horizontal">
+      <el-menu :default-active="$route.path" :router=true class="fl" mode="horizontal" :routePath="currentMenu">
         <a class="el-menu-item" href="http://www.feileyuan.com/" target="_blank">首页</a>
         <a class="el-menu-item" href="http://www.feileyuan.com/#/news" target="_blank">资讯</a>
-        <el-menu-item index="/">论坛</el-menu-item>
+        <el-menu-item index="/" ref="topic" :style="styleTab">论坛</el-menu-item>
         <a class="el-menu-item" href="http://www.feileyuan.com/#/topic" target="_blank">专题</a>
         <a class="el-menu-item" href="http://www.feileyuan.com/#/activity" target="_blank">活动</a>
       </el-menu>
@@ -47,7 +47,9 @@ export default {
     return {
       // islogin:false,
       keywords:"",
-      uName:""
+      uName:"",
+      currentMenu:"",
+      styleTab:''
     }
   },
   computed:{
@@ -55,13 +57,27 @@ export default {
       islogin:'islogin'
     })
   },
+  mounted(){
+        this.setCurrentMenu()
+    },
+    updated(){
+        this.setCurrentMenu()
+    },
   methods:{
     refresh() {
 				this.$delCookie("uInfo");
         this.uName = "";
         this.$store.dispatch('getIsLogin',false)
 				//this.islogin = false;
-			},
+    },
+    setCurrentMenu(){
+        if(this.$route.path.indexOf('disDetail')>-1 || this.$route.path.indexOf('disList')>-1){
+         
+           this.styleTab='border-bottom: 3px solid #409eff;color: #409eff;'
+        }
+        console.log(this.$route.path)
+        // console.log(this.currentMenu)
+    },
     logout() {
       try {
         let that = this;
@@ -84,8 +100,7 @@ export default {
         }
       } catch (e) {}
     },
-    goPath(){
-    }
+   
   },
   mounted() {
     let userInfo = this.$getCookie('uInfo');
@@ -139,7 +154,7 @@ export default {
   color: #409eff;
 }
 .search {
-  width: 30%;
+  width: 25%;
   padding: 18px 30px;
 }
 .user {

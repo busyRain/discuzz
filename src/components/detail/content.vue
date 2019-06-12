@@ -36,10 +36,7 @@
               <label  class="fl">用户积分</label>
               <span>{{detail.userPoints}}</span>
             </li>
-            <li>
-              <label  class="fl">用户等级</label>
-              <span>{{detail.userLvl}}</span>
-            </li>
+           
             <li>
               <label  class="fl">经验值</label>
               <span class="progress">
@@ -101,10 +98,7 @@
                       <label  class="fl">用户积分</label>
                       <span>{{item.userPoints}}</span>
                     </li>
-                    <li>
-                      <label  class="fl">用户等级</label>
-                      <span>{{item.userLvl}}</span>
-                    </li>
+                    
                     <li>
                     <label  class="fl">经验值</label>
                     <span class="progress">
@@ -253,7 +247,9 @@ export default {
         console.log(res)
         if(res.code == 0 ){
          this.defaultMsg = ''
-         this.getDetailReply(this.$route.params.id)
+         console.log(this.$refs.ue)
+         this.$refs.ue.execCommand('cleardoc');
+         //this.getDetailReply(this.$route.params.id)
         }
       })
     },

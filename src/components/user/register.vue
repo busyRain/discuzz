@@ -73,6 +73,7 @@
 	</div>
 </template>
 <script>
+import * as api from '@/api/login'
 	export default {
 		name: 'login',
 		data() {
@@ -206,74 +207,82 @@
 			};
 		},
 		methods: {
+			async sendPhoneCode(data){ //发送手机验证码
+				let that = this;
+				await api.sendPhoneCode(data).then(
+					res=>{
+						if (res.code == 0) {
+							that.$alert('手机验证码发送成功', {
+								confirmButtonText: '确定',
+								callback: function(action) {
+									that.loading.status = false;
+									that.formMobile.counter.func = setInterval(function() {
+										if (that.formMobile.counter.seconds == 0) {
+											clearInterval(that.formMobile.counter.func);
+											that.formMobile.counter.text = '重新发送验证码';
+											that.formMobile.counter.seconds = 120;
+										} else {
+											that.formMobile.counter.text = '重新发送验证码(' + that.formMobile.counter.seconds + ')';
+											that.formMobile.counter.seconds--;
+										}
+									}, 1000);
+								}
+							});
+						}
+					}
+				)
+			},
 			sendMobileMessage: function() {
-				var that = this;
+				let that = this;
 				if (that.formMobile.counter.seconds == 0 || that.formMobile.counter.seconds == 120) {
 					that.$refs.formMobile.validateField('userPhone', function(err) {
 						if (!err) {
 							that.loading.status = true;
 							that.loading.msg = '正在发送手机验证码~';
-							that.$post('users/sendPhoneVerificationCode', {
-								userPhone: that.formMobile.userPhone
-							}).then(respone => {
-								if (respone.code == 0) {
-									that.$alert('手机验证码发送成功', {
-										confirmButtonText: '确定',
-										callback: function(action) {
-											that.loading.status = false;
-											that.formMobile.counter.func = setInterval(function() {
-												if (that.formMobile.counter.seconds == 0) {
-													clearInterval(that.formMobile.counter.func);
-													that.formMobile.counter.text = '重新发送验证码';
-													that.formMobile.counter.seconds = 120;
-												} else {
-													that.formMobile.counter.text = '重新发送验证码(' + that.formMobile.counter.seconds + ')';
-													that.formMobile.counter.seconds--;
-												}
-											}, 1000);
-										}
-									});
-								}
-							});
+							that.sendPhoneCode({userPhone: that.formMobile.userPhone})
 						}
 					});
 				}
 			},
+			async sendEmalCode(data){
+				await api.sendEmalCode(data).then(
+					res=>{
+						if (res.code == 0) {
+							that.$alert('邮箱验证码发送成功', {
+								confirmButtonText: '确定',
+								callback: function(action) {
+									that.loading.status = false;
+									that.formEmail.counter.func = setInterval(function() {
+										if (that.formEmail.counter.seconds == 0) {
+											clearInterval(that.formEmail.counter.func);
+											that.formEmail.counter.text = '重新发送验证码';
+											that.formEmail.counter.seconds = 120;
+										} else {
+											that.formEmail.counter.text = '重新发送验证码(' + that.formEmail.counter.seconds + ')';
+											that.formEmail.counter.seconds--;
+										}
+									}, 1000);
+								}
+							});
+						}
+					}
+				)
+			},
 			sendEmailMessage: function() {
-				var that = this;
+				let that = this;
 				if (that.formEmail.counter.seconds == 0 || that.formEmail.counter.seconds == 120) {
 					that.$refs.formEmail.validateField('userEmail', function(err) {
 						if (!err) {
 							that.loading.status = true;
 							that.loading.msg = '正在发送邮箱验证码~';
-							that.$post('users/sendEmailVerificationCode', {
-								userEmail: that.formEmail.userEmail
-							}).then(respone => {
-								if (respone.code == 0) {
-									that.$alert('邮箱验证码发送成功', {
-										confirmButtonText: '确定',
-										callback: function(action) {
-											that.loading.status = false;
-											that.formEmail.counter.func = setInterval(function() {
-												if (that.formEmail.counter.seconds == 0) {
-													clearInterval(that.formEmail.counter.func);
-													that.formEmail.counter.text = '重新发送验证码';
-													that.formEmail.counter.seconds = 120;
-												} else {
-													that.formEmail.counter.text = '重新发送验证码(' + that.formEmail.counter.seconds + ')';
-													that.formEmail.counter.seconds--;
-												}
-											}, 1000);
-										}
-									});
-								}
-							});
+							that.sendEmalCode({userEmail: that.formEmail.userEmail})
 						}
 					});
 				}
 			},
 			onSuccess(type, respone) {
-				var that = this;
+				let that = this;
+				console.log(respone)
 				if (respone.code == 0) {
 					// 注册成功
 					let userInfo = {
@@ -290,16 +299,49 @@
 						}
 					});
 				} else {
-					var _msg = '';
+					let _msg = '';
 					if (respone.status == 200) {
 						_msg = respone.msg;
 					} else {
 						_msg = respone.message;
 					}
-					that.$alert(_msg, {
-						confirmButtonText: '确定'
+					that.$message({
+						message: _msg,
+						type: 'error',
+						duration: 3000,
 					});
+					
 				}
+			},
+			async sendUserMobile(data){ //注册手机号
+				let that = this;
+				await api.sendUserMobile(data).then(
+					res =>{
+						that.loading.status = false;
+						that.onSuccess(1, res);
+					},
+					res => {
+						that.loading.status = false;
+						that.$alert(res.response.message, {
+							confirmButtonText: '确定'
+						});
+					}
+				)
+			},
+			async sendUserEmail(data){
+				let that = this;
+				await api.sendUserEmail(data).then(
+					res =>{
+						that.loading.status = false;
+						that.onSuccess(2, res);
+					},
+					res =>{
+						that.loading.status = false;
+						that.$alert(res.response.message, {
+							confirmButtonText: '确定'
+						});
+					}
+				)
 			},
 			register() {
 				let that = this;
@@ -308,22 +350,11 @@
 						if (valid) {
 							that.loading.status = true;
 							that.loading.msg = '正在提交注册信息~';
-							this.$post('/users/register/mobile', {
+							that.sendUserMobile({
 								userPhone: that.formMobile.userPhone,
 								passWord: that.formMobile.passWord,
 								vCode: Number(that.formMobile.vCode)
-							}).then(
-								res => {
-									that.loading.status = false;
-									that.onSuccess(1, res);
-								},
-								res => {
-									that.loading.status = false;
-									that.$alert(res.response.message, {
-										confirmButtonText: '确定'
-									});
-								}
-							);
+							})
 						} else {
 							return false;
 						}
@@ -333,22 +364,11 @@
 						if (valid) {
 							that.loading.status = true;
 							that.loading.msg = "正在提交注册信息~";
-							this.$post('/users/register/email', {
+							that.sendUserEmail({
 								userEmail: that.formEmail.userEmail,
 								passWord: that.formEmail.passWord,
 								vCode: that.formEmail.emailCode
-							}).then(
-								res => {
-									that.loading.status = false;
-									that.onSuccess(2, res);
-								},
-								res => {
-									that.loading.status = false;
-									that.$alert(res.response.message, {
-										confirmButtonText: '确定'
-									});
-								}
-							);
+							})
 						} else {
 							return false;
 						}

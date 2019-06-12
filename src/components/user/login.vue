@@ -115,15 +115,16 @@ export default {
                         that.$setCookie("uInfo", JSON.stringify(userInfo));
                         that.$router.back();
                     } else {
-                        var _msg = "";
-                        
+                        let _msg = "";
                         if (res.status == 200) {
                             _msg = res.msg;
                         } else {
                             _msg = res.message;
                         }
-                        that.$alert(_msg, {
-                            confirmButtonText: '确定'
+                        that.$message({
+                            message: _msg,
+                            type: 'error',
+                            duration: 3000,
                         });
                     }
                 }
