@@ -94,6 +94,11 @@ export default {
             }
             await api.addReply(this.data).then(res=>{
                 if(res.code ==0 ){
+                    this.$message({
+                        message:"回复成功",
+                        type:"success"
+                    })
+                    this.$refs.ueditor.clearContent()
                     this.$emit("getNewList")
                 }
             })

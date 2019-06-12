@@ -45,7 +45,10 @@
       },
       getUEContent() { // 获取内容方法
           return this.editor.getContent()
-      },   
+      },  
+      clearContent() {
+        return this.editor.execCommand('cleardoc');
+      } 
     },
     destroyed() {
       this.editor.destroy();

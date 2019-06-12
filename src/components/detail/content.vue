@@ -142,28 +142,25 @@
     </div>
   </div>
    <div class="page">
-       <editortwo
+      <el-pagination class="pagination"
+        @current-change="handleCurrentChange"
+        background
+        layout="prev,pager,next,jumper"
+        :page-size="10"
+        :total="count"
+      ></el-pagination>
+    </div>
+    <editortwo
           :defaultMsg=defaultMsg
           :config=config
           ref='ue'
         >
         </editortwo>
-        <el-row :gutter="20" class="page">
+        <el-row :gutter="20" >
           <el-col :span="4">
             <el-button class="add" @click="reply(detail.id)" type="primary" size="medium">发表回复</el-button>
           </el-col>
-          <el-col :span="16">
-            <el-pagination
-              @current-change="handleCurrentChange"
-              background
-              layout="prev,pager,next,jumper"
-              :page-size="10"
-              :total="count"
-            ></el-pagination>
-          </el-col>
-        
         </el-row>
-    </div>
    <show-reply :replyDialog="replyDialog" :topicid="topicid" @cancel="cancel" :replyContent="replyContent" :noShow="noShow" @getNewList="getNewList" :sectionid="sectionid"></show-reply>
 </div>
 </template>
@@ -243,13 +240,20 @@ export default {
       } 
     },
     async commonReply(data){
+      let that = this;
+      console.log(this.$refs.ue.editor)
       await api.addReply(data).then(res=>{
         console.log(res)
         if(res.code == 0 ){
-         this.defaultMsg = ''
-         console.log(this.$refs.ue)
-         this.$refs.ue.execCommand('cleardoc');
-         //this.getDetailReply(this.$route.params.id)
+          this.$message({
+            message:"回复成功",
+            type:'success'
+          })
+        // this.defaultMsg = ''
+        
+         //this.$refs.ue.execCommand('cleardoc');
+         this.getDetailReply(this.$route.params.id)
+          this.$refs.ue.clearContent()
         }
       })
     },
@@ -537,10 +541,17 @@ export default {
 }
 .page{
   margin-top:40px;
+  .pagination{
+    margin-bottom:40px;
+    
+  } 
 }
+
 .el-progress-bar__outer{
   height:10px;
 }
-
+.add{
+  margin-top:40px;
+}
 
 </style>

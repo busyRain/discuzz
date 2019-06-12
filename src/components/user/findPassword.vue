@@ -288,7 +288,7 @@ import * as api from '@/api/login'
 						token: respone.data,
 						loginName: type == 1 ? this.formMobile.userPhone : this.formEmail.userEmail,
 					}
-					that.$setCookie("uInfo", JSON.stringify(userInfo));
+					//that.$setCookie("uInfo", JSON.stringify(userInfo));
 					that.$message({
 						message: respone.msg,
 						type: "success",
