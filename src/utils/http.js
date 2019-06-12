@@ -6,11 +6,11 @@ import {
 	DelCookies
 } from './setCookies.js'
 
-// if (process.env.NODE_ENV == 'development') {
-// 	axios.defaults.baseURL = 'http://api.feileyuan.club/';
-// } else if (process.env.NODE_ENV == 'production') {
+if (process.env.NODE_ENV == 'development') {
+    axios.defaults.baseURL = 'http://api.feileyuan.club/';
+} else if (process.env.NODE_ENV == 'production') {
 	axios.defaults.baseURL = 'http://api.feileyuan.com/';
-// }
+}
 axios.defaults.timeout = 10000;
 
 axios.defaults.headers = {

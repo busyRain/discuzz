@@ -1,78 +1,57 @@
 <template>
-	<div class="bg-wrap" v-loading="loading" element-loading-text="正在提交注册信息~" element-loading-spinner="el-icon-loading"
+	<div class="bg-wrap" v-loading="loading.status" :element-loading-text="loading.msg" element-loading-spinner="el-icon-loading"
 	 element-loading-background="rgba(0, 0, 0, 0.6)">
 		<div class="con-wrap">
 			<div class="con-inner">
 				<div class="left">
 					<p class="title">会员注册</p>
-					<ul class='tab'>
-						<li class="cursor" @click='changeTab(1)' :class="tab == 1 ? 'active' : ''">
-							通过短信注册
-						</li>
-						<li class="cursor" @click='changeTab(2)' :class="tab == 2 ? 'active' : ''">
-							通过邮箱注册
-						</li>
+					<ul class="tab">
+						<li class="cursor" @click="changeTab(1)" :class="tab == 1 ? 'active' : ''">通过短信注册</li>
+						<li class="cursor" @click="changeTab(2)" :class="tab == 2 ? 'active' : ''">通过邮箱注册</li>
 					</ul>
-					<div class="tab1" v-if='tab == 1'>
-						<el-form :model="formMobile" :rules="rulesMobile" ref="formMobile"  class="form-login">
+					<div class="tab1" v-if="tab == 1">
+						<el-form :model="formMobile" :rules="rulesMobile" ref="formMobile" class="form-login">
 							<el-form-item prop="userPhone">
-								<div class="phone">
-									<img src="@/assets/images/icon-phone.png" alt="">
-									<input v-model="formMobile.userPhone" type="tel" maxlength="11" placeholder="请输入的你的手机号码" />
+								<div class="form-input input-phone"><input v-model="formMobile.userPhone" type="tel" maxlength="11" placeholder="请输入的你的手机号码" /></div>
+							</el-form-item>
+							<el-form-item prop="vCode">
+								<div class="form-input  input-code">
+									<input class="code-input" v-model="formMobile.vCode" type="text" placeholder="输入验证码" />
+									<div class="get-code cursor" @click="sendMobileMessage"><span v-text="formMobile.counter.text"></span></div>
 								</div>
 							</el-form-item>
 							<el-form-item prop="passWord">
-								<div class="phone">
-									<img class="password" src="@/assets/images/icon-lock.png" alt="">
-									<input v-model="formMobile.passWord" type="password" placeholder="密码(6-20位字母与字母或符号组成)" />
-								</div>
+								<div class="form-input input-password"><input v-model="formMobile.passWord" type="password" placeholder="密码(6-20位字母与字母或符号组成)" /></div>
 							</el-form-item>
 							<el-form-item prop="surePassword">
-								<div class="phone">
-									<img class="password" src="@/assets/images/icon-lock.png" alt="">
-									<input v-model="formMobile.surePassword" type="password" placeholder="请重复密码" />
-								</div>
-							</el-form-item>
-							<el-form-item prop="vCode">
-								<div class="phone code">
-									<input class="code-input" v-model="formMobile.vCode" type="text" placeholder="输入验证码" />
-									<div class="get-code cursor">
-										<span @click="sendMobileMessage" v-text="formMobile.counter.text"></span>
-									</div>
-								</div>
+								<div class="form-input input-password"><input v-model="formMobile.surePassword" type="password" placeholder="请重复密码" /></div>
 							</el-form-item>
 						</el-form>
 					</div>
-					<div class="tab1" v-if='tab == 2'>
+					<div class="tab1" v-if="tab == 2">
 						<el-form :model="formEmail" :rules="rulesEmail" ref="formEmail" class="form-login">
 							<el-form-item prop="userEmail" inline-message="true">
-								<div class="phone">
-									<img src="@/assets/images/icon-phone.png" alt="">
-									<input v-model="formEmail.userEmail" type="email" placeholder="请输入的你的邮箱" />
+								<div class="form-input input-email"><input v-model="formEmail.userEmail" type="email" placeholder="请输入的你的邮箱" /></div>
+							</el-form-item>
+							<el-form-item prop="emailCode" inline-message="true">
+								<div class="form-input input-code">
+									<input v-model="formEmail.emailCode" type="text" placeholder="输入邮箱验证码" />
+									<div class="get-code cursor" @click="sendEmailMessage"><span v-text="formEmail.counter.text"></span></div>
 								</div>
 							</el-form-item>
 							<el-form-item prop="passWord" inline-message="true">
-								<div class="phone">
-									<img class="password" src="@/assets/images/icon-lock.png" alt="">
-									<input v-model="formEmail.passWord" type="password" placeholder="密码(6-20位字母与字母或符号组成)" />
-								</div>
+								<div class="form-input input-password"><input v-model="formEmail.passWord" type="password" placeholder="密码(6-20位字母与字母或符号组成)" /></div>
 							</el-form-item>
 							<el-form-item prop="surePassword" inline-message="true">
-								<div class="phone">
-									<img class="password" src="@/assets/images/icon-lock.png" alt="">
-									<input v-model="formEmail.surePassword" type="password" placeholder="请重复密码" />
-								</div>
-							</el-form-item>
-							<el-form-item prop="vCode" inline-message="true">
-								<div class="phone">
-									<img class="email" src="@/assets/images/icon-email.png" alt="">
-									<input v-model="formEmail.vCode" type="text" placeholder="输入邮箱验证码" />
-								</div>
+								<div class="form-input input-password"><input v-model="formEmail.surePassword" type="password" placeholder="请重复密码" /></div>
 							</el-form-item>
 						</el-form>
 					</div>
-					<div class="login-btn cursor" @click='register'>确认注册</div>
-					<div class="already">已有账号？<span class="cursor" @click='$router.push("/login")'>马上登录</span></div>
+					<div class="login-btn cursor" @click="register">确认注册</div>
+					<div class="already">
+						已有账号？
+						<span class="cursor" @click="$router.push('/login')">马上登录</span>
+					</div>
 				</div>
 
 				<div class="right">
@@ -82,15 +61,9 @@
 						<div class="right-line"></div>
 					</div>
 					<div class="other-icon">
-						<div class="qq cursor">
-							<span class="iconfont icon-qq1"></span>
-						</div>
-						<div class="qq cursor">
-							<span class="iconfont icon-weixin1"></span>
-						</div>
-						<div class="qq cursor">
-							<span class="iconfont icon-weibo1"></span>
-						</div>
+						<div class="qq cursor"><span class="iconfont icon-qq1"></span></div>
+						<div class="qq cursor"><span class="iconfont icon-weixin1"></span></div>
+						<div class="qq cursor"><span class="iconfont icon-weibo1"></span></div>
 					</div>
 					<div class="qr"></div>
 					<div class="ewm">扫码下载APP</div>
@@ -101,41 +74,43 @@
 </template>
 <script>
 	export default {
-		name: "login",
+		name: 'login',
 		data() {
 			return {
-				loading: false,
+				loading: {
+					status: false,
+					msg: '正在提交注册信息~'
+				},
 				checked: false,
 				tab: 1,
 				formMobile: {
-					userPhone: "",
-					passWord: "",
-					surePassword: "",
-					vCode: "",
+					userPhone: '',
+					passWord: '',
+					surePassword: '',
+					vCode: '',
 					counter: {
-						text: "发送手机验证码",
+						text: '发送手机验证码',
 						seconds: 120,
 						func: null
-					},
-
+					}
 				},
 				formEmail: {
-					userEmail: "",
-					passWord: "",
-					surePassword: "",
-					vCode: "",
+					userEmail: '',
+					passWord: '',
+					surePassword: '',
+					emailCode: '',
 					counter: {
-						text: "发送邮箱验证码",
+						text: '发送邮箱验证码',
 						seconds: 120,
 						func: null
-					},
+					}
 				},
 				rulesMobile: {
 					userPhone: [{
 						validator: (rule, value, callback) => {
 							if (!value) {
 								return callback(new Error('请输入手机号'));
-							} else if (!(/^(13[0-9]|14[0-9]|15[0-9]|17[0-9]|18[0-9]|19[0-9]|16[0-9])\d{8}$/.test(value))) {
+							} else if (!/^(13[0-9]|14[0-9]|15[0-9]|17[0-9]|18[0-9]|19[0-9]|16[0-9])\d{8}$/.test(value)) {
 								return callback(new Error('请输入正确的手机号'));
 							}
 							callback && callback();
@@ -184,7 +159,7 @@
 						validator: (rule, value, callback) => {
 							if (!value) {
 								return callback(new Error('请输入邮箱'));
-							} else if (!(/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/.test(value))) {
+							} else if (!/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/.test(value)) {
 								return callback(new Error('请输入正确的邮箱'));
 							}
 							callback && callback();
@@ -228,39 +203,73 @@
 						trigger: 'blur'
 					}]
 				}
-			}
+			};
 		},
 		methods: {
-			sendMobileMessage(){
+			sendMobileMessage: function() {
 				var that = this;
 				if (that.formMobile.counter.seconds == 0 || that.formMobile.counter.seconds == 120) {
-					that.$refs.formMobile.validateField("userPhone", function(err) {
+					that.$refs.formMobile.validateField('userPhone', function(err) {
 						if (!err) {
-							that.loading = true;
-							//that.loading.msg = "正在发送手机验证码~";
+							that.loading.status = true;
+							that.loading.msg = '正在发送手机验证码~';
 							that.$post('users/sendPhoneVerificationCode', {
 								userPhone: that.formMobile.userPhone
 							}).then(respone => {
 								if (respone.code == 0) {
-									that.$alert("手机验证码发送成功", {
+									that.$alert('手机验证码发送成功', {
 										confirmButtonText: '确定',
 										callback: function(action) {
-											that.loading= false;
-											that.formMobile.counter.func = setInterval(function() {												
-												if (that.formMobile.counter.seconds == 0) {													
-													clearInterval(that.formMobile.counter.func);													
-													that.formMobile.counter.text = "重新发送验证码";
+											that.loading.status = false;
+											that.formMobile.counter.func = setInterval(function() {
+												if (that.formMobile.counter.seconds == 0) {
+													clearInterval(that.formMobile.counter.func);
+													that.formMobile.counter.text = '重新发送验证码';
 													that.formMobile.counter.seconds = 120;
+												} else {
+													that.formMobile.counter.text = '重新发送验证码(' + that.formMobile.counter.seconds + ')';
+													that.formMobile.counter.seconds--;
 												}
-												that.formMobile.counter.text = "重新发送验证码(" + that.formMobile.counter.seconds + ")";
-												that.formMobile.counter.seconds--;
-											}, 1000)
+											}, 1000);
 										}
 									});
 								}
-							})
+							});
 						}
-					})
+					});
+				}
+			},
+			sendEmailMessage: function() {
+				var that = this;
+				if (that.formEmail.counter.seconds == 0 || that.formEmail.counter.seconds == 120) {
+					that.$refs.formEmail.validateField('userEmail', function(err) {
+						if (!err) {
+							that.loading.status = true;
+							that.loading.msg = '正在发送邮箱验证码~';
+							that.$post('users/sendEmailVerificationCode', {
+								userEmail: that.formEmail.userEmail
+							}).then(respone => {
+								if (respone.code == 0) {
+									that.$alert('邮箱验证码发送成功', {
+										confirmButtonText: '确定',
+										callback: function(action) {
+											that.loading.status = false;
+											that.formEmail.counter.func = setInterval(function() {
+												if (that.formEmail.counter.seconds == 0) {
+													clearInterval(that.formEmail.counter.func);
+													that.formEmail.counter.text = '重新发送验证码';
+													that.formEmail.counter.seconds = 120;
+												} else {
+													that.formEmail.counter.text = '重新发送验证码(' + that.formEmail.counter.seconds + ')';
+													that.formEmail.counter.seconds--;
+												}
+											}, 1000);
+										}
+									});
+								}
+							});
+						}
+					});
 				}
 			},
 			onSuccess(type, respone) {
@@ -269,20 +278,19 @@
 					// 注册成功
 					let userInfo = {
 						token: respone.data,
-						loginName: type == 1 ? this.formMobile.userPhone : this.formEmail.userEmail,
-					}
-					that.$setCookie("uInfo", JSON.stringify(userInfo));
+						loginName: type == 1 ? this.formMobile.userPhone : this.formEmail.userEmail
+					};
+					that.$setCookie('uInfo', JSON.stringify(userInfo));
 					that.$message({
 						message: respone.msg,
-						type: "success",
+						type: 'success',
 						duration: 3000,
 						onClose() {
 							that.$router.back();
 						}
 					});
 				} else {
-					that.loading = false;
-					var _msg = "";
+					var _msg = '';
 					if (respone.status == 200) {
 						_msg = respone.msg;
 					} else {
@@ -296,32 +304,51 @@
 			register() {
 				let that = this;
 				if (this.tab == 1) {
-					this.$refs.formMobile.validate((valid) => {
+					this.$refs.formMobile.validate(valid => {
 						if (valid) {
-							that.loading = true;
+							that.loading.status = true;
+							that.loading.msg = '正在提交注册信息~';
 							this.$post('/users/register/mobile', {
 								userPhone: that.formMobile.userPhone,
 								passWord: that.formMobile.passWord,
-								vCode: that.formMobile.vCode,
-							}).then(res => {
-								that.onSuccess(1, res);
-							})
+								vCode: Number(that.formMobile.vCode)
+							}).then(
+								res => {
+									that.loading.status = false;
+									that.onSuccess(1, res);
+								},
+								res => {
+									that.loading.status = false;
+									that.$alert(res.response.message, {
+										confirmButtonText: '确定'
+									});
+								}
+							);
 						} else {
 							return false;
 						}
 					});
-
 				} else if (this.tab == 2) {
-					this.$refs.formEmail.validate((valid) => {
+					this.$refs.formEmail.validate(valid => {
 						if (valid) {
-							that.loading = true;
+							that.loading.status = true;
+							that.loading.msg = "正在提交注册信息~";
 							this.$post('/users/register/email', {
 								userEmail: that.formEmail.userEmail,
 								passWord: that.formEmail.passWord,
-								vCode: that.formEmail.vCode,
-							}).then(res => {
-								that.onSuccess(2, res);
-							})
+								vCode: that.formEmail.emailCode
+							}).then(
+								res => {
+									that.loading.status = false;
+									that.onSuccess(2, res);
+								},
+								res => {
+									that.loading.status = false;
+									that.$alert(res.response.message, {
+										confirmButtonText: '确定'
+									});
+								}
+							);
 						} else {
 							return false;
 						}
@@ -331,39 +358,38 @@
 			changeTab(tabIndex) {
 				this.tab = tabIndex;
 				if (this.tab == 1) {
-					this.formMobile.userPhone = "";
-					this.formMobile.passWord = "";
-					this.formMobile.surePassword = "";
-					this.formMobile.vCode = "";
+					this.formMobile.userPhone = '';
+					this.formMobile.passWord = '';
+					this.formMobile.surePassword = '';
+					this.formMobile.vCode = '';
 					setTimeout(() => {
 						this.$refs.formMobile.resetFields();
-					}, 10)
+					}, 10);
 				} else {
-					this.formEmail.userEmail = "";
-					this.formEmail.passWord = "";
-					this.formEmail.surePassword = "";
-					this.formEmail.vCode = "";
+					this.formEmail.userEmail = '';
+					this.formEmail.passWord = '';
+					this.formEmail.surePassword = '';
+					this.formEmail.emailCode = '';
 					setTimeout(() => {
 						this.$refs.formEmail.resetFields();
-					}, 10)
+					}, 10);
 				}
 			}
 		}
-	}
+	};
 </script>
-<style scoped lang="scss"> 
-
-	@media (max-height:768px) {
+<style scoped lang="scss">
+	@media (max-height: 768px) {
 		.bg-wrap {
 			padding: 6% 0;
-		} 
+		}
 	}
 
-	@media (min-height:768px) and (max-height:799px) {
+	@media (min-height: 768px) and (max-height: 799px) {
 		.bg-wrap {
 			position: absolute;
 			bottom: 0;
-			top:75px;
+			top: 75px;
 		}
 
 		.con-wrap {
@@ -372,11 +398,11 @@
 		}
 	}
 
-	@media (min-height:800px) {
+	@media (min-height: 800px) {
 		.bg-wrap {
 			position: absolute;
 			bottom: 0;
-			top:75px;
+			top: 75px;
 		}
 
 		.con-wrap {
@@ -411,7 +437,7 @@
 
 					.title {
 						font-size: 24px;
-						color: #FFFFFF;
+						color: #ffffff;
 						font-weight: 600;
 						text-align: center;
 						padding: 18px 0 38px 0;
@@ -442,10 +468,9 @@
 						text-align: center;
 					}
 
-					.phone {
+					.form-input {
 						width: 90%;
 						height: 48px;
-						background: rgba(255, 255, 255, .1);
 						border: 1px solid rgba(255, 255, 255, 1);
 						border-radius: 24px;
 						padding: 9px 10px 9px 24px;
@@ -480,7 +505,6 @@
 
 						.get-code {
 							border-right: none;
-							border-left: 1px solid #fff;
 							padding-left: 9px;
 							font-size: 14px;
 							color: #fff;
@@ -488,8 +512,8 @@
 
 						input {
 							width: 95%;
-							padding-left: 17px;
-							background: rgba(255, 255, 255, 0);
+							padding-left: 30px;
+							background: transparent;
 							height: 100%;
 							outline: none;
 							border: 0;
@@ -515,7 +539,7 @@
 						height: 48px;
 						border-radius: 24px;
 						background: #fff;
-						color: #0077FF;
+						color: #0077ff;
 						font-size: 20px;
 						line-height: 48px;
 						text-align: center;
@@ -529,7 +553,7 @@
 						line-height: 1.5;
 
 						span {
-							color: #FFC766;
+							color: #ffc766;
 						}
 					}
 

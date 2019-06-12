@@ -1,5 +1,5 @@
 <template>
-	<div class="bg-wrap" v-loading="loading.status" :element-loading-text="loading.msg" element-loading-spinner="el-icon-loading"
+	<div class="bg-wrap findPassword" v-loading="loading.status" :element-loading-text="loading.msg" element-loading-spinner="el-icon-loading"
 	 element-loading-background="rgba(0, 0, 0, 0.6)">
 		<div class="con-wrap">
 			<div class="con-inner">
@@ -39,13 +39,13 @@
 					<el-form :model="formEmail" :rules="rulesEmail" ref="formEmail">
 						<el-form-item prop="userEmail">
 							<div class="input-wrap input-key">
-								<input type="email" v-model='formEmail.userEmail' placeholder="请填写邮箱验" />
+								<input type="email" v-model='formEmail.userEmail' placeholder="请填写邮箱" />
 								<div class="btn cursor" @click="sendEmailMessage" v-text="formEmail.counter.text"></div>
 							</div>
 						</el-form-item>
-						<el-form-item prop="emailCode">
+						<el-form-item prop="vCode">
 							<div class="input-wrap">
-								<input type="text" v-model='formEmail.emailCode' placeholder="请填写邮箱验验证码" />
+								<input type="text" v-model='formEmail.vCode' placeholder="请填写邮箱验验证码" />
 							</div>
 						</el-form-item>
 						<el-form-item prop="passWord">
@@ -95,7 +95,7 @@
 					userEmail: "",
 					passWord: "",
 					surePassword: "",
-					emailCode: "",
+					vCode: "",
 					counter: {
 						text: "发送邮箱验证码",
 						seconds: 120,
@@ -190,7 +190,7 @@
 						},
 						trigger: 'blur'
 					}],
-					emailCode: [{
+					vCode: [{
 						validator: (rule, value, callback) => {
 							if (value === '') {
 								callback(new Error('请邮箱验证码'));
@@ -297,14 +297,24 @@
 				if (this.tab == 1) {
 					this.$refs.formMobile.validate((valid) => {
 						if (valid) {
-							that.loading.status = true;
+                            that.loading.status = true;
+                            that.loading.msg = '密码正在重置~'
 							this.$post('/users/forgetPassWord', {
 								userPhone: that.formMobile.userPhone,
 								newPassWord: that.formMobile.passWord,
 								vCode: that.formMobile.vCode,
-							}).then(res => {
-								that.onSuccess(1, res);
-							})
+							}).then(
+                                res => {
+                                    that.loading.status = false  
+                                    that.onSuccess(1, res);
+                                },
+                                res =>{
+                                    that.loading.status = false;
+                                    that.$alert(res.response.message, {
+										confirmButtonText: '确定'
+									});
+                                }
+                            )
 						} else {
 							return false;
 						}
@@ -313,14 +323,25 @@
 				} else if (this.tab == 2) {
 					this.$refs.formEmail.validate((valid) => {
 						if (valid) {
-							that.loading = true;
-							this.$axios.post('/users/forgetPassWordFromEmail', {
+                            that.loading.status = true;
+                            that.loading.msg = '密码正在重置~'
+							this.$post('/users/forgetPassWordFromEmail', {
 								userEmail: that.formEmail.userEmail,
 								newPassWord: that.formEmail.passWord,
-								vCode: that.formEmail.emailCode,
-							}).then(res => {
-								that.onSuccess(2, res);
-							})
+								vCode: Number(that.formEmail.vCode),
+							}).then(
+                                res => {
+                                    that.loading.status = false;
+                                    that.onSuccess(2, res);
+                                },
+                                res =>{
+                                    that.loading.status = false;
+                                    that.$alert(res.response.message, {
+										confirmButtonText: '确定'
+									});
+                                }
+                        
+                            )
 						} else {
 							return false;
 						}
@@ -341,7 +362,7 @@
 					this.formEmail.userEmail = "";
 					this.formEmail.passWord = "";
 					this.formEmail.surePassword = "";
-					this.formEmail.emailCode = "";
+					this.formEmail.vCode = "";
 					setTimeout(() => {
 						this.$refs.formEmail.resetFields();
 					}, 10)
@@ -473,8 +494,9 @@
 							width: 100%;
 							background: rgba(255, 255, 255, 0.1);
 							border: 1px solid rgba(255, 255, 255, 1);
-							border-radius: 4px;
-							padding: 10px;
+                            border-radius: 35px;
+                           // padding-left: 20px;
+							padding: 10px 10px 10px 20px;
 							color: #fff;
 							font-size: 16px;
 							box-sizing: border-box;
@@ -487,7 +509,7 @@
 						.btn {
 							color: #0077FF;
 							background: rgba(255, 255, 255, 1);
-							border-radius: 4px;
+							border-radius: 35px;
 						}
 					}
 
@@ -496,7 +518,7 @@
 							color: #0077FF;
 							height: 48px;
 							background: rgba(255, 255, 255, 1);
-							border-radius: 4px;
+							border-radius: 35px;
 							font-size: 16px;
 							line-height: 48px;
 							display: block;

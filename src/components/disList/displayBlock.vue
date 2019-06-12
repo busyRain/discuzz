@@ -8,7 +8,6 @@
                     <img class="board-icon" :src="$IMG_URL+blockTop.imgurl"/>
                     <el-popover
                         placement="right"
-                   
                         trigger="hover"
                         >
                         <ul class="sectionList">

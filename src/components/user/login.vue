@@ -62,6 +62,7 @@
 	</div>
 </template>
 <script>
+import * as api from '@/api/login'
 export default {
     name: "login",
     data() {
@@ -99,36 +100,43 @@ export default {
         };
     },
     methods: {
+        async userLogin(data){
+            let that = this;
+            await api.userlogin(data).then(
+                res=>{
+                    console.log(res)
+                    that.loading = false;
+                    if (res.code == 0) {
+                        // 登陆成功
+                        let userInfo = {
+                            token: res.data,
+                            loginName: that.loginForm.userName,
+                        }
+                        that.$setCookie("uInfo", JSON.stringify(userInfo));
+                        that.$router.back();
+                    } else {
+                        var _msg = "";
+                        
+                        if (res.status == 200) {
+                            _msg = res.msg;
+                        } else {
+                            _msg = res.message;
+                        }
+                        that.$alert(_msg, {
+                            confirmButtonText: '确定'
+                        });
+                    }
+                }
+            ) 
+        },
         login() {
             let that = this;
             this.$refs.loginForm.validate((valid) => {
                 if (valid) {
                     that.loading = true;
-                    that.$axios.post('/users/login', {
+                    this.userLogin({
                         loginName: that.loginForm.userName,
                         passWord: that.loginForm.passWord
-                    }).then(res => {
-                        that.loading = false;
-                        if (res.code == 0) {
-                            // 登陆成功
-                            let userInfo = {
-                                token: res.data,
-                                loginName: that.loginForm.userName,
-                            }
-                            that.$setCookie("uInfo", JSON.stringify(userInfo));
-                            that.$router.back();
-                        } else {
-                            var _msg = "";
-                           
-                            if (res.status == 200) {
-                                _msg = res.msg;
-                            } else {
-                                _msg = res.message;
-                            }
-                            that.$alert(_msg, {
-                                confirmButtonText: '确定'
-                            });
-                        }
                     })
                 } else {
                     return false;

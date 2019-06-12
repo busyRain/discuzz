@@ -166,49 +166,49 @@ textarea {
   font-size: 12px;
   font-family: "PingFangSC-Regular", "苹方", "Microsoft YaHei", "微软雅黑";
 }
-body{
-    line-height: 1;
-    background: #f3f3f3;
+body {
+  line-height: 1;
+  background: #f3f3f3;
 }
 .inner {
-    width: 1200px;
-    margin: 0 auto;
+  width: 1200px;
+  margin: 0 auto;
 }
 .fl,.fr {
-    display: inline
+  display: inline
 }
 .fl {
-    float: left
+  float: left
 }
 .fr {
-    float: right
+  float: right
 }
 .hide,
 .none {
   display: none
 }
-.clearfix::before,.clearfix::after{
-    display: table;
-    content:" ";
-    line-height: 0;
+.clearfix::before,.clearfix::after {
+  display: table;
+  content:" ";
+  line-height: 0;
 }
-.clearfix::after{
-    clear: both;
+.clearfix::after {
+  clear: both;
 }
 .ov {
-    overflow: hidden;
+  overflow: hidden;
 }  
-.highlight-color{
-    color:#F26C4F;
+.highlight-color {
+  color:#F26C4F;
 }
 .pipe {
-    margin: 0 5px;
-    color: #ccc;
+  margin: 0 5px;
+  color: #ccc;
 }
 .m-3 {
   margin:30px auto 0;
 }
-.board-box{
+.board-box {
   background-color: #fff;
   -webkit-box-shadow: 0 0 8px 1px #e4e5e6;
   box-shadow: 0 0 8px 1px #e4e5e6;
@@ -230,8 +230,8 @@ body{
 .cursor {
   cursor: pointer;
 }
-.el-image{
-  .image-slot{
+.el-image {
+  .image-slot {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -252,12 +252,13 @@ body{
     font-size: 30px;
   }
 }
-.el-pagination{
+.el-pagination {
   text-align: center;
 }
 .el-form-item__label{
   text-align: left;
 }
+/*进度条*/
 .progress{
   .el-progress{
     margin-top: 5px;
@@ -268,4 +269,58 @@ body{
   .el-progress-bar__outer{
     background-color: #adaeaf;
   }
+}
+/*登录 注册框*/
+.form-login .form-input {
+	position: relative;
+	background-repeat: no-repeat;
+	background-position: 0 0;
+	background-size: 20px;
+	background-image: url(../../assets/images/icon-sprite-sign.png);
+	background-color: rgba(255, 255, 255, 0.1);
+}
+
+.form-login .form-input.input-username {
+	background-image: url(../../assets/images/icon-user.png);
+	background-position: 22px 14px;
+}
+
+.form-login .form-input.input-email {
+	background-position: 22px 18px;
+}
+
+.form-login .form-input.input-phone {
+	background-position: 22px -20px;
+}
+
+.form-login .form-input.input-code {
+	background-position: 22px -134px;
+}
+
+.form-login .form-input.input-password {
+	background-position: 22px -97px;
+}
+
+.form-login .form-input .get-code {
+	position: absolute;
+	right: 20px;
+}
+.el-form-item {
+	margin-bottom: 35px;
+}
+
+.findPassword .el-form-item__error{
+  left:10px !important;
+}
+.el-form-item__error {
+	left: 70px;
+	font-size: 14px;
+}
+
+.form-edit .el-form-item .el-form-item__error {
+	left: 10px;
+}
+
+.is-error .el-form-item__content .phone {
+	border-color: #F56C6C;
 }
