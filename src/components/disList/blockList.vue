@@ -5,7 +5,7 @@
         <li v-for="(item,index) in list" :key="index">
           <!--主题标题-->
           <div class="post-title cleardis">
-            <router-link :to="{path:`/disDetail/${item.id}`}" tag="a" target="_blank">{{item.title}}</router-link>
+            <router-link :to="{path:`/disDetail/${item.id}`,query:{sectionid:sectionid}}" tag="a" target="_blank">{{item.title}}</router-link>
             <span class="uscat_pt" v-if="item.isrecommend">
               置顶
             </span>
@@ -34,7 +34,6 @@
                   <i class="el-icon-picture-outline"></i>
                 </div>
               </el-image>
-              <!-- <img :src="$IMG_URL+item.userImgUrl" style="display: inline;"> -->
                 <span class="author">{{item.nickName}}</span>
             </a>
           </div>
@@ -45,34 +44,6 @@
         </li>
         <!-- <div class="bankuai" >版块主题</div> -->
       </ul>
-      
-      <!--普通贴子-->
-      <!-- <ul class="post-list">
-        <li>
-          <div class="post-title cleardis">
-            <font color="#0087e0">[</font>
-            <font color="#0087e0">普通帖子</font>
-            <font color="#0087e0">]</font>
-            <router-link :to="{path:'/discuzz/disDetail/19'}" tag="a" target="_blank">测试标题</router-link>
-          </div>
-          <div class="info1 cleardis">
-            sfsdfsdfsfsdfs
-          </div>
-          <div class="info2 cleardis">
-            <span class="fr">最后发表 
-              <i class="change-time highlight-color">36 秒前</i>  
-            </span>
-            <a href="javascript:;" class="usre-avatar fl" target="_blank">
-              <img src="http://img.javaex.cn/72419aa803684ae59d1bfa28c67ee71d" style="display: inline;">
-              <span class="author">admin</span>
-            </a>
-          </div>
-            <div class="price">
-              <strong>2</strong>浏览
-              <strong>1</strong>回复
-            </div>
-        </li>
-      </ul> -->
       <div class="page">
         <el-row :gutter="20">
           <el-col :span="4">
@@ -91,6 +62,19 @@
         </el-row>
       </div>
     </div>
+    <div class="scroll-top-btn">
+      <ul>
+        <li @click="goTop">
+            <span class="iconbtn"><i class="el-icon-arrow-up"></i></span>
+            <span>top</span>
+
+        </li>
+        <li @click="addBlock">
+          <em>快速</em>
+          <em>发贴</em>
+        </li>
+      </ul>
+    </div>
     <show-add :show="isShowAdd" :id="id" @cancel="cancel"></show-add>
   </div>
 </template>
@@ -101,7 +85,7 @@ import showAdd from "@/components/common/showAdd"
 
 export default {
     name:"blockList",
-    props:['list','count'],
+    props:['list','count','sectionid'],
     data(){
       return {
         id:'',
@@ -123,6 +107,9 @@ export default {
       // }),
     },
     methods:{
+      goTop(){
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
+      },
       init(){
           let cookie = this.$getCookie('uInfo');
           let userInfo = JSON.parse(cookie);
@@ -135,8 +122,7 @@ export default {
       handleCurrentChange(val){
         console.log(val)
         document.body.scrollTop = document.documentElement.scrollTop = 0;
-        this.$refs.boardBox.scrollTop=0
-        console.log( this.$refs.boardBox.scrollTop)
+       
         this.$emit("getPage",val)
       },
       cancel(val){
@@ -255,6 +241,39 @@ export default {
   }
   .page{
     margin-top:20px;
+  }
+}
+.scroll-top-btn{
+  position: fixed;
+  bottom: 100px;
+  width: 40px;
+  z-index: 99;
+  margin-left: 1210px;
+  li{
+    width: 45px;
+    height: 50px;
+    background: #737070;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+    line-height: 50px;
+    position: relative;
+    margin-bottom:10px;
+    display: block;
+    span{
+      display: block;
+      height: 8px;
+    }
+    .iconbtn{
+     top: -10px;
+      position: relative;
+    }
+    em{
+      display: block;
+      height: 20px;
+      position: relative;
+      top: -10px;
+    }
   }
 }
 </style>

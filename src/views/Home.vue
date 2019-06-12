@@ -14,6 +14,7 @@
         <friend></friend>
       </div>
     </div>
+    
   </div>
 </template>
 <script>

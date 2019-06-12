@@ -33,7 +33,7 @@ import * as api from '@/api/detail';
 
 export default {
     name:"replay",
-    props:['replyDialog','topicid','replyContent','noShow'],
+    props:['replyDialog','topicid','replyContent','noShow','sectionid'],
     components:{
         ueditor,
     },
@@ -76,6 +76,7 @@ export default {
             let content = this.$refs.ueditor.getUEContent()
             if(this.noShow){
                 this.data = {
+                    sectionid:this.sectionid,
                     topicid:this.replyContent.topicid,
                     content:content,
                     replyuserid:this.replyContent.replyuserid,
@@ -85,6 +86,7 @@ export default {
                 }
             }else{
                 this.data = {
+                    sectionid:this.sectionid,
                     topicid:this.topicid,
                     content:content,
                     

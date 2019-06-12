@@ -40,6 +40,12 @@
               <label  class="fl">用户等级</label>
               <span>{{detail.userLvl}}</span>
             </li>
+            <li>
+              <label  class="fl">经验值</label>
+              <span class="progress">
+                <el-progress :text-inside="true" :stroke-width="15" :percentage="(this.detail.userPoints)/(this.detail.nextLvlPoints) || 0"></el-progress>
+              </span>
+            </li>
           </ul>
         </div>
       </div>
@@ -83,21 +89,27 @@
                     </a>
                 </div>
                 <ul class="otherinfo">
-                  <li>
-                    <label class="fl">组别</label>
-                    <span class="admin" >{{item.vip?'管理员':"游客"}}</span>
-                  </li>
-                  <li>
-                    <label  class="fl">Vip等级</label>
-                    <span>{{item.vipLvl}}</span>
-                  </li>
-                  <li>
-                    <label  class="fl">用户积分</label>
-                    <span>{{item.userPoints}}</span>
-                  </li>
-                  <li>
-                    <label  class="fl">用户等级</label>
-                    <span>{{item.userLvl}}</span>
+                    <li>
+                      <label class="fl">组别</label>
+                      <span class="admin" >{{item.vip?'管理员':"用户"}}</span>
+                    </li>
+                    <li>
+                      <label  class="fl">用户等级</label>
+                      <span>{{item.userLvl}}</span>
+                    </li>
+                    <li>
+                      <label  class="fl">用户积分</label>
+                      <span>{{item.userPoints}}</span>
+                    </li>
+                    <li>
+                      <label  class="fl">用户等级</label>
+                      <span>{{item.userLvl}}</span>
+                    </li>
+                    <li>
+                    <label  class="fl">经验值</label>
+                    <span class="progress">
+                      <el-progress :text-inside="true" :stroke-width="15" :percentage="(item.userPoints)/(item.nextLvlPoints) || 0"></el-progress>
+                    </span>
                   </li>
                 </ul>
             </div>
@@ -158,7 +170,7 @@
         
         </el-row>
     </div>
-   <show-reply :replyDialog="replyDialog" :topicid="topicid" @cancel="cancel" :replyContent="replyContent" :noShow="noShow" @getNewList="getNewList"></show-reply>
+   <show-reply :replyDialog="replyDialog" :topicid="topicid" @cancel="cancel" :replyContent="replyContent" :noShow="noShow" @getNewList="getNewList" :sectionid="sectionid"></show-reply>
 </div>
 </template>
 <script>
@@ -180,6 +192,7 @@ export default {
       topicid:"",
       loginStatus:false,
       noShow:false,
+      sectionid:0,//贴子id
       replyContent:{
 
       },
@@ -214,6 +227,7 @@ export default {
     showReply,
     editortwo
   },
+  
   methods:{
     getNewList(){
       this.replyDialog=false,
@@ -248,6 +262,7 @@ export default {
     },
     handleCurrentChange(val){
       this.page=val
+       document.body.scrollTop = document.documentElement.scrollTop = 0;
       this.getDetailReply(this.$route.params.id)
     },
     async delDis(id){ //删除回复
@@ -347,6 +362,8 @@ export default {
     this.init()
     this.getDetail(this.$route.params.id)
     this.getDetailReply(this.$route.params.id)
+    this.sectionid = this.$route.query.sectionid
+    console.log(JSON.parse(sessionStorage.getItem('navList')))
   }
 }
 </script>
@@ -404,8 +421,9 @@ export default {
         margin: 5px 10px 5px 20px;
         li{
           overflow: hidden;
-          height: 24px;
-          line-height: 24px;
+          height: 28px;
+          line-height: 28px;
+          position: relative;
           label{
             width: 80px;
           }
@@ -418,7 +436,7 @@ export default {
   }
   .detailRight {
     width:1019px;
-    min-height: 355px;
+    min-height: 400px;
     border-left: 1px solid #CDCDCD;
     .detailRight_info {
       margin-bottom:40px;
@@ -515,7 +533,7 @@ export default {
     border-top: 4px solid #c3c3c3;
   }
   .detailRight{
-    min-height: 320px;
+    min-height: 365px;
   }
   .detailRight_info{
   border-top: 4px solid #e6e6e6;
@@ -524,4 +542,9 @@ export default {
 .page{
   margin-top:40px;
 }
+.el-progress-bar__outer{
+  height:10px;
+}
+
+
 </style>

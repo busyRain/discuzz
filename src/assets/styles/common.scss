@@ -258,3 +258,14 @@ body{
 .el-form-item__label{
   text-align: left;
 }
+.progress{
+  .el-progress{
+    margin-top: 5px;
+  }
+  .el-progress-bar{
+    width:45%;
+  }
+  .el-progress-bar__outer{
+    background-color: #adaeaf;
+  }
+}
