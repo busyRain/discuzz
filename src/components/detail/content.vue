@@ -52,7 +52,7 @@
             <div class="detailRight_info_content ov" ref="detailRight_info_content">
                 <div class="pi">
                     <img src="@/assets/images/ico_lz.png" class="authincn vm">
-                        <em>楼主 | 发表于 <span class="highlight-color">{{detail.ctime|dateTime}}</span></em>
+                        <em>楼主 | 发表于 <span class="highlight-color">{{detail.ctime|dateNewComment}}</span></em>
                         <strong>楼主</strong>				
                 </div>
                 <div class="contentDetail" >
@@ -114,12 +114,12 @@
                     <div class="pi">
                       <img src="@/assets/images/ico_lz.png" class="authincn vm">
                         <em>{{item.nickname}} | 发表于 <span class="highlight-color">{{item.ctime|dateTime}}</span></em>
-                        <strong>{{index+2}}楼</strong>				
+                        <strong>{{(page-1)*limit+index+2}}楼</strong>				
                     </div>
                     <div class="contentDetail" >
                         <div class="quote" v-if="item.replyModel!=null">
                             <blockquote>
-                               {{item.replyModel.nickname}} 表示于 {{detail.ctime|dateTime}}
+                               {{item.replyModel.nickname}} 表示于 {{detail.ctime|dateNewComment}}
                                 <strong>楼层{{item.buildingno}}</strong>
                                 <br>
                                 <p v-html="item.content"></p>
@@ -133,7 +133,7 @@
             <div class="detailRight_site">
                 <a class="replayBtn" @click="addReplayIndex(detail.id,item.cid,item.nickname,item.id,index+2,item.content,item.ctime)">回复</a>
                 <!-- <a class="editBtn" v-if="loginStatus">编辑</a> -->
-                <p class="fr" v-if="loginStatus">
+                <p class="fr" v-if="loginStatus && item.isavailable==true">
                     <!-- <span>举报</span> -->
                     <i class="el-icon-delete" @click="delDis(item.id)">删除</i>
                 </p>
@@ -183,6 +183,7 @@ export default {
       topicid:"",
       loginStatus:false,
       noShow:false,
+      limit:10,
       sectionid:0,//贴子id
       replyContent:{
 
@@ -325,7 +326,8 @@ export default {
     async getDetailReply(id){
       await api.getReplay({
         topicid:id,
-        page:this.page
+        page:this.page,
+        limit:this.limit
         }).then(res=>{
         const data = res.data
         console.log(res)
@@ -338,6 +340,7 @@ export default {
     init(){
       let cookie = this.$getCookie('uInfo');
       let userInfo = JSON.parse(cookie);
+      console.log(userInfo)
       if (userInfo && userInfo.token) {
           this.loginStatus = true;
       } else {
