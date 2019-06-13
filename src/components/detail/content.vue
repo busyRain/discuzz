@@ -40,7 +40,7 @@
             <li>
               <label  class="fl">经验值</label>
               <span class="progress">
-                <el-progress :text-inside="true" :stroke-width="15" :percentage="(this.detail.userPoints)/(this.detail.nextLvlPoints) || 0"></el-progress>
+                <el-progress :text-inside="true" :stroke-width="15" :percentage="parseInt((this.detail.userPoints)/(this.detail.nextLvlPoints)*100) || 0"></el-progress>
               </span>
             </li>
           </ul>
@@ -102,7 +102,7 @@
                     <li>
                     <label  class="fl">经验值</label>
                     <span class="progress">
-                      <el-progress :text-inside="true" :stroke-width="15" :percentage="(item.userPoints)/(item.nextLvlPoints) || 0"></el-progress>
+                      <el-progress :text-inside="true" :stroke-width="15" :percentage="parseInt((item.userPoints)/(item.nextLvlPoints)*100) || 0"></el-progress>
                     </span>
                   </li>
                 </ul>
