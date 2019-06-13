@@ -91,7 +91,7 @@ service.interceptors.response.use(
 					err.message = "登录信息失效";
 					break;
 				case 403:
-					err.message = "拒绝访问";
+					err.message = "用户未登录";
 					break;
 				case 404:
 					err.message = "请求错误,未找到该资源";
