@@ -1,7 +1,25 @@
+const webpack = require("webpack");
+const path = require("path");
 module.exports = {
   publicPath: "./",
   outputDir: "dist",
   assetsDir: "assets",
+   //webpack配置
+   configureWebpack: {
+    plugins: [
+      new webpack.ProvidePlugin({
+        $: "jquery",
+        jQuery: "jquery",
+        "windows.jQuery": "jquery"
+      })
+    ]
+    // if(process.env.NODE_ENV === 'production'){
+    //     //生产环境
+    // }else{
+    //     BASE_URL = "http://10.3.38.8:88/"//本地请求url
+    //     //开发环境
+    // }
+  },
   lintOnSave: false,
   productionSourceMap: false,
   devServer: {
@@ -12,9 +30,7 @@ module.exports = {
     hot: true,
     proxy: {
       "/api": {
-        target: "http://api.feileyuan.com/",
-        //target: "http://124.156.160.86",
-        //target: "http://150.109.48.154",
+        target: "http://api.feileyuan.club/",
         changeOrigin: true,
         secure: false,
         ws: true,
