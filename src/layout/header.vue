@@ -12,7 +12,7 @@
         <a class="el-menu-item" href="http://www.feileyuan.com/#/activity" target="_blank">活动</a>
       </el-menu>
       <div class="search fl ov">
-				<el-input class="fl" prefix-icon="el-icon-search" placeholder="请输入您要搜索的关键字" v-model="keywords"></el-input>
+				<el-input class="fl" prefix-icon="el-icon-search" placeholder="请输入您要搜索的关键字" v-model="keywords"  @keyup.enter.native="search"></el-input>
 			</div>
       <div class="user fr ov" v-if="islogin">
 				<router-link to="" class="ov user-link">
@@ -28,7 +28,6 @@
 					</div>
 				</router-link>
 				<router-link to="" class="user-link"><img src="@/assets/images/chat.png" alt="" class="icon"></router-link>
-				<router-link to="" class="user-link"><img src="@/assets/images/friend.png" alt="" class="icon"></router-link>
 				<router-link to="" class="user-link"><img src="@/assets/images/setting.png" alt="" class="icon"></router-link>
 				<img @click='logout' src="@/assets/images/quit.png" alt="" class="icon cursor out">
 			</div>
@@ -64,6 +63,14 @@ export default {
         this.setCurrentMenu()
     },
   methods:{
+    search(e){
+      
+      var e = event || window.event || arguments.callee.caller.arguments[0];
+				if (e && e.keyCode == 13) {
+          window.open("http://www.feileyuan.com/#/search?keyword="+this.keywords)
+				  //location.href="http://www.feileyuan.com/#/search?keyword="+this.keywords
+				}
+    },
     refresh() {
 				this.$delCookie("uInfo");
         this.uName = "";

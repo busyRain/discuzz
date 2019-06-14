@@ -63,6 +63,10 @@
 </template>
 <script>
 import * as api from '@/api/login'
+import cookies from 'cookiesjs'
+import {
+	Base64
+} from 'js-base64';
 export default {
     name: "login",
     data() {
@@ -107,6 +111,18 @@ export default {
                     console.log(res)
                     that.loading = false;
                     if (res.code == 0) {
+                        // jsCookies.setItem('userInfo',Base64.encode(res.data),{
+                        //     expires:100*24*3600,
+                        //     path:'/',
+                            
+                        // })
+                        cookies({'userInfo':null})
+                        if(!cookies('userInfo')){
+                            cookies({userInfo:Base64.encode(res.data)},
+                            {expires:100*24*3600,
+                            domain:'feileyuan.com',
+                           path:'/'})
+                        }
                         // 登陆成功
                         let userInfo = {
                             token: res.data,

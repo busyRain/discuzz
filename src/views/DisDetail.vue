@@ -25,7 +25,7 @@
               </div>
           </li>
       </ul>
-      <el-button class="sectionBtn fr" size="small" slot="reference" >版本切换</el-button>
+      <el-button class="sectionBtn fr" size="small" slot="reference" >版块切换</el-button>
     </el-popover>
     
     <keep-alive>
