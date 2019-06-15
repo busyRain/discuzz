@@ -338,10 +338,8 @@ export default {
       })
     },
     init(){
-      let cookie = this.$getCookie('uInfo');
-      let userInfo = JSON.parse(cookie);
-      console.log(userInfo)
-      if (userInfo && userInfo.token) {
+      
+      if (localStorage.getItem('token')) {
           this.loginStatus = true;
       } else {
           this.loginStatus = false;

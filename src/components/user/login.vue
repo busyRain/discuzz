@@ -116,20 +116,20 @@ export default {
                         //     path:'/',
                             
                         // })
-                        cookies({'userInfo':null})
-                        if(!cookies('userInfo')){
-                            cookies({userInfo:Base64.encode(res.data)},
-                            {expires:100*24*3600,
-                            domain:'feileyuan.com',
-                           path:'/'})
-                        }
+                        // cookies({'userInfo':null})
+                        // if(!cookies('userInfo')){
+                        //     cookies({userInfo:Base64.encode(res.data)},
+                        //     {expires:100*24*3600,
+                        //     domain:'feileyuan.com',
+                        //    path:'/'})
+                        // }
                         // 登陆成功
-                        let userInfo = {
-                            token: res.data,
-                            loginName: that.loginForm.userName,
-                        }
-                        that.$setCookie("uInfo", JSON.stringify(userInfo));
-                        that.$router.back();
+                        // let userInfo = {
+                        //     token: res.data,
+                        //     loginName: that.loginForm.userName,
+                        // }
+                        //that.$setCookie("uInfo", JSON.stringify(userInfo));
+                       // that.$router.back();
                     } else {
                         let _msg = "";
                         if (res.status == 200) {

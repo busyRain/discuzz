@@ -28,9 +28,9 @@ service.interceptors.request.use(config => {
   }
   //token放到header里
   try {
-    let cookie = GetCookies("uInfo");
-    let token = cookie ? JSON.parse(cookie).token : "";
-    let username = cookie ? JSON.parse(cookie).loginName : "";
+    //let cookie = GetCookies("uInfo");
+    let token = localStorage.getItem("token")||'';
+    let username =localStorage.getItem("username")||'';
     if (token) {
       config.headers["TOKEN"] = token;
       config.headers["UN"] = username;

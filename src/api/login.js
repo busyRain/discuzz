@@ -5,6 +5,11 @@ export function userlogin(data) {//用户登录
         data
     })
 }
+export function getUser(){
+    return request('/usersCenter/getUserInfo',{
+        method:"post"
+    })
+}
 export function sendPhoneCode (data) { //发送手机验证码
     return request("users/sendPhoneVerificationCode",{
         method:"post",

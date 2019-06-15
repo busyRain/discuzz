@@ -1,9 +1,9 @@
 const webpack = require("webpack");
 const path = require("path");
 module.exports = {
-  publicPath: "./",
+  publicPath: "/",
   outputDir: "dist",
-  assetsDir: "assets",
+  // assetsDir: "assets",
    //webpack配置
    configureWebpack: {
     plugins: [
@@ -26,7 +26,8 @@ module.exports = {
     https: false, // https:{type:Boolean}
     open: true, //配置自动启动浏览器
     hotOnly: false,
-    port: 8080,
+    disableHostCheck: true,
+    port: 80,
     hot: true,
     proxy: {
       "/api": {

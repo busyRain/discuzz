@@ -111,9 +111,8 @@ export default {
         document.body.scrollTop = document.documentElement.scrollTop = 0;
       },
       init(){
-          let cookie = this.$getCookie('uInfo');
-          let userInfo = JSON.parse(cookie);
-          if (userInfo && userInfo.token) {
+          
+          if (localStorage.getItem('token')) {
               this.loginStatus = true;
           } else {
               this.loginStatus = false;

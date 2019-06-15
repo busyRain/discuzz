@@ -9,6 +9,8 @@ export default new Vuex.Store({
     disList: {},
     isShowAdd:false,
     islogin:false,
+    token:'',
+    username:'',
   },
   mutations: {
     GET_DISLIST: (state, params) => {
@@ -20,9 +22,34 @@ export default new Vuex.Store({
     },
     GET_ISLOGIN:(state,params) =>{
       state.islogin = params
-    }
+    },
+    GET_USERINFO:(state,params) =>{
+      console.log(params)
+      state.token = params.token
+      state.username = params.username
+      localStorage.setItem("token",state.token)
+      localStorage.setItem("username",state.username)
+    },
+    CLEAR: function() {
+			localStorage.clear();
+			localStorage.removeItem("token");
+			localStorage.removeItem("username");
+			var dateExpire = new Date(),
+				siteCookies = document.cookie.split("; ");
+
+			dateExpire.setTime(dateExpire.getTime() - 10000);
+			for (var idx = 0; idx < siteCookies.length; idx++) {
+				var itemCookie = siteCookies[idx],
+					keyvalues = itemCookie.split("=");
+				document.cookie = keyvalues[0] + "=" + keyvalues[1] + ";expire=" + dateExpire.toGMTString();
+			}
+		}
+    
   },
   actions: {
+    init({commit},params){
+      commit("GET_USERINFO",params)
+    },
     async getBlock({ commit }, params) {
       await api.getBlockTop(params).then(res => {
         const { data } = res;
@@ -37,7 +64,10 @@ export default new Vuex.Store({
     },
     getIsLogin({commit},params) {
       commit("GET_ISLOGIN",params)
-    }
+    },
+    Logout({commit}){
+			commit("CLEAR");
+		}
   },
   getters: {
     disList: state => {
@@ -49,6 +79,9 @@ export default new Vuex.Store({
     },
     islogin : state =>{
       return state.islogin
+    },
+    userInfo : state =>{
+      return userInfo
     }
   }
 });
