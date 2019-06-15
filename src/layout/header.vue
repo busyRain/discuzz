@@ -110,47 +110,57 @@ export default {
         console.log(this.$route.path)
         // console.log(this.currentMenu)
     },
-    logout() {
-      try {
+    async logout() {
+      //try {
         let that = this;
-        if (that.uName) {
-          that.$axios.post('/users/logout').then(res => {
+        if (this.islogin) {
+          const _loading = this.$loading({
+            lock:true,
+            text:'正在退出',
+            spinner:'el-icon-loading',
+            background:'rgba(0,0,0,0.7)'
+          });
+          await api.logout().then(res => {
             if (res.code == 0) {
               this.$store.dispatch('Logout')
-              that.$message({
-                message: '退出成功',
-                type: "success",
-                duration: 2000,
-                onClose() {
-                  that.$router.go(0);
-                }
-              });
+              setTimeout(function() {
+									_loading.close();
+									that.$message({
+										message: '退出成功',
+										type: 'success',
+										duration: 500
+									});
+								
+								}, 2000);
               this.islogin = false
             }
           })
-        } else {
-          that.$router.go(0);
-        }
-      } catch (e) {}
+        } 
+        //else {
+      //     that.$router.go(0);
+      //   }
+      // } catch (e) {}
     },
    
   },
   mounted() {
     this.setCurrentMenu()
-    //this.test()
+   
     this.keywords = this.$route.query.keyword;
-    //userInfo ?  this.$store.dispatch('getIsLogin',true) : this.$store.dispatch('getIsLogin',false);
+   
   },
   created(){
-      this.username = this.getName('username')
-      this.token = this.getName('token')
-      let auth =this.getName('auth')
-      console.log(this.username)
-     this.$store.dispatch('init',{username:this.username,token:this.token})
-      if(this.token){
-        this.islogin = true
-        this.getUser()
-      }
+      //if(localStorage.getItem("token")==''){
+          this.username = this.getName('username')
+          this.token = this.getName('token')
+          let auth =this.getName('auth')
+          console.log(this.username)
+          this.$store.dispatch('init',{username:this.username,token:this.token})
+          if(this.token){
+            this.islogin = true
+            this.getUser()
+          }
+      //}
     }
 };
 </script>

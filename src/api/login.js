@@ -5,9 +5,14 @@ export function userlogin(data) {//用户登录
         data
     })
 }
-export function getUser(){
+export function getUser(){ //获取用户信息
     return request('/usersCenter/getUserInfo',{
         method:"post"
+    })
+}
+export function logout(){
+    return request('/users/logout',{
+        method:'post'
     })
 }
 export function sendPhoneCode (data) { //发送手机验证码

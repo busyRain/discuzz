@@ -23,7 +23,7 @@
     console.log(URL)
     var serverUrl = ''
      if(process.env.NODE_ENV === 'production'){
-        serverUrl='http://api.feileyuan.com/'
+        serverUrl='http://api.feileyuan.club/'
         //生产环境
     }else{
         serverUrl = "http://api.feileyuan.club/"//本地请求url

@@ -24,7 +24,6 @@ export default new Vuex.Store({
       state.islogin = params
     },
     GET_USERINFO:(state,params) =>{
-      console.log(params)
       state.token = params.token
       state.username = params.username
       localStorage.setItem("token",state.token)
@@ -35,14 +34,14 @@ export default new Vuex.Store({
 			localStorage.removeItem("token");
 			localStorage.removeItem("username");
 			var dateExpire = new Date(),
-				siteCookies = document.cookie.split("; ");
-
+			siteCookies = document.cookie.split("; ");
 			dateExpire.setTime(dateExpire.getTime() - 10000);
 			for (var idx = 0; idx < siteCookies.length; idx++) {
 				var itemCookie = siteCookies[idx],
 					keyvalues = itemCookie.split("=");
 				document.cookie = keyvalues[0] + "=" + keyvalues[1] + ";expire=" + dateExpire.toGMTString();
-			}
+      }
+      console.log(document.cookie)
 		}
     
   },
@@ -66,6 +65,7 @@ export default new Vuex.Store({
       commit("GET_ISLOGIN",params)
     },
     Logout({commit}){
+      commit("GET_USERINFO",{username:'',token:''})
 			commit("CLEAR");
 		}
   },
