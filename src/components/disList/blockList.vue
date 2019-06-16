@@ -151,7 +151,7 @@ export default {
       // console.log(this.blocklist)
     },
     created(){        
-        this.init();
+        //this.init();
     }
 }
 </script>

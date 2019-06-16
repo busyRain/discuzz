@@ -11,7 +11,6 @@ export default new Vuex.Store({
   state: {
     disList: {},
     isShowAdd:false,
-    //islogin:false,
     token: GetCookie("token"),
 		username: GetCookie("username"),
   },
@@ -23,9 +22,7 @@ export default new Vuex.Store({
     GET_ISSHOWADD:(state,params) =>{
       state.isShowAdd = params
     },
-    // GET_ISLOGIN:(state,params) =>{
-    //   state.islogin = params
-    // },
+  
     GET_USERINFO:(state,params) =>{
       state.token = params.token
       state.username = params.username
@@ -33,6 +30,7 @@ export default new Vuex.Store({
       localStorage.setItem("username",state.username)
     },
     CLEAR:(state, params)=>{
+     
 			localStorage.clear();
 			localStorage.removeItem("token");
       localStorage.removeItem("username");
@@ -43,7 +41,7 @@ export default new Vuex.Store({
 				var itemCookie = siteCookies[idx],
         keyvalues = itemCookie.split("=");
        
-				document.cookie = keyvalues[0] + "=" + keyvalues[1] + ";domain=.feileyuan.club;expires=" + dateExpire.toGMTString();
+				document.cookie = keyvalues[0] + "=" + keyvalues[1] + ";domain=.feileyuan.club;expires=" + dateExpire.toGMTString() + ';path=/;';
       }
       console.log(document.cookie)
       state.token = "";
@@ -53,9 +51,6 @@ export default new Vuex.Store({
     
   },
   actions: {
-    init({commit},params){
-      commit("GET_USERINFO",params)
-    },
     async getBlock({ commit }, params) {
       await api.getBlockTop(params).then(res => {
         const { data } = res;
@@ -68,9 +63,7 @@ export default new Vuex.Store({
     getIsShowAdd({commit},params) {
       commit("GET_ISSHOWADD",params)
     },
-    // getIsLogin({commit},params) {
-    //   commit("GET_ISLOGIN",params)
-    // },
+   
     Logout({commit}){
       commit("GET_USERINFO",{username:'',token:''})
 			commit("CLEAR");
@@ -84,9 +77,7 @@ export default new Vuex.Store({
     isShowAdd: state => {
       return state.isShowAdd;
     },
-    // islogin: state => {
-		// 	return state.islogin
-		// },
+   
     userInfo : state =>{
       return userInfo
     }

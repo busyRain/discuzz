@@ -356,9 +356,9 @@ export default {
         }
       })
     },
-    init(){
+    // init(){
     
-    },
+    // },
     async updateCount (id){
       await api.updateCount(id).then(res=>{
         console.log(res)
@@ -374,7 +374,7 @@ export default {
   },
   created(){
     this.updateCount(this.$route.params.id)
-    this.init()
+    //this.init()
     this.getDetail(this.$route.params.id)
     this.getDetailReply(this.$route.params.id)
     this.sectionid = this.$route.query.sectionid

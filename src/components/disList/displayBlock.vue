@@ -202,7 +202,7 @@ export default {
         },
     },
     mounted() {
-        this.init();
+        //this.init();
     },
     created(){
         sessionStorage.removeItem('navList')
