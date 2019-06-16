@@ -12,7 +12,7 @@ import baseFilter from "@/utils/date";
 import {Api,Get,Post} from '@/utils/http';
 import { SetCookies, GetCookies, DelCookies } from "@/utils/setCookies.js";
 // import "./registerServiceWorker";
-const IMG_URL = "http://www.feileyuan.com/";
+const IMG_URL = "http://bbs.feileyuan.club/";
 
 Vue.prototype.$setCookie = SetCookies;
 Vue.prototype.$getCookie = GetCookies;

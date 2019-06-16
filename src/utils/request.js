@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Message } from "element-ui";
-import { GetCookies,DelCookies } from "@/utils/setCookies.js";
+
+import store from '../store';
 // axios.defaults.transformRequest = [
 //   function(data) {
 //     let ret = "";
@@ -28,9 +29,10 @@ service.interceptors.request.use(config => {
   }
   //token放到header里
   try {
-    //let cookie = GetCookies("uInfo");
-    let token = localStorage.getItem("token")||'';
-    let username =localStorage.getItem("username")||'';
+    
+	var token = store.state.token ? Base64.decode(unescape(store.state.token)) : "";
+	var username = store.state.username ? Base64.decode(unescape(store.state.username)) : "";
+
     if (token) {
       config.headers["TOKEN"] = token;
       config.headers["UN"] = username;

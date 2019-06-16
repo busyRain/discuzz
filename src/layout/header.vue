@@ -48,7 +48,6 @@ export default {
   name:"headerTop",
   data(){
     return {
-      islogin:false,
       keywords:"",
       uName:"",
       currentMenu:"",
@@ -58,15 +57,16 @@ export default {
       users:{}
     }
   },
-  computed:{
-    ...mapGetters({
-      //islogin:'islogin',
-      userInfo:'userInfo'
-    })
-  },
-  
+  computed: {
+			islogin: {
+        get:function (){
+         return !!this.$store.state.token;
+			},
+		  set:function(){
+			}}	
+		},
   updated(){
-      this.setCurrentMenu()
+    this.setCurrentMenu()
   },
   methods:{
     goPath(url){
@@ -132,7 +132,7 @@ export default {
 									});
 								
 								}, 2000);
-              this.islogin = false
+             this.islogin = false
             }
           })
         } 
@@ -145,21 +145,22 @@ export default {
   },
   mounted() {
     this.setCurrentMenu()
-   
     this.keywords = this.$route.query.keyword;
-   
   },
   created(){
+    if (this.islogin) {
+      this.getUser();
+    }
       //if(localStorage.getItem("token")==''){
-          this.username = this.getName('username')
-          this.token = this.getName('token')
-          let auth =this.getName('auth')
-          console.log(this.username)
-          this.$store.dispatch('init',{username:this.username,token:this.token})
-          if(this.token){
-            this.islogin = true
-            this.getUser()
-          }
+          // this.username = this.getName('username')
+          // this.token = this.getName('token')
+          // let auth =this.getName('auth')
+          // console.log(this.username)
+          // this.$store.dispatch('init',{username:this.username,token:this.token})
+          // if(this.token){
+          //   this.islogin = true
+          //   this.getUser()
+          // }
       //}
     }
 };

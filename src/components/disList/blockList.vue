@@ -94,7 +94,7 @@ export default {
         limit:80,
         orderbytype:1,
         isShowAdd:false,
-        loginStatus:false,
+        //loginStatus:false,
         // count:0,
       }
     },
@@ -103,21 +103,24 @@ export default {
   
     },
     computed:{
-      // ...mapGetters({
-      //  blocklist:'disList'
-      // }),
+      islogin: {
+        get:function (){
+          return !!this.$store.state.token;
+        },
+        set:function(){
+        }}
+
     },
     methods:{
       goTop(){
         document.body.scrollTop = document.documentElement.scrollTop = 0;
       },
       init(){
-          
-          if (localStorage.getItem('token')) {
-              this.loginStatus = true;
-          } else {
-              this.loginStatus = false;
-          }
+          // if (this.islogin) {
+          //     this.loginStatus = true;
+          // } else {
+          //     this.loginStatus = false;
+          // }
       },
       handleCurrentChange(val){
         console.log(val)
@@ -130,14 +133,16 @@ export default {
         this.$emit("getPage",1)
       },
       addBlock(){
-        if(this.loginStatus){
+        if(this.islogin){
           this.id=this.$route.params.id
           this.$store.dispatch("getIsShowAdd",true)
           this.$refs.boardBox.scrollTop = 0
-          
          // document.body.scrollTop = document.documentElement.scrollTop = 0;
         }else{
-          this.$router.push({path:'/login'}) 
+          this.$message({
+            message:"用户未登录",
+            type:'error'
+          })
         }
         
       }

@@ -9,7 +9,7 @@ import {
 if (process.env.NODE_ENV == 'development') {
     axios.defaults.baseURL = 'http://api.feileyuan.club/';
 } else if (process.env.NODE_ENV == 'production') {
-	axios.defaults.baseURL = 'http://api.feileyuan.com/';
+	axios.defaults.baseURL = 'http://api.feileyuan.club/';
 }
 axios.defaults.timeout = 10000;
 
