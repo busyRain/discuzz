@@ -1,56 +1,59 @@
 <template>
 <div>
     <div class="board-box">
-        <div class="board-bg"></div>
+        <div class="board-bg" ></div>
         <div class="team-desc clearfix">
             <div class="desc-left fl">
                 <div class="circle-img fl">
                     <img class="board-icon" :src="$IMG_URL+blockTop.imgurl"/>
-                    <a href="javascrip:;" class="join-circle">板块统计</a>
+                    <el-popover
+                        placement="right"
+                        trigger="hover"
+                        >
+                        <ul class="sectionList">
+                            <li  v-for="(item,index) in section" :key="index" class="listLi">
+                                <label class="fl">{{item.name}}</label>
+                                <div class="childUL" v-if="item.childList.length>0">
+                                     <router-link  v-for="(childItem,childIndex) in item.childList" :key="childIndex" :to="{path:`/disList/${childItem.id}`}" tag="a" target="_blank" >{{childItem.name}}</router-link>
+                                </div>
+                            </li>
+                        </ul>
+                        <el-button class="join-circle" slot="reference" size="medium" round >版块切换</el-button>
+                        <!-- <a href="javascrip:;" class="join-circle" slot="reference">版块切换</a> -->
+                    </el-popover>
                 </div>
                 <div class="circle-name fl">
                     <div class="club-name">{{blockTop.name}}</div>
                     <div class="club-desc">{{blockTop.synopsis}}</div>
                     <div class="club-desc-line"></div>
                     <div class="club-fan">
-                        <p class="fan-numb">
+                        <!-- <p class="fan-numb">
                             <span class="fan-text">级别</span>
                             <b>{{blockTop.level}}</b>
-                        </p>
+                        </p> -->
                         <p class="fan-numb">
                             <span class="fan-text">贴数</span>
                             <b>{{blockTop.topiccount}}</b>
                         </p>
                         <p class="fan-numb">
                             <span class="fan-text">今日</span>
-                            <b>{{blockTop.commentcount}}</b>
+                            <b>{{blockTop.todayTopiccount}}</b>
                         </p>
                     </div>
                 </div>
             </div>
             <div class="desc-right fr">
-                <a href="javascript:;" @click="openDialog" class="send-post">发新贴</a>
+                <el-button @click="openDialog" class="send-post" round size="medium">发新贴</el-button>
+                <!-- <a href="javascript:;" @click="openDialog" class="send-post"></a> -->
             </div>
         </div>
-        <!--版主信息-->
-        <!-- <div class="master-header clearfix">
-            <div class="master-intro clearfix">
-                <h4 class="title clearfix">版主</h4>
-                <p class="m-list fl">
-                    <a href="" target="_black">123456</a>
-                </p>
-                <p class="m-list fl">
-                    <a href="" target="_black">张三张三</a>
-                </p>
-                <p class="m-list fl">
-                    <a href="" target="_black">李四李四</a>
-                </p>
-                <p class="m-list fl">
-                    <a href="" target="_black">w35343243</a>
-                </p>
+         <!--版块切换-->
+        <!-- <div class="master-header clear ov">
+            <div class="master-intro clear">
+                <h4 class="title clear">版块切换</h4>
+                
             </div>
         </div> -->
-        <!--筛选-->
         <div class="classify-list " style="margin-left:20px;">
             <div class="classify-item">
                 <span class="classify-title">看贴：</span>
@@ -83,11 +86,12 @@
             </div>
         </div>
     </div>
-    <block-list :list="blockList" @getPage="getPage" :count="count"></block-list>
+    <block-list :list="blockList" @getPage="getPage" :count="count" :sectionid="blockTop.id"></block-list>
 </div>
 </template>
 <script>
 import * as api from "@/api/list"
+import * as apiSec from '@/api/home'
 import blockList from '@/components/disList/blockList'
 import { mapGetters } from 'vuex';
 
@@ -101,12 +105,13 @@ export default {
             isessence:false,
             orderbytype:4,
             page:1,
-            limit:10,
+            limit:80,
             sectionid:'',
             blockList:{},
             blockTop:{},
             count:0,
             loginStatus:false,
+            section:{}
         }
     },
     computed:{
@@ -141,7 +146,7 @@ export default {
             await api.getBlockList({
                 //id:this.id,
                 page:this.page,
-                limit:10,
+                limit:this.limit,
                 orderbytype:this.orderbytype,
                 isessence:this.isessence,
                 sectionid:this.sectionid
@@ -175,7 +180,15 @@ export default {
             } else {
                 this.loginStatus = false;
             }
-        }
+        },
+        async getSection () {
+            await apiSec.getSection().then(res=>{
+                const { data} = res
+                if(res.code == 0){
+                    this.section = data
+                }
+            })
+        },
     },
     mounted() {
         this.init();
@@ -183,7 +196,7 @@ export default {
     created(){
         sessionStorage.removeItem('navList')
         this.sectionid = this.$route.params.id
-        //console.log( this.$route.params.id)
+        this.getSection()
         this.getBlockList()
         this.getBlockTop(this.$route.params.id)
         //this.init();
@@ -195,7 +208,7 @@ export default {
     font-size:14px;
 }
 .board-bg{
-    background: url(../../assets/images/bg.png) no-repeat;
+    background: url('../../assets/images/bg.png') no-repeat;
     background-size: cover;
     width:100%;
     height: 150px;
@@ -225,15 +238,15 @@ export default {
             .join-circle{
                 display: block;
                 margin: 66px 0 0 10px;
-                width: 80px;
-                height: 28px;
-                border-radius: 5px;
-                color: #1C8CE9;
-                border: 1px solid #1C8CE9;
-                text-align: center;
-                font-size: 13px;
-                line-height: 28px;
-                cursor: pointer;
+                // width: 80px;
+                // height: 28px;
+                // border-radius: 5px;
+                 color: #1C8CE9;
+                 border: 1px solid #1C8CE9;
+                // text-align: center;
+                // font-size: 13px;
+                // line-height: 28px;
+                // cursor: pointer;
             }
         }
         .circle-name{
@@ -293,15 +306,15 @@ export default {
             display: block;
             margin: 41px auto 0;
             margin-right: 20px;
-            width: 100px;
-            height: 38px;
+            /* width: 100px; */
+            /* height: 38px; */
             border: 1px solid #1C8CE9;
-            border-radius: 5px;
+            /* border-radius: 5px; */
             color: #1C8CE9;
-            text-align: center;
-            font-size: 14px;
-            line-height: 36px;
-            cursor: pointer;
+            /* text-align: center; */
+            /* font-size: 14px; */
+            /* line-height: 36px; */
+            /* cursor: pointer; */
         }
     }
 }
@@ -362,9 +375,33 @@ export default {
             border-radius: 2px
         }
     }
-    .classify-li.on .classify-letter{
+    .classify-li.on .classify-letter {
         background: #555;
         color:#fff;
+    }
+}
+.sectionList {
+    padding: 0 20px 20px;
+    label {
+        padding: 0 25px 14px 0;
+        font-size: 14px;
+        color: #999;
+    }
+    .listLi {
+        padding-top: 14px;
+        overflow: hidden;
+    }
+    .childUL {
+        margin: 0 0 0 81px;
+        border-bottom: dashed 1px #a3a1a1;
+        padding-bottom: 15px;
+        a{
+            padding: 0 25px 14px 0;
+           
+        }
+        a:hover{
+             color:#1C8CE9;
+        }
     }
 }
 </style>

@@ -7,15 +7,17 @@
                     <li class="listLi" v-for="(childItem,childIndex) in item.childList" :key="childIndex">
                         <div class="board">
                             <div class="board-img">
-                                <a href="" target="_blank">
+                              <router-link :to="{path:`/disList/${childItem.id}`}" tag="a" target="_blank" >
+                                <!-- <a href="javascript:;" target="_blank"> -->
                                   <el-image
                                     style="width: 80px; height:80px;float:left"
                                     :src="$IMG_URL+childItem.imgurl"
                                     :fit="'contain'"
                                   >
                                   </el-image>
+                                </router-link>
                                     <!-- <img class="fl" src="http://img.javaex.cn/Fnol7Gy7_ztiulsQLGpJDSQUzshj"/> -->
-                                </a>
+                                <!-- </a> -->
                             </div>
                             <dl>
                                 <dt>

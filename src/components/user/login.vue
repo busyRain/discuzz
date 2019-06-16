@@ -62,6 +62,11 @@
 	</div>
 </template>
 <script>
+import * as api from '@/api/login'
+import cookies from 'cookiesjs'
+import {
+	Base64
+} from 'js-base64';
 export default {
     name: "login",
     data() {
@@ -99,36 +104,56 @@ export default {
         };
     },
     methods: {
+        async userLogin(data){
+            let that = this;
+            await api.userlogin(data).then(
+                res=>{
+                    console.log(res)
+                    that.loading = false;
+                    if (res.code == 0) {
+                        // jsCookies.setItem('userInfo',Base64.encode(res.data),{
+                        //     expires:100*24*3600,
+                        //     path:'/',
+                            
+                        // })
+                        // cookies({'userInfo':null})
+                        // if(!cookies('userInfo')){
+                        //     cookies({userInfo:Base64.encode(res.data)},
+                        //     {expires:100*24*3600,
+                        //     domain:'feileyuan.com',
+                        //    path:'/'})
+                        // }
+                        // 登陆成功
+                        // let userInfo = {
+                        //     token: res.data,
+                        //     loginName: that.loginForm.userName,
+                        // }
+                        //that.$setCookie("uInfo", JSON.stringify(userInfo));
+                       // that.$router.back();
+                    } else {
+                        let _msg = "";
+                        if (res.status == 200) {
+                            _msg = res.msg;
+                        } else {
+                            _msg = res.message;
+                        }
+                        that.$message({
+                            message: _msg,
+                            type: 'error',
+                            duration: 3000,
+                        });
+                    }
+                }
+            ) 
+        },
         login() {
             let that = this;
             this.$refs.loginForm.validate((valid) => {
                 if (valid) {
                     that.loading = true;
-                    that.$axios.post('/users/login', {
+                    this.userLogin({
                         loginName: that.loginForm.userName,
                         passWord: that.loginForm.passWord
-                    }).then(res => {
-                        that.loading = false;
-                        if (res.code == 0) {
-                            // 登陆成功
-                            let userInfo = {
-                                token: res.data,
-                                loginName: that.loginForm.userName,
-                            }
-                            that.$setCookie("uInfo", JSON.stringify(userInfo));
-                            that.$router.back();
-                        } else {
-                            var _msg = "";
-                           
-                            if (res.status == 200) {
-                                _msg = res.msg;
-                            } else {
-                                _msg = res.message;
-                            }
-                            that.$alert(_msg, {
-                                confirmButtonText: '确定'
-                            });
-                        }
                     })
                 } else {
                     return false;

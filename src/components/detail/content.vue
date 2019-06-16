@@ -26,19 +26,22 @@
           <ul class="otherinfo">
             <li>
               <label class="fl">组别</label>
-              <span class="admin" >{{detail.vip?'管理员':"游客"}}</span>
+              <span class="admin" >{{detail.vip?'管理员':"用户"}}</span>
             </li>
             <li>
-              <label  class="fl">Vip等级</label>
-              <span>{{detail.vipLvl}}</span>
+              <label  class="fl">用户等级</label>
+              <span>{{detail.userLvl}}</span>
             </li>
             <li>
               <label  class="fl">用户积分</label>
               <span>{{detail.userPoints}}</span>
             </li>
+           
             <li>
-              <label  class="fl">用户等级</label>
-              <span>{{detail.userLvl}}</span>
+              <label  class="fl">经验值</label>
+              <span class="progress">
+                <el-progress :text-inside="true" :stroke-width="15" :percentage="parseInt((this.detail.userPoints)/(this.detail.nextLvlPoints)*100) || 0"></el-progress>
+              </span>
             </li>
           </ul>
         </div>
@@ -49,7 +52,7 @@
             <div class="detailRight_info_content ov" ref="detailRight_info_content">
                 <div class="pi">
                     <img src="@/assets/images/ico_lz.png" class="authincn vm">
-                        <em>楼主 | 发表于 <span class="highlight-color">{{detail.ctime|dateTime}}</span></em>
+                        <em>楼主 | 发表于 <span class="highlight-color">{{detail.ctime|dateNewComment}}</span></em>
                         <strong>楼主</strong>				
                 </div>
                 <div class="contentDetail" >
@@ -83,21 +86,24 @@
                     </a>
                 </div>
                 <ul class="otherinfo">
-                  <li>
-                    <label class="fl">组别</label>
-                    <span class="admin" >{{item.vip?'管理员':"游客"}}</span>
-                  </li>
-                  <li>
-                    <label  class="fl">Vip等级</label>
-                    <span>{{item.vipLvl}}</span>
-                  </li>
-                  <li>
-                    <label  class="fl">用户积分</label>
-                    <span>{{item.userPoints}}</span>
-                  </li>
-                  <li>
-                    <label  class="fl">用户等级</label>
-                    <span>{{item.userLvl}}</span>
+                    <li>
+                      <label class="fl">组别</label>
+                      <span class="admin" >{{item.vip?'管理员':"用户"}}</span>
+                    </li>
+                    <li>
+                      <label  class="fl">用户等级</label>
+                      <span>{{item.userLvl}}</span>
+                    </li>
+                    <li>
+                      <label  class="fl">用户积分</label>
+                      <span>{{item.userPoints}}</span>
+                    </li>
+                    
+                    <li>
+                    <label  class="fl">经验值</label>
+                    <span class="progress">
+                      <el-progress :text-inside="true" :stroke-width="15" :percentage="parseInt((item.userPoints)/(item.nextLvlPoints)*100) || 0"></el-progress>
+                    </span>
                   </li>
                 </ul>
             </div>
@@ -108,12 +114,12 @@
                     <div class="pi">
                       <img src="@/assets/images/ico_lz.png" class="authincn vm">
                         <em>{{item.nickname}} | 发表于 <span class="highlight-color">{{item.ctime|dateTime}}</span></em>
-                        <strong>{{index+2}}楼</strong>				
+                        <strong>{{(page-1)*limit+index+2}}楼</strong>				
                     </div>
                     <div class="contentDetail" >
                         <div class="quote" v-if="item.replyModel!=null">
                             <blockquote>
-                               {{item.replyModel.nickname}} 表示于 {{detail.ctime|dateTime}}
+                               {{item.replyModel.nickname}} 表示于 {{detail.ctime|dateNewComment}}
                                 <strong>楼层{{item.buildingno}}</strong>
                                 <br>
                                 <p v-html="item.content"></p>
@@ -127,7 +133,7 @@
             <div class="detailRight_site">
                 <a class="replayBtn" @click="addReplayIndex(detail.id,item.cid,item.nickname,item.id,index+2,item.content,item.ctime)">回复</a>
                 <!-- <a class="editBtn" v-if="loginStatus">编辑</a> -->
-                <p class="fr" v-if="loginStatus">
+                <p class="fr" v-if="loginStatus && item.isavailable==true">
                     <!-- <span>举报</span> -->
                     <i class="el-icon-delete" @click="delDis(item.id)">删除</i>
                 </p>
@@ -136,30 +142,26 @@
     </div>
   </div>
    <div class="page">
-       <editortwo
+      <el-pagination class="pagination"
+        @current-change="handleCurrentChange"
+        background
+        layout="prev,pager,next,jumper"
+        :page-size="10"
+        :total="count"
+      ></el-pagination>
+    </div>
+    <editortwo
           :defaultMsg=defaultMsg
           :config=config
           ref='ue'
         >
         </editortwo>
-        <el-row :gutter="20" class="page">
+        <el-row :gutter="20" >
           <el-col :span="4">
             <el-button class="add" @click="reply(detail.id)" type="primary" size="medium">发表回复</el-button>
           </el-col>
-          <el-col :span="16">
-            <el-pagination v-if="count!=0"
-              @current-change="handleCurrentChange"
-              background
-              layout="prev,pager,next,jumper"
-              :page-size="10"
-              :total="count"
-            ></el-pagination>
-            
-          </el-col>
-        
         </el-row>
-    </div>
-   <show-reply :replyDialog="replyDialog" :topicid="topicid" @cancel="cancel" :replyContent="replyContent" :noShow="noShow" @getNewList="getNewList"></show-reply>
+   <show-reply :replyDialog="replyDialog" :topicid="topicid" @cancel="cancel" :replyContent="replyContent" :noShow="noShow" @getNewList="getNewList" :sectionid="sectionid"></show-reply>
 </div>
 </template>
 <script>
@@ -181,6 +183,8 @@ export default {
       topicid:"",
       loginStatus:false,
       noShow:false,
+      limit:10,
+      sectionid:0,//贴子id
       replyContent:{
 
       },
@@ -215,6 +219,7 @@ export default {
     showReply,
     editortwo
   },
+  
   methods:{
     getNewList(){
       this.replyDialog=false,
@@ -236,11 +241,20 @@ export default {
       } 
     },
     async commonReply(data){
+      let that = this;
+      console.log(this.$refs.ue.editor)
       await api.addReply(data).then(res=>{
         console.log(res)
         if(res.code == 0 ){
-         this.defaultMsg = ''
+          this.$message({
+            message:"回复成功",
+            type:'success'
+          })
+        // this.defaultMsg = ''
+        
+         //this.$refs.ue.execCommand('cleardoc');
          this.getDetailReply(this.$route.params.id)
+          this.$refs.ue.clearContent()
         }
       })
     },
@@ -249,6 +263,7 @@ export default {
     },
     handleCurrentChange(val){
       this.page=val
+       document.body.scrollTop = document.documentElement.scrollTop = 0;
       this.getDetailReply(this.$route.params.id)
     },
     async delDis(id){ //删除回复
@@ -311,7 +326,8 @@ export default {
     async getDetailReply(id){
       await api.getReplay({
         topicid:id,
-        page:this.page
+        page:this.page,
+        limit:this.limit
         }).then(res=>{
         const data = res.data
         console.log(res)
@@ -322,13 +338,17 @@ export default {
       })
     },
     init(){
-      let cookie = this.$getCookie('uInfo');
-      let userInfo = JSON.parse(cookie);
-      if (userInfo && userInfo.token) {
+      
+      if (localStorage.getItem('token')) {
           this.loginStatus = true;
       } else {
           this.loginStatus = false;
       }
+    },
+    async updateCount (id){
+      await api.updateCount(id).then(res=>{
+        console.log(res)
+      })
     }
   },
   mounted(){
@@ -339,9 +359,12 @@ export default {
     })
   },
   created(){
+    this.updateCount(this.$route.params.id)
     this.init()
     this.getDetail(this.$route.params.id)
     this.getDetailReply(this.$route.params.id)
+    this.sectionid = this.$route.query.sectionid
+    console.log(JSON.parse(sessionStorage.getItem('navList')))
   }
 }
 </script>
@@ -366,6 +389,7 @@ export default {
     overflow: hidden;
     width: 180px;
     min-width: 180px;
+    padding: 0 0 22px 0;
     //background: #E6E6E6;
     .detailLeft_top {
       text-align: center;
@@ -398,8 +422,9 @@ export default {
         margin: 5px 10px 5px 20px;
         li{
           overflow: hidden;
-          height: 24px;
-          line-height: 24px;
+          height: 28px;
+          line-height: 28px;
+          position: relative;
           label{
             width: 80px;
           }
@@ -412,7 +437,7 @@ export default {
   }
   .detailRight {
     width:1019px;
-    min-height: 330px;
+    min-height: 400px;
     border-left: 1px solid #CDCDCD;
     .detailRight_info {
       margin-bottom:40px;
@@ -509,7 +534,7 @@ export default {
     border-top: 4px solid #c3c3c3;
   }
   .detailRight{
-    min-height: 294px;
+    min-height: 365px;
   }
   .detailRight_info{
   border-top: 4px solid #e6e6e6;
@@ -517,5 +542,17 @@ export default {
 }
 .page{
   margin-top:40px;
+  .pagination{
+    margin-bottom:40px;
+    
+  } 
 }
+
+.el-progress-bar__outer{
+  height:10px;
+}
+.add{
+  margin-top:40px;
+}
+
 </style>

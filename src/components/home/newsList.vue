@@ -9,51 +9,24 @@
             </div>
             <div class="tabList"  v-show="tabIndex==1">
                 <ul >
-                    <li v-for="(item,index) in hotList.slice(0,6)" :key="index">
-                        <i v-text="index"></i>
+                    <li v-for="(item,index) in hotList.slice(0,7)" :key="index">
+                        <i v-text="index+1"></i>
                         <span>[{{item.sectionName}}]</span>
-                        <router-link :to="{path:`/discuzz/disDetail/${item.id}`}" tag="a" target="_blank">{{item.title}}</router-link>
+                        <router-link :to="{path:`/disDetail/${item.id}`,query:{sectionid:item.sectionid}}" tag="a" target="_blank">{{item.title}}</router-link>
                         <em class="time">{{$formatDate(item.lasttime,"yyyy-MM-dd")}}</em>
                     </li>  
                 </ul>       
             </div>
             <div class="tabList" v-show="tabIndex==2">
                 <ul>
-                    <li v-for="(item,index) in newList.slice(0,6)" :key="index">
-                        <i v-text="index"></i>
+                    <li v-for="(item,index) in newList.slice(0,7)" :key="index">
+                        <i v-text="index+1"></i>
                         <span>[{{item.sectionName}}]</span>
-                        <router-link :to="{path:`/discuzz/disDetail/${item.id}`}" tag="a" target="_blank">{{item.title}}</router-link>
+                        <router-link :to="{path:`/disDetail/${item.id}`,query:{sectionid:item.sectionid}}" tag="a" target="_blank">{{item.title}}</router-link>
                         <em class="time">{{$formatDate(item.lasttime,"yyyy-MM-dd")}}</em>
                     </li>  
                 </ul> 
             </div>   
-                <!-- <div v-show="tabIndex==1" class="tabList">
-                    <div class="main animated fadeInDown">
-                        <div class="right-list">
-                            <div class="index_img" style="background:url(http://img.javaex.cn/72419aa803684ae59d1bfa28c67ee71d) no-repeat;background-size:100% 100%;">
-                            </div>
-                            <div class="index_title">
-                                <b>
-                                    <a href="">虫林大作战</a>
-                                </b>
-                                <span>2019-04-15</span>
-                            </div>
-                                <a href="" class="index_summary">导演: Arnaud Bouron / Antoon Krings编剧: Antoon Krings</a> 
-                                <hr class="index_hr">
-                            <ul>
-                                <li>
-                                    <a href="" target="_blank">知道人是怎么做出来的么</a>
-                                    <span>2018-02-15</span>
-                                </li>
-                                    <li>
-                                    <a href="" target="_blank">知道人是怎么做出来的么</a>
-                                    <span>2018-02-15</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div> -->
-           
         </div>  
     </div>
 </template>
@@ -113,7 +86,6 @@ export default {
     display: block;
     margin-top:10px;
     text-align: left;
-   
 }
 .main{
     height: 320px;
