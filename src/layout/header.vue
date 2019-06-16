@@ -5,19 +5,19 @@
 			  <img src="@/assets/images/logo.png" alt>
 			</router-link>
       <el-menu :default-active="$route.path" :router=true class="fl" mode="horizontal" :routePath="currentMenu">
-        <a class="el-menu-item" href="http://www.feileyuan.com/" target="_blank">首页</a>
-        <a class="el-menu-item" href="http://www.feileyuan.com/#/news" target="_blank">资讯</a>
+        <a class="el-menu-item" :href="$BBS_URL" target="_blank">首页</a>
+        <a class="el-menu-item" :href="$BBS_URL+'news'" target="_blank">资讯</a>
         <el-menu-item index="/" ref="topic" :style="styleTab">论坛</el-menu-item>
-        <a class="el-menu-item" href="http://www.feileyuan.com/#/topic" target="_blank">专题</a>
-        <a class="el-menu-item" href="http://www.feileyuan.com/#/activity" target="_blank">活动</a>
+        <a class="el-menu-item" :href="$BBS_URL+'topic'" target="_blank">专题</a>
+        <a class="el-menu-item" :href="$BBS_URL+'activity'" target="_blank">活动</a>
       </el-menu>
       <div class="search fl ov">
 				<el-input class="fl" prefix-icon="el-icon-search" placeholder="请输入您要搜索的关键字" v-model="keywords"  @keyup.enter.native="search"></el-input>
 			</div>
       <div class="user fr ov" v-if="islogin">
-				<router-link to="" class="ov user-link">
+				<a :href="$BBS_URL+'member/posting'" class="ov user-link">
           <div class="user-avatar fl">
-					  <img :src="users.imgurl" class="fl" alt="">
+					  <img :src="$IMG_URL+users.imgurl" class="fl" alt="">
           </div>
 					<div class="user-info fl">
 						<h4 class="user-name" v-text="users.nickname"></h4>
@@ -26,15 +26,15 @@
 							<span class="inline point">经验：{{ users.userpoints }}</span>
 						</div>
 					</div>
-				</router-link>
-				<router-link to="" class="user-link"><img src="@/assets/images/chat.png" alt="" class="icon"></router-link>
-				<router-link to="" class="user-link"><img src="@/assets/images/setting.png" alt="" class="icon"></router-link>
+				</a>
+        <a :href="$BBS_URL+'member/profile'"><img src="@/assets/images/setting.png" alt="" class="icon"></a>
+
 				<img @click='logout' src="@/assets/images/quit.png" alt="" class="icon cursor out">
 			</div>
       <div class="user fr ov" v-else>
         <!-- <a href="http://www.feileyuan.com/login" class="el-button--primary">登录</a> -->
-        <el-button type="primary" @click="goPath('http://www.feileyuan.com/login')">登录</el-button>
-        <el-button  @click="goPath('http://www.feileyuan.com/register')">注册</el-button>
+        <el-button type="primary" @click="goPath($BBS_URL+'login')">登录</el-button>
+        <el-button  @click="goPath($BBS_URL+'register')">注册</el-button>
         <!-- <router-link to='/login' tag="el-button" class="el-button--primary">登录</router-link>
 				<router-link to="/user/register" tag="el-button">注册</router-link> -->
 			</div>
@@ -70,7 +70,8 @@ export default {
   },
   methods:{
     goPath(url){
-      window.open(url)
+      location.href=url
+      //window.open(url)
     },
     getName(c_name){
       if (document.cookie.length>0){
@@ -87,8 +88,8 @@ export default {
     search(e){
       var e = event || window.event || arguments.callee.caller.arguments[0];
 				if (e && e.keyCode == 13) {
-          window.open("http://www.feileyuan.com/search?keyword="+this.keywords)
-				  //location.href="http://www.feileyuan.com/#/search?keyword="+this.keywords
+         // window.open("http://www.feileyuan.com/search?keyword="+this.keywords)
+				  location.href="http://www.feileyuan.com/search?keyword="+this.keywords
 				}
     },
     async getUser(){
