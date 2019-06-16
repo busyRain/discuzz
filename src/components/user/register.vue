@@ -222,15 +222,15 @@
 		methods: {
 			onSuccess(type, respone) {
 				var that = this;
-				if (respone.data.code == 0) {
+				if (respone.code == 0) {
 					// 注册成功
 					let userInfo = {
-						token: respone.data.data,
+						token: respone.data,
 						loginName: type == 1 ? this.formMobile.userPhone : this.formEmail.userEmail,
 					}
 					that.$setCookie("uInfo", JSON.stringify(userInfo));
 					that.$message({
-						message: respone.data.msg,
+						message: respone.msg,
 						type: "success",
 						duration: 3000,
 						onClose() {

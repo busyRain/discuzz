@@ -10,8 +10,8 @@ module.exports = {
     port: 8080,
     hot: true,
     proxy: {
-      "/api": {
-        target: "http://api.feileyuan.club",
+      "/": {
+        target: "http://api.feileyuan.com",
         //target: "http://124.156.160.86",
         //target: "http://150.109.48.154",
         changeOrigin: true,

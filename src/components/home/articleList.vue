@@ -19,7 +19,7 @@
                             </div>
                             <dl>
                                 <dt>
-                                    <router-link :to="{path:`discuzz/disList/${childItem.id}`}" tag="a" target="_blank" >{{childItem.name}}</router-link>
+                                    <router-link :to="{path:`/disList/${childItem.id}`}" tag="a" target="_blank" >{{childItem.name}}</router-link>
                                 </dt>
                                 <dd>
                                     <em>主题：{{childItem.topiccount}}</em>

@@ -6,8 +6,8 @@
 			</router-link>
       <!-- <div class="default-nav fl cb"> -->
       <el-menu :default-active="$route.path" :router=true class="fl" mode="horizontal">
-        <el-menu-item index="/">首页</el-menu-item>
-        <el-menu-item index="/discuzz">论坛</el-menu-item>
+       
+        <el-menu-item index="/">论坛</el-menu-item>
       </el-menu>
 			<!-- </div> -->
       <div class="search fl ov">
@@ -33,7 +33,7 @@
 			</div>
       <div class="user fr ov" v-else>
         <router-link to='/login' tag="el-button" class="el-button--primary">登录</router-link>
-				<router-link to="/register" tag="el-button">注册</router-link>
+				<router-link to="/user/register" tag="el-button">注册</router-link>
 			</div>
     </div>
   </div>

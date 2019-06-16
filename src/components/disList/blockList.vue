@@ -5,7 +5,7 @@
         <li v-for="(item,index) in list" :key="index">
           <!--主题标题-->
           <div class="post-title cleardis">
-            <router-link :to="{path:`/discuzz/disDetail/${item.id}`}" tag="a" target="_blank">{{item.title}}</router-link>
+            <router-link :to="{path:`/disDetail/${item.id}`}" tag="a" target="_blank">{{item.title}}</router-link>
             <span class="uscat_pt" v-if="item.isrecommend">
               置顶
             </span>
@@ -75,7 +75,7 @@
             <el-button type="primary" @click="addBlock" size="mini">发表</el-button>
           </el-col>
           <el-col :span="16">
-            <el-pagination
+            <el-pagination  v-if="count!=0"
               background
               @current-change="handleCurrentChange"
               layout="prev,pager,next,jumper"
@@ -83,6 +83,7 @@
               :total="count"
             >
             </el-pagination>
+            <div v-else class="noDate">暂无数据</div>
           </el-col>
         </el-row>
       </div>
@@ -245,6 +246,10 @@ export default {
   }
   .page{
     margin-top:20px;
+  }
+  .noDate{
+    text-align: center;
+    color:#999;
   }
 }
 </style>

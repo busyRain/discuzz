@@ -147,13 +147,14 @@
             <el-button class="add" @click="reply(detail.id)" type="primary" size="medium">发表回复</el-button>
           </el-col>
           <el-col :span="16">
-            <el-pagination
+            <el-pagination v-if="count!=0"
               @current-change="handleCurrentChange"
               background
               layout="prev,pager,next,jumper"
               :page-size="10"
               :total="count"
             ></el-pagination>
+            
           </el-col>
         
         </el-row>

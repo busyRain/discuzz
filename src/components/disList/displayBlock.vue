@@ -1,7 +1,7 @@
 <template>
 <div>
     <div class="board-box">
-        <div class="board-bg" style="background: url(http://img.javaex.cn/FsjZILLbMNWFO_iFJNNneW-cmE0G) no-repeat;background-size: cover;"></div>
+        <div class="board-bg"></div>
         <div class="team-desc clearfix">
             <div class="desc-left fl">
                 <div class="circle-img fl">
@@ -195,6 +195,8 @@ export default {
     font-size:14px;
 }
 .board-bg{
+    background: url(../../assets/images/bg.png) no-repeat;
+    background-size: cover;
     width:100%;
     height: 150px;
     background-color: #fbfbfb;
