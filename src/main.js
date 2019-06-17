@@ -11,6 +11,7 @@ import { formatDate } from "@/utils/formatDate";
 import baseFilter from "@/utils/date";
 import {Api,Get,Post} from '@/utils/http';
 import { SetCookies, GetCookies, DelCookies } from "@/utils/setCookies.js";
+import test from "@/utils/test.js";
 // import "./registerServiceWorker";
 const IMG_URL = "http://www.feileyuan.com/";
 
@@ -22,6 +23,7 @@ Vue.prototype.$axios = axios;
 Vue.prototype.$Api = Api;
 Vue.prototype.$get = Get;
 Vue.prototype.$post = Post; 
+Vue.prototype.$test = test;
 Vue.prototype.$formatDate = formatDate;
 Vue.config.productionTip = false;
 Vue.use(ElementUI);

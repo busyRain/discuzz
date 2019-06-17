@@ -130,7 +130,7 @@ export default {
 										type: 'success',
 										duration: 500
 									});
-								
+								//that.$router.go(0);
 								}, 2000);
               this.islogin = false
             }

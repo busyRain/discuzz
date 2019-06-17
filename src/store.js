@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import * as api from "@/api/list";
 import { stat } from "fs";
+import test from '@/utils/test'
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -9,8 +10,8 @@ export default new Vuex.Store({
     disList: {},
     isShowAdd:false,
     islogin:false,
-    token:'',
-    username:'',
+    token:test.getCookie('token')||'',
+    username:test.getCookie("username")||'',
   },
   mutations: {
     GET_DISLIST: (state, params) => {
@@ -34,7 +35,8 @@ export default new Vuex.Store({
 			localStorage.removeItem("token");
 			localStorage.removeItem("username");
 			var dateExpire = new Date(),
-			siteCookies = document.cookie.split("; ");
+      siteCookies = document.cookie.split("; ");
+      //debugger;
 			dateExpire.setTime(dateExpire.getTime() - 10000);
 			for (var idx = 0; idx < siteCookies.length; idx++) {
 				var itemCookie = siteCookies[idx],
