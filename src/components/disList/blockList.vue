@@ -50,7 +50,7 @@
             <el-button type="primary" @click="addBlock" size="mini">发表</el-button>
           </el-col>
           <el-col :span="16">
-            <el-pagination
+            <el-pagination  v-if="count!=0"
               background
               @current-change="handleCurrentChange"
               layout="prev,pager,next,jumper"
@@ -58,6 +58,7 @@
               :total="count"
             >
             </el-pagination>
+            <div v-else class="noDate">暂无数据</div>
           </el-col>
         </el-row>
       </div>
@@ -93,7 +94,7 @@ export default {
         limit:80,
         orderbytype:1,
         isShowAdd:false,
-        loginStatus:false,
+        //loginStatus:false,
         // count:0,
       }
     },
@@ -102,21 +103,24 @@ export default {
   
     },
     computed:{
-      // ...mapGetters({
-      //  blocklist:'disList'
-      // }),
+      islogin: {
+        get:function (){
+          return !!this.$store.state.token;
+        },
+        set:function(){
+        }}
+
     },
     methods:{
       goTop(){
         document.body.scrollTop = document.documentElement.scrollTop = 0;
       },
       init(){
-          
-          if (localStorage.getItem('token')) {
-              this.loginStatus = true;
-          } else {
-              this.loginStatus = false;
-          }
+          // if (this.islogin) {
+          //     this.loginStatus = true;
+          // } else {
+          //     this.loginStatus = false;
+          // }
       },
       handleCurrentChange(val){
         console.log(val)
@@ -129,14 +133,16 @@ export default {
         this.$emit("getPage",1)
       },
       addBlock(){
-        if(this.loginStatus){
+        if(this.islogin){
           this.id=this.$route.params.id
           this.$store.dispatch("getIsShowAdd",true)
           this.$refs.boardBox.scrollTop = 0
-          
          // document.body.scrollTop = document.documentElement.scrollTop = 0;
         }else{
-          this.$router.push({path:'/login'}) 
+          this.$message({
+            message:"用户未登录",
+            type:'error'
+          })
         }
         
       }
@@ -145,7 +151,7 @@ export default {
       // console.log(this.blocklist)
     },
     created(){        
-        this.init();
+        //this.init();
     }
 }
 </script>
@@ -240,6 +246,10 @@ export default {
   }
   .page{
     margin-top:20px;
+  }
+  .noDate{
+    text-align: center;
+    color:#999;
   }
 }
 .scroll-top-btn{

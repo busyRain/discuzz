@@ -1,17 +1,13 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Default from "./views/Default.vue";
-import {
-	SetCookies,
-	GetCookies
-} from '@/utils/auth.js'
+import store from './store';
 
 Vue.use(Router);
-let isLogin = () => { //判断是否登录
+ let isLogin = () => { //判断是否登录
 	try {
-		let cookie = GetCookies('uInfo');
-		let userInfo = JSON.parse(cookie);
-		return !!(userInfo && userInfo.token);
+    
+		return !!(store.state.token);
 	} catch (e) {
 		return false;
 	}
@@ -28,6 +24,10 @@ export default new Router({
   mode: "history",
   // base: process.env.BASE_URL,
   routes: [
+    // {
+    //   path: "/",
+    //   redirect: ""
+    // },
     {
       path: "/",
       redirect:'home',
@@ -62,7 +62,6 @@ export default new Router({
         {
           path: "register",
           name: "register",
-          beforeEnter: limitNotLogin,
           component: () => import("./components/user/register")
         },
         {

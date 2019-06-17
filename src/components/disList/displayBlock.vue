@@ -110,14 +110,20 @@ export default {
             blockList:{},
             blockTop:{},
             count:0,
-            loginStatus:false,
+            //loginStatus:false,
             section:{}
         }
     },
     computed:{
         ...mapGetters({
             isShowAdd:'isShowAdd'
-        })
+        }),
+         islogin: {
+        get:function (){
+          return !!this.$store.state.token;
+        },
+        set:function(){
+        }}
     },
     methods:{
         getPage(val){
@@ -135,10 +141,15 @@ export default {
             this.getBlockList()
         },
         openDialog(){
-            if(this.loginStatus){
+            console.log(this.islogin)
+            if(this.islogin){
                 this.$store.dispatch("getIsShowAdd",true)
             }else{
-                this.$router.push({path:'/login'}) 
+                this.$message({
+                    message:"用户未登录",
+                    type:'error'
+                })
+                //this.$router.push({path:'/login'}) 
             }
             
         },
@@ -173,13 +184,13 @@ export default {
             })
         },
         init(){
-            let cookie = this.$getCookie('uInfo');
-            let userInfo = JSON.parse(cookie);
-            if (userInfo && userInfo.token) {
-                this.loginStatus = true;
-            } else {
-                this.loginStatus = false;
-            }
+            // let cookie = this.$getCookie('uInfo');
+            // let userInfo = JSON.parse(cookie);
+            // if (userInfo && userInfo.token) {
+            //     this.loginStatus = true;
+            // } else {
+            //     this.loginStatus = false;
+            // }
         },
         async getSection () {
             await apiSec.getSection().then(res=>{
@@ -191,7 +202,7 @@ export default {
         },
     },
     mounted() {
-        this.init();
+        //this.init();
     },
     created(){
         sessionStorage.removeItem('navList')

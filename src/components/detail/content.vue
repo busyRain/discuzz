@@ -133,7 +133,7 @@
             <div class="detailRight_site">
                 <a class="replayBtn" @click="addReplayIndex(detail.id,item.cid,item.nickname,item.id,index+2,item.content,item.ctime)">回复</a>
                 <!-- <a class="editBtn" v-if="loginStatus">编辑</a> -->
-                <p class="fr" v-if="loginStatus && item.isavailable==true">
+                <p class="fr" v-if="islogin && item.isavailable==true">
                     <!-- <span>举报</span> -->
                     <i class="el-icon-delete" @click="delDis(item.id)">删除</i>
                 </p>
@@ -181,7 +181,7 @@ export default {
       page:1,
       replyDialog:false,
       topicid:"",
-      loginStatus:false,
+      //loginStatus:false,
       noShow:false,
       limit:10,
       sectionid:0,//贴子id
@@ -219,7 +219,15 @@ export default {
     showReply,
     editortwo
   },
-  
+  computed:{
+    islogin: {
+      get:function (){
+        return !!this.$store.state.token;
+      },
+      set:function(){
+      }
+    }
+  },
   methods:{
     getNewList(){
       this.replyDialog=false,
@@ -230,14 +238,18 @@ export default {
       this.replyDialog=val
     },
     reply(id){//发表回复
-      if(this.loginStatus){
+      if(this.islogin){
           let data = {
           topicid:id,
           content:this.$refs.ue.getUEContent()
         }  
         this.commonReply(data)
       }else{
-        this.$router.push({path:'/login'}) 
+        this.$message({
+            message:"用户未登录",
+            type:'error'
+          })
+        //window.open('http://www.feileyuan.club/login')
       } 
     },
     async commonReply(data){
@@ -290,12 +302,16 @@ export default {
         });
     },
     addReplay(id){
-      if(this.loginStatus){
+      if(this.islogin){
         this.noShow=false
         this.topicid=id
         this.replyDialog = true
       }else{
-        this.$router.push({path:'/login'}) 
+         this.$message({
+            message:"用户未登录",
+            type:'error'
+          })
+        //window.open('http://www.feileyuan.club/login')
       }
     },
     addReplayIndex(topicid,replyuserid,replyusername,replyid,buildingno,content,ctime){
@@ -308,11 +324,14 @@ export default {
         content:content,
         ctime:ctime
       }
-      if(this.loginStatus){
+      if(this.islogin){
         this.replyDialog = true
         this.noShow=true
       }else{
-        this.$router.push({path:'/login'}) 
+       this.$message({
+            message:"用户未登录",
+            type:'error'
+          })
       }
     },
     async getDetail(id){
@@ -337,14 +356,9 @@ export default {
         }
       })
     },
-    init(){
-      
-      if (localStorage.getItem('token')) {
-          this.loginStatus = true;
-      } else {
-          this.loginStatus = false;
-      }
-    },
+    // init(){
+    
+    // },
     async updateCount (id){
       await api.updateCount(id).then(res=>{
         console.log(res)
@@ -360,7 +374,7 @@ export default {
   },
   created(){
     this.updateCount(this.$route.params.id)
-    this.init()
+    //this.init()
     this.getDetail(this.$route.params.id)
     this.getDetailReply(this.$route.params.id)
     this.sectionid = this.$route.query.sectionid

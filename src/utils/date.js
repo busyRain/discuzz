@@ -85,7 +85,7 @@ Vue.filter('dateNewComment',function(date){
                   
               }
         }
-        return result;
+        return result ||'';
       }
     dateTime = getDateDiff2(date);
     return dateTime;
