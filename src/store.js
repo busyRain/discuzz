@@ -1,29 +1,18 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import * as api from "@/api/list";
-<<<<<<< HEAD
-import { stat } from "fs";
-import test from '@/utils/test'
-=======
 import {
 	GetCookie
 } from "@/utils/setCookies.js";
 
->>>>>>> db6be9416c4f1bfe55efac989e1ff7b625659a0d
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     disList: {},
     isShowAdd:false,
-<<<<<<< HEAD
-    islogin:false,
-    token:test.getCookie('token')||'',
-    username:test.getCookie("username")||'',
-=======
     token: GetCookie("token"),
 		username: GetCookie("username"),
->>>>>>> db6be9416c4f1bfe55efac989e1ff7b625659a0d
   },
   mutations: {
     GET_DISLIST: (state, params) => {

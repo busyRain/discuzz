@@ -27,7 +27,7 @@ module.exports = {
     open: true, //配置自动启动浏览器
     hotOnly: false,
     disableHostCheck: true,
-    port: 80,
+    port: 8080,
     hot: true,
     proxy: {
       "/api": {
