@@ -60,7 +60,7 @@
                 <div class="classify-list-out">
                     <ul class="classify-ul">
                         <li :class="['classify-li',isessence == false ?'on':'']" @click="toggleTab(false)">
-                            <a href="javascript:;" class="classify-letter">普通贴</a>
+                            <a href="javascript:;" class="classify-letter">全部贴</a>
                         </li>
                         <li :class="['classify-li',isessence == true ?'on':'']" @click="toggleTab(true)">
                             <a href="javascript:;" class="classify-letter">精华贴</a>

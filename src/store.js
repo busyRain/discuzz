@@ -36,7 +36,6 @@ export default new Vuex.Store({
       localStorage.removeItem("username");
 			var dateExpire = new Date(),
       siteCookies = document.cookie.split("; ");
-      //debugger;
 			dateExpire.setTime(dateExpire.getTime() - 10000);
 			for (var idx = 0; idx < siteCookies.length; idx++) {
 				var itemCookie = siteCookies[idx],
