@@ -32,11 +32,7 @@
               <label  class="fl">用户等级</label>
               <span>{{detail.userLvl}}</span>
             </li>
-            <li>
-              <label  class="fl">用户积分</label>
-              <span>{{detail.userPoints}}</span>
-            </li>
-           
+            
             <li>
               <label  class="fl">经验值</label>
               <span class="progress">
@@ -93,10 +89,6 @@
                     <li>
                       <label  class="fl">用户等级</label>
                       <span>{{item.userLvl}}</span>
-                    </li>
-                    <li>
-                      <label  class="fl">用户积分</label>
-                      <span>{{item.userPoints}}</span>
                     </li>
                     
                     <li>
