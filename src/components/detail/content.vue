@@ -109,14 +109,17 @@
                         <strong>{{(page-1)*limit+index+2}}楼</strong>				
                     </div>
                     <div class="contentDetail" >
-                        <div class="quote" v-if="item.replyModel!=null">
-                            <blockquote>
-                               {{item.replyModel.nickname}} 表示于 {{detail.ctime|dateNewComment}}
-                                <strong>楼层{{item.buildingno}}</strong>
-                                <br>
-                                <p v-html="item.content"></p>
-                            </blockquote>
-                            <p  class="replyContent" v-html="item.replyModel.content"></p>
+                        <div  v-if="item.replyModel!=null">
+                           
+                            <div class="quote">
+                              <blockquote>
+                                {{item.replyModel.nickname}} 表示于 {{detail.ctime|dateNewComment}}
+                                  <strong>楼层{{item.buildingno}}</strong>
+                                  <br>
+                                  <p v-html="item.replyModel.content"></p>
+                              </blockquote>
+                            </div>
+                            <p  class="replyContent" v-html="item.content"></p>
                         </div>
                         <p v-html="item.content" v-else></p>
                     </div>  
