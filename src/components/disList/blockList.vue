@@ -19,7 +19,7 @@
           <div class="info2 cleardis">
             <span class="fr">
               发布于 
-              <i class="change-time">{{$formatDate(item.ctime,"yyyy-MM-dd hh:mm:ss")}}</i>
+              <i class="change-time">{{item.ctime|dateTimeList}}</i>
             </span>
             <a href="javascript:;" class="usre-avatar fl" target="_blank">
               <el-image
