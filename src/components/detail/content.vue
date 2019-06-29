@@ -186,7 +186,7 @@ export default {
       config: {
         toolbars:[[
         'undo', 'redo', 'removeformat', 'formatmatch', '|',
-        'paragraph',  'fontfamily','fontsize', 'backcolor','|',
+        'paragraph',  'fontfamily','fontsize', 'forecolor','|',
         'bold', 'italic', 'underline','|',
         'insertorderedlist', 'insertunorderedlist','|', 
         'indent', 'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|',

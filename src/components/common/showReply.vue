@@ -41,13 +41,14 @@ export default {
         return {
             defaultMsg:"",
             config: {
-                toolbars:[[
+               toolbars:[[
                 'undo', 'redo', 'removeformat', 'formatmatch', '|',
-                'paragraph',  'fontsize', '|',
+                'paragraph',  'fontfamily','fontsize', 'forecolor','|',
                 'bold', 'italic', 'underline','|',
                 'insertorderedlist', 'insertunorderedlist','|', 
                 'indent', 'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|',
-                'simpleupload',  'horizontal','|'
+                'simpleupload', 'insertvideo','horizontal','|',
+                'emotion',
                 ]],
                 'insertorderedlist':{
                         decimal: "1,2,3...",
@@ -63,7 +64,8 @@ export default {
                     dash: "— 破折號"
                 },
                 'paragraph':{ 'h2':'标题 1', 'h3':'标题 2', 'h4':'标题 3', },
-                'fontsize':[14, 16, 18, 20, 24]
+                'fontsize':[14, 16, 18, 20, 24],
+                zIndex:2000
             },
             data:{}
         }
