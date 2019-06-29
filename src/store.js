@@ -41,7 +41,7 @@ export default new Vuex.Store({
 				var itemCookie = siteCookies[idx],
         keyvalues = itemCookie.split("=");
        
-				document.cookie = keyvalues[0] + "=" + keyvalues[1] + ";domain=.feileyuan.club;expires=" + dateExpire.toGMTString() + ';path=/;';
+				document.cookie = keyvalues[0] + "=" + keyvalues[1] + ";domain=.feileyuan.com;expires=" + dateExpire.toGMTString() + ';path=/;';
       }
       console.log(document.cookie)
       state.token = "";
