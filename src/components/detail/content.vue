@@ -48,7 +48,7 @@
             <div class="detailRight_info_content ov" ref="detailRight_info_content">
                 <div class="pi">
                     <img src="@/assets/images/ico_lz.png" class="authincn vm">
-                        <em>楼主 | 发表于 <span class="highlight-color">{{detail.ctime|dateNewComment}}</span></em>
+                        <em>楼主 | 发表于 <span class="highlight-color">{{detail.ctime|dateComment}}</span></em>
                         <strong>楼主</strong>				
                 </div>
                 <div class="contentDetail" >
@@ -105,7 +105,7 @@
                 <div class="detailRight_info_content">
                     <div class="pi">
                       <img src="@/assets/images/ico_lz.png" class="authincn vm">
-                        <em>{{item.nickname}} | 发表于 <span class="highlight-color">{{item.ctime|dateTime}}</span></em>
+                        <em>{{item.nickname}} | 发表于 <span class="highlight-color">{{item.ctime|dateComment}}</span></em>
                         <strong>{{(page-1)*limit+index+2}}楼</strong>				
                     </div>
                     <div class="contentDetail" >
@@ -113,7 +113,7 @@
                            
                             <div class="quote">
                               <blockquote>
-                                {{item.replyModel.nickname}} 表示于 {{detail.ctime|dateNewComment}}
+                                {{item.replyModel.nickname}} 表示于 {{item.replyModel.ctime|dateComment}}
                                   <strong>楼层{{item.buildingno}}</strong>
                                   <br>
                                   <p v-html="item.replyModel.content"></p>
