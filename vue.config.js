@@ -31,7 +31,7 @@ module.exports = {
     hot: true,
     proxy: {
       "/api": {
-        target: "http://api.feileyuan.com/",
+        target: "http://api.feileyuan.club/",
         changeOrigin: true,
         secure: false,
         ws: true,
