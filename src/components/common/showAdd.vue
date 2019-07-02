@@ -101,6 +101,11 @@ export default {
                     this.defaultMsg = ''
                     //this.$refs.ue.execCommand("clearlocaldata");
                     this.$refs.ue.setContent('');
+                } else if(res.status==403){
+                        this.$message({
+                        message:"用户未登录",
+                        type:'error'
+                    })
                 }
             })
         }

@@ -264,6 +264,11 @@ export default {
          //this.$refs.ue.execCommand('cleardoc');
           this.getDetailReply(this.$route.params.id)
           this.$refs.ue.clearContent()
+        }else if(res.status==403){
+            this.$message({
+            message:"用户未登录",
+            type:'error'
+          })
         }
       })
     },
@@ -336,6 +341,7 @@ export default {
         const data = res.data
         if(res.code == 0 ) {
           this.detail = data
+          this.detail.content = decodeURIComponent(data.content)
         }
       })
     },
@@ -348,6 +354,12 @@ export default {
         const data = res.data
         console.log(res)
         if(res.code ==0 ) {
+          data.map(item => {
+            item.content = decodeURIComponent(item.content);
+            if (item.replyModel) {
+              item.replyModel.content = decodeURIComponent(item.replyModel.content);
+            }
+          });
           this.replyList = data
           this.count = res.count
         }

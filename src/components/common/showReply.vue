@@ -102,6 +102,11 @@ export default {
                     })
                     this.$refs.ueditor.clearContent()
                     this.$emit("getNewList")
+                }else if(res.status==403){
+                    this.$message({
+                        message:"用户未登录",
+                        type:'error'
+                    })
                 }
             })
         }
