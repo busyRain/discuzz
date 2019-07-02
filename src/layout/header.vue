@@ -89,7 +89,7 @@ export default {
       var e = event || window.event || arguments.callee.caller.arguments[0];
 				if (e && e.keyCode == 13) {
          // window.open("http://www.feileyuan.com/search?keyword="+this.keywords)
-				  location.href="https://www.feileyuan.club/search?keyword="+this.keywords
+				  location.href="http://www.feileyuan.com/search?keyword="+this.keywords
 				}
     },
     async getUser(){

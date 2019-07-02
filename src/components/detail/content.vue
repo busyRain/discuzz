@@ -234,7 +234,8 @@ export default {
       this.replyDialog=val
     },
     reply(id){//发表回复
-      if(this.islogin){
+    
+     if(this.islogin){
           let data = {
           topicid:id,
           content:this.$refs.ue.getUEContent()
@@ -245,7 +246,7 @@ export default {
             message:"用户未登录",
             type:'error'
           })
-        //window.open('http://www.feileyuan.club/login')
+   
       } 
     },
     async commonReply(data){
@@ -261,7 +262,7 @@ export default {
         // this.defaultMsg = ''
         
          //this.$refs.ue.execCommand('cleardoc');
-         this.getDetailReply(this.$route.params.id)
+          this.getDetailReply(this.$route.params.id)
           this.$refs.ue.clearContent()
         }
       })
