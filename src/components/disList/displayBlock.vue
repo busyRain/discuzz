@@ -142,7 +142,7 @@ export default {
         },
         openDialog(){
             console.log(this.islogin)
-            if(this.islogin){
+           if(this.islogin){
                 this.$store.dispatch("getIsShowAdd",true)
             }else{
                 this.$message({
