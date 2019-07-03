@@ -86,7 +86,7 @@ export default {
                     let data={
                         sid:parseInt(this.$route.params.id),
                         title:this.title,
-                        content:this.$refs.ue.getUEContent(),
+                        content:encodeURIComponent(this.$refs.ue.getUEContent()),
                     }
                     this.add(data)
                 }

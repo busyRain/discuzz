@@ -75,7 +75,7 @@ export default {
             this.$emit("cancel",false)
         },
         async replay(){
-            let content = this.$refs.ueditor.getUEContent()
+            let content = encodeURIComponent(this.$refs.ueditor.getUEContent())
             if(this.noShow){
                 this.data = {
                     sectionid:this.sectionid,

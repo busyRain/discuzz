@@ -238,7 +238,7 @@ export default {
      if(this.islogin){
           let data = {
           topicid:id,
-          content:this.$refs.ue.getUEContent()
+          content:encodeURIComponent(this.$refs.ue.getUEContent())
         }  
         this.commonReply(data)
       }else{
@@ -341,7 +341,7 @@ export default {
         const data = res.data
         if(res.code == 0 ) {
           this.detail = data
-          this.detail.content = decodeURIComponent(data.content)
+          this.detail.content = data.content
         }
       })
     },
@@ -355,9 +355,9 @@ export default {
         console.log(res)
         if(res.code ==0 ) {
           data.map(item => {
-            item.content = decodeURIComponent(item.content);
+            item.content = item.content;
             if (item.replyModel) {
-              item.replyModel.content = decodeURIComponent(item.replyModel.content);
+              item.replyModel.content = item.replyModel.content
             }
           });
           this.replyList = data
