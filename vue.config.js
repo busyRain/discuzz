@@ -30,15 +30,15 @@ module.exports = {
     port: 8080,
     hot: true,
     proxy: {
-      "/api": {
-        target: "http://api.feileyuan.com/",
-        changeOrigin: true,
-        secure: false,
-        ws: true,
-        pathRewrite: {
-          "^/api": ""
-        }
-      }
+      // "/api": {
+      //   target: "http://api.feileyuan.club/",
+      //   changeOrigin: true,
+      //   secure: false,
+      //   ws: true,
+      //   pathRewrite: {
+      //     "^/api": ""
+      //   }
+      //}
     }
   }
 };

@@ -30,7 +30,6 @@ export default new Vuex.Store({
       localStorage.setItem("username",state.username)
     },
     CLEAR:(state, params)=>{
-     
 			localStorage.clear();
 			localStorage.removeItem("token");
       localStorage.removeItem("username");
@@ -41,7 +40,7 @@ export default new Vuex.Store({
 				var itemCookie = siteCookies[idx],
         keyvalues = itemCookie.split("=");
        
-				document.cookie = keyvalues[0] + "=" + keyvalues[1] + ";domain=.feileyuan.com;expires=" + dateExpire.toGMTString() + ';path=/;';
+				document.cookie = keyvalues[0] + "=" + keyvalues[1] + ";domain="+$doman+";expires=" + dateExpire.toGMTString() + ';path=/;';
       }
       console.log(document.cookie)
       state.token = "";

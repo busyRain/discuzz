@@ -32,7 +32,7 @@ export default function(Vue) {
     return result ||'';
   });
 Vue.filter('dateComment',function(time){
-  let result="";
+    let result="";
     let t = Date.now() - time;
     let days = Math.floor(t / (24 * 60 * 60 * 1000));
     let hours = Math.floor(t / (60 * 60 * 1000));

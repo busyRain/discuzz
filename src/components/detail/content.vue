@@ -313,7 +313,7 @@ export default {
             message:"用户未登录",
             type:'error'
           })
-        //window.open('http://www.feileyuan.club/login')
+       
       }
     },
     addReplayIndex(topicid,replyuserid,replyusername,replyid,buildingno,content,ctime){

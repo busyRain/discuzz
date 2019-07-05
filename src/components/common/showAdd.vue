@@ -99,14 +99,13 @@ export default {
                     this.$emit('cancel',false)
                     this.title=''
                     this.defaultMsg = ''
-                    this.$refs.ueditor.clearContent()
+                    this.$refs.ue.clearContent()
                 } else if(res.status==403){
                         this.$message({
                         message:"用户未登录",
                         type:'error'
                     })
                 }
-                
             })
         }
     },

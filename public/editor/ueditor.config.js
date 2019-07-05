@@ -26,7 +26,7 @@
         serverUrl='http://api.feileyuan.com/'
         //生产环境
     }else{
-        serverUrl = "http://api.feileyuan.com/"//本地请求url
+        serverUrl = "https://api.feileyuan.club/"//本地请求url
         //开发环境
     }
     /**
