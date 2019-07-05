@@ -500,6 +500,9 @@ export default {
         }
         .contentDetail{
             line-height: 30px;
+            img {
+              max-width: 100%;
+            }
             .quote{
                 overflow: hidden;
                 margin: 10px 0;
