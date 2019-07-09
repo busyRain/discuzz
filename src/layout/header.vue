@@ -10,6 +10,7 @@
         <el-menu-item index="/" ref="topic" :style="styleTab">论坛</el-menu-item>
         <a class="el-menu-item" :href="$BBS_URL+'topic'" target="_blank">专题</a>
         <a class="el-menu-item" :href="$BBS_URL+'activity'" target="_blank">活动</a>
+        <a class="el-menu-item" href="http://live.feileyuan.com" target="_blank">便民</a>
       </el-menu>
       <div class="search fl ov">
 				<el-input class="fl" prefix-icon="el-icon-search" placeholder="请输入您要搜索的关键字" v-model="keywords"  @keyup.enter.native="search"></el-input>
