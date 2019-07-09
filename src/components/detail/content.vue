@@ -490,19 +490,21 @@ export default {
             top: 5px;
             margin-right: 10px;
           }
+          em {
+            font-style: normal;
+          }
           strong{
             border: 1px solid #FFFFFF;
             float: right;
             font-weight: 400;
             margin-top: -6px;
             padding: 4px 6px;
+            font-style: normal;
           }
         }
         .contentDetail{
             line-height: 30px;
-              img {
-                max-width: 100%;
-            }
+             
             .quote{
                 overflow: hidden;
                 margin: 10px 0;

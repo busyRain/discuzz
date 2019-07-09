@@ -6,7 +6,15 @@ import {
 } from "@/utils/setCookies.js";
 
 Vue.use(Vuex);
+let _domain = "";
+if (process.env.NODE_ENV == 'development') {
 
+	_domain = 'localhost'; 
+	// _domain = 'localhost'; 
+} else if (process.env.NODE_ENV == 'production') {
+
+	_domain = '.feileyuan.com';
+}
 export default new Vuex.Store({
   state: {
     disList: {},
@@ -40,7 +48,7 @@ export default new Vuex.Store({
 				var itemCookie = siteCookies[idx],
         keyvalues = itemCookie.split("=");
        
-				document.cookie = keyvalues[0] + "=" + keyvalues[1] + ";domain="+$doman+";expires=" + dateExpire.toGMTString() + ';path=/;';
+				document.cookie = keyvalues[0] + "=" + keyvalues[1] + ";domain="+_domain+";expires=" + dateExpire.toGMTString() + ';path=/;';
       }
       console.log(document.cookie)
       state.token = "";

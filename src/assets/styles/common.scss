@@ -13,7 +13,6 @@ h4,
 h5,
 h6,
 p,
-blockquote,
 pre,
 a,
 abbr,
@@ -24,7 +23,6 @@ cite,
 code,
 del,
 dfn,
-em,
 img,
 ins,
 kbd,
@@ -33,7 +31,6 @@ s,
 samp,
 small,
 strike,
-strong,
 sub,
 sup,
 tt,
@@ -335,6 +332,6 @@ body {
 .contentDetail{
   line-height: 30px;
     img {
-      max-width: 100%;
+      max-width: 80%;
   }
 }
