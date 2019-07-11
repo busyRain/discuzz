@@ -1,25 +1,18 @@
 <template>
-    <div>
-        <el-dialog 
-            :visible="isShowAdd"  
-            title="发表贴子"
-            center
-            :before-close="cancel"
-            >
-            <div class="editor-container">
-                <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-                    <el-form-item label="标题">
-                        <el-input v-model="title"></el-input>
-                    </el-form-item>
-                </el-form>
-                <ueditor 
-                    :defaultMsg=defaultMsg
-                    :config=config 
-                    ref="ue">
-                </ueditor>
-                <el-button class="add" @click="save('form')" type="primary" size="medium">发表贴子</el-button>
-            </div>
-        </el-dialog>
+    <div class="addTop">
+        <div class="editor-container">
+            <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+                <el-form-item label="标题">
+                    <el-input v-model="title"></el-input>
+                </el-form-item>
+            </el-form>
+            <ueditor 
+                :defaultMsg=defaultMsg
+                :config=config 
+                ref="ue">
+            </ueditor>
+            <el-button class="add" @click="save('form')" type="primary" size="medium">发表贴子</el-button>
+        </div>
     </div>
 </template>
 <script>
@@ -112,6 +105,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.addTop {
+    margin-top: 40px;
+}
 .add{
     margin-top:30px;
 }

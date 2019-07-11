@@ -43,6 +43,10 @@ export default new Router({
           component: () => import("./views/DisList")
         },
         {
+          path:"addTop",
+          component:() => import("./components/disList/showAdd")
+        },
+        {
           path: "disDetail/:id",
           component: () => import("./views/DisDetail")
         }
@@ -76,6 +80,12 @@ export default new Router({
           component: () => import("./components/user/findPassword")
         }
       ]
-    }
+    },
+    {
+      path: '*',
+      name: '404',
+      hideInMenu: true,
+      component: () => import("./components/common/blank"),
+    },
   ]
 });

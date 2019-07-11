@@ -1,5 +1,8 @@
 <template>
-<div>
+<div v-loading="loading.status"
+    :element-loading-text="loading.text"
+    element-loading-spinner="el-icon-loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)">
     <div class="board-box">
         <div class="board-bg" ></div>
         <div class="team-desc clearfix">
@@ -111,7 +114,11 @@ export default {
             blockTop:{},
             count:0,
             //loginStatus:false,
-            section:{}
+            section:{},
+            loading:{
+                status:true,
+                text:'数据正在加载中...'
+            }
         }
     },
     computed:{
@@ -142,8 +149,9 @@ export default {
         },
         openDialog(){
             console.log(this.islogin)
-           if(this.islogin){
-                this.$store.dispatch("getIsShowAdd",true)
+            if(this.islogin){
+                window.open('/addTop?id='+this.$route.params.id)
+                this.id=this.$route.params.id
             }else{
                 this.$message({
                     message:"用户未登录",
@@ -166,7 +174,8 @@ export default {
                 if(res.code == 0){
                     this.blockList = data
                     this.count = res.count
-                  
+                    this.loading.status = false
+                    this.loading.text = ''
                 }
             })
         },

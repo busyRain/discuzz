@@ -35,9 +35,9 @@
             
             <li>
               <label  class="fl">经验值</label>
-              <span class="progress">
-                <el-progress :text-inside="true" :stroke-width="15" :percentage="parseInt((this.detail.userPoints)/(this.detail.nextLvlPoints)*100) || 0"></el-progress>
-              </span>
+              <span class="proNum"> {{detail.userPoints}}</span>
+              <progress-bar :current="detail.userPoints" :total="detail.nextLvlPoints"></progress-bar>
+                 
             </li>
           </ul>
         </div>
@@ -90,12 +90,10 @@
                       <label  class="fl">用户等级</label>
                       <span>{{item.userLvl}}</span>
                     </li>
-                    
                     <li>
-                    <label  class="fl">经验值</label>
-                    <span class="progress">
-                      <el-progress :text-inside="true" :stroke-width="15" :percentage="parseInt((item.userPoints)/(item.nextLvlPoints)*100) || 0"></el-progress>
-                    </span>
+                      <label  class="fl">经验值</label>
+                      <span class="proNum"> {{detail.userPoints}}</span>
+                      <progress-bar :current="item.userPoints" :total="item.nextLvlPoints"></progress-bar>
                   </li>
                 </ul>
             </div>
@@ -110,7 +108,6 @@
                     </div>
                     <div class="contentDetail" >
                         <div  v-if="item.replyModel!=null">
-                           
                             <div class="quote">
                               <blockquote>
                                 {{item.replyModel.nickname}} 表示于 {{item.replyModel.ctime|dateComment}}
@@ -161,6 +158,7 @@
 </template>
 <script>
 // import ueditor from '@/components/common/ueditor';
+import progressBar from '@/components/common/progressBar'
 import editortwo from "@/components/common/ueditortwo"
 import * as api from "@/api/detail"
 import showReply from '@/components/common/showReply'
@@ -206,13 +204,13 @@ export default {
             dash: "— 破折號"
         },
         'paragraph':{ 'h2':'标题 1', 'h3':'标题 2', 'h4':'标题 3', },
-        
       },
     }
   },
   components:{
     showReply,
-    editortwo
+    editortwo,
+    progressBar
   },
   computed:{
     islogin: {
@@ -308,11 +306,10 @@ export default {
         this.topicid=id
         this.replyDialog = true
       }else{
-         this.$message({
-            message:"用户未登录",
-            type:'error'
-          })
-       
+        this.$message({
+          message:"用户未登录",
+          type:'error'
+        })
       }
     },
     addReplayIndex(topicid,replyuserid,replyusername,replyid,buildingno,content,ctime){
@@ -444,11 +441,14 @@ export default {
         margin: 5px 10px 5px 20px;
         li{
           overflow: hidden;
-          height: 28px;
+          // height: 28px;
           line-height: 28px;
           position: relative;
           label{
             width: 80px;
+          }
+          .proNum {
+            // margin-left:-5px;
           }
           .admin{
             color:#9933CC;
