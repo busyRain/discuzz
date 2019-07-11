@@ -170,6 +170,7 @@ export default {
             float: right;
             color: #999;
             font-size: 14px;
+            font-style: inherit;
         }
     }
 }
