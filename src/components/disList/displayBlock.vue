@@ -3,53 +3,56 @@
     :element-loading-text="loading.text"
     element-loading-spinner="el-icon-loading"
     element-loading-background="rgba(0, 0, 0, 0.8)">
-    <div class="board-box">
-        <div class="board-bg" ></div>
-        <div class="team-desc clearfix">
-            <div class="desc-left fl">
-                <div class="circle-img fl">
-                    <img class="board-icon" :src="$IMG_URL+blockTop.imgurl"/>
-                    <el-popover
-                        placement="right"
-                        trigger="hover"
-                        >
-                        <ul class="sectionList">
-                            <li  v-for="(item,index) in section" :key="index" class="listLi">
-                                <label class="fl">{{item.name}}</label>
-                                <div class="childUL" v-if="item.childList.length>0">
-                                     <router-link  v-for="(childItem,childIndex) in item.childList" :key="childIndex" :to="{path:`/disList/${childItem.id}`}" tag="a" target="_blank" >{{childItem.name}}</router-link>
-                                </div>
-                            </li>
-                        </ul>
-                        <el-button class="join-circle" slot="reference" size="medium" round >版块切换</el-button>
-                        <!-- <a href="javascrip:;" class="join-circle" slot="reference">版块切换</a> -->
-                    </el-popover>
-                </div>
-                <div class="circle-name fl">
-                    <div class="club-name">{{blockTop.name}}</div>
-                    <div class="club-desc">{{blockTop.synopsis}}</div>
-                    <div class="club-desc-line"></div>
-                    <div class="club-fan">
-                        <!-- <p class="fan-numb">
-                            <span class="fan-text">级别</span>
-                            <b>{{blockTop.level}}</b>
-                        </p> -->
-                        <p class="fan-numb">
-                            <span class="fan-text">贴数</span>
-                            <b>{{blockTop.topiccount}}</b>
-                        </p>
-                        <p class="fan-numb">
-                            <span class="fan-text">今日</span>
-                            <b>{{blockTop.todayTopiccount}}</b>
-                        </p>
+    <div class="">
+        <display-section></display-section>
+        <div class=" board-box board-left">
+            <div class="board-bg" ></div>
+            <div class="team-desc clearfix">
+                <div class="desc-left fl">
+                    <div class="circle-img fl">
+                        <img class="board-icon" :src="$IMG_URL+blockTop.imgurl"/>
+                        <!-- <el-popover
+                            placement="right"
+                            trigger="hover"
+                            >
+                            <ul class="sectionList">
+                                <li  v-for="(item,index) in section" :key="index" class="listLi">
+                                    <label class="fl">{{item.name}}</label>
+                                    <div class="childUL" v-if="item.childList.length>0">
+                                        <router-link  v-for="(childItem,childIndex) in item.childList" :key="childIndex" :to="{path:`/disList/${childItem.id}`}" tag="a" target="_blank" >{{childItem.name}}</router-link>
+                                    </div>
+                                </li>
+                            </ul> -->
+                            <el-button class="join-circle" slot="reference" size="medium" round >版块切换</el-button>
+                            <!-- <a href="javascrip:;" class="join-circle" slot="reference">版块切换</a> -->
+                        <!-- </el-popover> -->
+                    </div>
+                    <div class="circle-name fl">
+                        <div class="club-name">{{blockTop.name}}</div>
+                        <div class="club-desc">{{blockTop.synopsis}}</div>
+                        <div class="club-desc-line"></div>
+                        <div class="club-fan">
+                            <!-- <p class="fan-numb">
+                                <span class="fan-text">级别</span>
+                                <b>{{blockTop.level}}</b>
+                            </p> -->
+                            <p class="fan-numb">
+                                <span class="fan-text">贴数</span>
+                                <b>{{blockTop.topiccount}}</b>
+                            </p>
+                            <p class="fan-numb">
+                                <span class="fan-text">今日</span>
+                                <b>{{blockTop.todayTopiccount}}</b>
+                            </p>
+                        </div>
                     </div>
                 </div>
+                <div class="desc-right fr">
+                    <el-button @click="openDialog" class="send-post" round size="medium">发新贴</el-button>
+                    <!-- <a href="javascript:;" @click="openDialog" class="send-post"></a> -->
+                </div>
             </div>
-            <div class="desc-right fr">
-                <el-button @click="openDialog" class="send-post" round size="medium">发新贴</el-button>
-                <!-- <a href="javascript:;" @click="openDialog" class="send-post"></a> -->
-            </div>
-        </div>
+       
          <!--版块切换-->
         <!-- <div class="master-header clear ov">
             <div class="master-intro clear">
@@ -57,37 +60,38 @@
                 
             </div>
         </div> -->
-        <div class="classify-list " style="margin-left:20px;">
-            <div class="classify-item">
-                <span class="classify-title">看贴：</span>
-                <div class="classify-list-out">
-                    <ul class="classify-ul">
-                        <li :class="['classify-li',isessence == false ?'on':'']" @click="toggleTab(false)">
-                            <a href="javascript:;" class="classify-letter">全部贴</a>
-                        </li>
-                        <li :class="['classify-li',isessence == true ?'on':'']" @click="toggleTab(true)">
-                            <a href="javascript:;" class="classify-letter">精华贴</a>
-                        </li>
-                    </ul>
+            <div class="classify-list " style="margin-left:20px;">
+                <div class="classify-item">
+                    <span class="classify-title">看贴：</span>
+                    <div class="classify-list-out">
+                        <ul class="classify-ul">
+                            <li :class="['classify-li',isessence == false ?'on':'']" @click="toggleTab(false)">
+                                <a href="javascript:;" class="classify-letter">全部贴</a>
+                            </li>
+                            <li :class="['classify-li',isessence == true ?'on':'']" @click="toggleTab(true)">
+                                <a href="javascript:;" class="classify-letter">精华贴</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="classify-item">
+                    <span class="classify-title">排序：</span>
+                    <div class="classify-list-out">
+                        <ul class="classify-ul">
+                            <li :class="['classify-li',orderbytype == 4?'on':'']" @click="toggleSort(4)">
+                                <a href="javascript:;" class="classify-letter">回复时间</a>
+                            </li>
+                            <li :class="['classify-li',orderbytype == 3?'on':'']" @click="toggleSort(3)">
+                                <a href="javascript:;" class="classify-letter">发布时间</a>
+                            </li>
+                            <li :class="['classify-li',orderbytype == 1?'on':'']" @click="toggleSort(1)">
+                                <a href="javascript:;" class="classify-letter">浏览次数</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-            <div class="classify-item">
-                <span class="classify-title">排序：</span>
-                <div class="classify-list-out">
-                    <ul class="classify-ul">
-                        <li :class="['classify-li',orderbytype == 4?'on':'']" @click="toggleSort(4)">
-                            <a href="javascript:;" class="classify-letter">回复时间</a>
-                        </li>
-                        <li :class="['classify-li',orderbytype == 3?'on':'']" @click="toggleSort(3)">
-                            <a href="javascript:;" class="classify-letter">发布时间</a>
-                        </li>
-                        <li :class="['classify-li',orderbytype == 1?'on':'']" @click="toggleSort(1)">
-                            <a href="javascript:;" class="classify-letter">浏览次数</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+         </div>
     </div>
     <block-list :list="blockList" @getPage="getPage" :count="count" :sectionid="blockTop.id"></block-list>
 </div>
@@ -97,11 +101,12 @@ import * as api from "@/api/list"
 import * as apiSec from '@/api/home'
 import blockList from '@/components/disList/blockList'
 import { mapGetters } from 'vuex';
-
+import displaySection from '@/components/disList/displaySection'
 export default {
     name:"displayBlock",
     components:{
       blockList,
+         displaySection
     },
     data(){
         return{
@@ -224,8 +229,12 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.board-left {
+    // width:80%;
+}
 .board-box{
     font-size:14px;
+    clear: both;
 }
 .board-bg{
     background: url('../../assets/images/bg.png') no-repeat;
