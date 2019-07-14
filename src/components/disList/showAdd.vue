@@ -76,7 +76,7 @@ export default {
             this.$refs[formName].validate((valid) =>{
                 if (valid) {
                     let data={
-                        sid:parseInt(this.$route.params.id),
+                        sid:parseInt(this.$route.query.id),
                         title:this.title,
                         content:encodeURIComponent(this.$refs.ue.getUEContent()),
                     }
