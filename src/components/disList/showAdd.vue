@@ -92,6 +92,10 @@ export default {
                     this.title=''
                     this.defaultMsg = ''
                     this.$refs.ue.clearContent()
+                    this.$message({
+                        message:'发贴成功',
+                        type:'success'
+                    })
                 } else if(res.status==403){
                         this.$message({
                         message:"用户未登录",
