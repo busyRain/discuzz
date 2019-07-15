@@ -55,26 +55,28 @@ export default {
     // width:100%;
     display: flex;
     .listLi {
-        padding: 25px 30px;
-        // flex: 1;
+        padding: 20px 30px;
+        position: relative;
         label {
-            
             font-size:20px;
             padding-bottom:10px;
             display: block;
+            padding-left: 5px;
             span {
                 font-weight: bold;
                 margin-left:10px;
+                font-size: 16px;
             }
         }
         .childUL {
-            font-size: 18px;
+           
             text-align: left;
             a {
-                margin: 10px 9px 10px 0;
+                margin: 9px 8px 9px 0px;
                 display: inline-block;
                 padding: 5px;
                 border-radius: 2px;
+                font-size: 16px;
             } 
         }
     }
@@ -83,11 +85,40 @@ export default {
     }
     .listLi:nth-child(2) {
         width: 276px;
+        label {
+            margin-left: 23px;
+        }
+        .childUL {
+            margin-left: 25px;
+        }
     }
-    .listLi::after {
-        // content:"";
-        // display:inline-block;
-        // border-right:1px solid #a0a0a0;
+    .listLi:nth-child(3) {
+        label {
+            margin-left: 23px;
+        }
+        .childUL {
+            margin-left: 25px;
+        }
+    }
+    .listLi:last-child {
+         label {
+            margin-left: 11px;
+        }
+        .childUL {
+            margin-left: 12px;
+        }
+    }
+    .childUL::after {
+        content: "";
+        border-right: 1px solid #c0c0c3;
+        height: 80px;
+        display: block;
+        position: absolute;
+        right: 0;
+        bottom: 45px;
+    }
+    .listLi:last-child >.childUL::after{
+        border-right:0px;
     }
 }
 .is-active{

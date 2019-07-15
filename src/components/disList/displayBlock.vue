@@ -240,7 +240,7 @@ export default {
     background: url('../../assets/images/bg.png') no-repeat;
     background-size: cover;
     width:100%;
-    height: 150px;
+    height: 100px;
     background-color: #fbfbfb;
     background-size: cover;
     background-position: center;
@@ -410,7 +410,7 @@ export default {
     }
 }
 .sectionList {
-    padding: 0 20px 20px;
+    padding: 0 20px 0px;
     label {
         padding: 0 25px 14px 0;
         font-size: 14px;
@@ -432,5 +432,6 @@ export default {
              color:#1C8CE9;
         }
     }
+    
 }
 </style>
