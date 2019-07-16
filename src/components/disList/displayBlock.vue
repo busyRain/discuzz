@@ -5,7 +5,7 @@
     element-loading-background="rgba(0, 0, 0, 0.8)">
     <div class="">
         <display-section></display-section>
-        <div class=" board-box board-left">
+        <div class="board-box board-left">
             <div class="board-bg" ></div>
             <div class="team-desc clearfix">
                 <div class="desc-left fl">
@@ -23,7 +23,7 @@
                                     </div>
                                 </li>
                             </ul> -->
-                            <el-button class="join-circle" slot="reference" size="medium" round >版块切换</el-button>
+                            <el-button  slot="reference" size="medium" round ></el-button>
                             <!-- <a href="javascrip:;" class="join-circle" slot="reference">版块切换</a> -->
                         <!-- </el-popover> -->
                     </div>
@@ -32,10 +32,7 @@
                         <div class="club-desc">{{blockTop.synopsis}}</div>
                         <div class="club-desc-line"></div>
                         <div class="club-fan">
-                            <!-- <p class="fan-numb">
-                                <span class="fan-text">级别</span>
-                                <b>{{blockTop.level}}</b>
-                            </p> -->
+                           
                             <p class="fan-numb">
                                 <span class="fan-text">贴数</span>
                                 <b>{{blockTop.topiccount}}</b>
@@ -92,6 +89,9 @@
                 </div>
             </div>
          </div>
+        <div class="board-box border-right">
+            <moderator-info></moderator-info>
+        </div>
     </div>
     <block-list :list="blockList" @getPage="getPage" :count="count" :sectionid="blockTop.id"></block-list>
 </div>
@@ -100,13 +100,15 @@
 import * as api from "@/api/list"
 import * as apiSec from '@/api/home'
 import blockList from '@/components/disList/blockList'
+import moderatorInfo from '@/components/disList/moderatorInfo'
 import { mapGetters } from 'vuex';
 import displaySection from '@/components/disList/displaySection'
 export default {
     name:"displayBlock",
     components:{
       blockList,
-         displaySection
+        displaySection,
+        moderatorInfo
     },
     data(){
         return{
@@ -162,9 +164,7 @@ export default {
                     message:"用户未登录",
                     type:'error'
                 })
-                //this.$router.push({path:'/login'}) 
             }
-            
         },
         async getBlockList(){
             await api.getBlockList({
@@ -230,7 +230,15 @@ export default {
 </script>
 <style lang="scss" scoped>
 .board-left {
-    // width:80%;
+    width:80%;
+    display: inline-block;
+}
+.border-right {
+    width: 15%;
+    /* display: inline-block; */
+    float: right;
+    padding:20px;
+    height: 245px;
 }
 .board-box{
     font-size:14px;

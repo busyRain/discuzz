@@ -10,3 +10,9 @@ export function getBlockTop(data) {
     method: "get"
   });
 }
+
+export function getModeratorInfo(data) {
+  return request(`section/getmoderatorInfo/${data}`,{
+    method:"get"
+  })
+}
