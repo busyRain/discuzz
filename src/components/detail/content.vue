@@ -60,7 +60,8 @@
             <a class="replayBtn" @click="addReplay(detail.id)">回复</a>
             <!-- <a class="editBtn" v-if="loginStatus">编辑</a> -->
             <p class="fr">
-                <!-- <span>举报</span> -->
+                <!-- <span>删除</span>
+                <span>禁言</span> -->
             </p>
         </div>
       </div>
@@ -125,10 +126,12 @@
             <div class="detailRight_site">
                 <a class="replayBtn" @click="addReplayIndex(detail.id,item.cid,item.nickname,item.id,index+2,item.content,item.ctime)">回复</a>
                 <!-- <a class="editBtn" v-if="loginStatus">编辑</a> -->
-                <p class="fr" v-if="islogin && item.isavailable==true">
+                <span class="fr" @click="noAdd(item.userId)">禁言</span>
+                <span class="fr" v-if="islogin && item.isavailable==true">
                     <!-- <span>举报</span> -->
-                    <i class="el-icon-delete" @click="delDis(item.id)">删除</i>
-                </p>
+                    <i class="el-icon-delete" @click="delDis(item.id)">删除</i> 
+                </span>
+               
             </div>
         </div>
     </div>
@@ -153,6 +156,24 @@
             <el-button class="add" @click="reply(detail.id)" type="primary" size="medium">发表回复</el-button>
           </el-col>
         </el-row>
+  <el-dialog
+    title="禁言时间"
+    :visible.sync="noAddDialog"
+    width="30%"
+    >
+    <span>
+       <el-date-picker
+        v-model="time"
+        type="date"
+        format="yyyy-MM-dd"
+        placeholder="选择日期时间">
+      </el-date-picker>
+    </span>
+    <span slot="footer" class="dialog-footer">
+      <el-button @click="noAddDialog = false">取 消</el-button>
+      <el-button type="primary" @click="noAddTopic">确 定</el-button>
+    </span>
+  </el-dialog>
    <show-reply :replyDialog="replyDialog" :topicid="topicid" @cancel="cancel" :replyContent="replyContent" :noShow="noShow" @getNewList="getNewList" :sectionid="sectionid"></show-reply>
 </div>
 </template>
@@ -178,6 +199,9 @@ export default {
       noShow:false,
       limit:50,
       sectionid:0,//贴子id
+      time:"",//禁言时间
+      noAddDialog:false,
+      userId:"",
       replyContent:{
 
       },
@@ -222,6 +246,42 @@ export default {
     }
   },
   methods:{
+    noAdd(id){
+      this.noAddDialog = true
+      this.userId = id
+    },
+     //时间格式化
+        getTime(dt){
+            var year = dt.getFullYear(); //年
+            var month = dt.getMonth() +1; //月
+            var date = dt.getDate(); //日
+            month = month < 10 ? "0" + month : month;
+            date  = date <10 ? "0" + date : date;
+            var str = year + "-" + month + "-" + date;
+            return str;
+        },
+    async noAddTopic() {//禁言
+      this.time =  this.getTime(new Date(this.time))
+      console.log(this.time)
+      await api.noAddTopic({
+        id:this.userId,
+        time:this.time
+        }).then(res=>{
+           this.noAddDialog = false
+          if(res.code ==0 ){
+            this.$message({
+              message:'禁言成功',
+              type:'success'
+            })
+          }else {
+            this.$message({
+              message:res.msg,
+              type:'error'
+            })
+          }
+          
+      })
+    },
     getNewList(){
       this.replyDialog=false,
       console.log(this.$route.params.id)
@@ -338,6 +398,8 @@ export default {
         if(res.code == 0 ) {
           this.detail = data
           this.detail.content = data.content
+           this.sectionid = data.sectionid
+           console.log(this.sectionid)
         }
       })
     },
@@ -382,7 +444,7 @@ export default {
     //this.init()
     this.getDetail(this.$route.params.id)
     this.getDetailReply(this.$route.params.id)
-    this.sectionid = this.$route.query.sectionid
+   
     console.log(JSON.parse(sessionStorage.getItem('navList')))
   }
 }
@@ -539,6 +601,9 @@ export default {
   width: 972px;
   cursor: pointer;
   opacity: 0.2;
+  span {
+    margin:0 5px;
+  }
   a {
     padding: 0 20px 0 25px;
   }

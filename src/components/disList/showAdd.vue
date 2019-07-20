@@ -2,7 +2,7 @@
     <div class="addTop">
         <div class="editor-container">
             <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-                <el-form-item label="标题">
+                <el-form-item label="标题" prop="title">
                     <el-input v-model="title"></el-input>
                 </el-form-item>
             </el-form>
@@ -96,12 +96,13 @@ export default {
                         message:'发贴成功',
                         type:'success'
                     })
+                    this.$router.push(`/disDetail/${res.data}`)
                 } else if(res.status==403){
                         this.$message({
                         message:"用户未登录",
                         type:'error'
                     })
-                }
+                } 
             })
         }
     },

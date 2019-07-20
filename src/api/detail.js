@@ -36,7 +36,27 @@ export function deleteDis(data) {
 }
 export function updateCount(data){
 //更新贴子点击数
-return request(`/topic/update/count/${data}`,{
-  method:"post"
-})
+  return request(`/topic/update/count/${data}`,{
+    method:"post"
+  })
+}
+export function banned(data) {
+  //禁言接口
+  return request(`section/banned/${data}`,{
+    method:"post"
+  })
+}
+export function deletebymoderator(data) {
+  //版主删除
+  return request(`topiclogin/deletebymoderator/${data}`,{
+    method:"post"
+  })
+}
+export function noAddTopic(data) {
+  console.log(data)
+  //禁言
+  return request(`/section/banned/${data.id}`,{
+    method:"post",
+    data
+  })
 }

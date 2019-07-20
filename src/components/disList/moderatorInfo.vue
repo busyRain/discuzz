@@ -31,7 +31,7 @@ export default {
         async getModerator(id){
             await api.getModeratorInfo(id).then(res=>{
                 if(res.code==0){
-                    this.infoData = res.data
+                    this.infoData = res.data.slice(0,4)
                 }
             })
         }
@@ -49,7 +49,7 @@ export default {
         margin-bottom:20px;
     }
     li {
-        padding:10px 0;
+        padding:5px 0;
         position: relative;
     }
     .el-image {

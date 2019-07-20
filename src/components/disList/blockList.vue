@@ -6,7 +6,7 @@
           <!--主题标题-->
           <div class="postLi">
             <div class="post-title cleardis">
-              <router-link :to="{path:`/disDetail/${item.id}`,query:{sectionid:sectionid}}" tag="a" target="_blank">{{item.title}}</router-link>
+              <router-link :to="{path:`/disDetail/${item.id}`}" tag="a" target="_blank">{{item.title}}</router-link>
               <span class="uscat_pt" v-if="item.isrecommend">
                 置顶
               </span>

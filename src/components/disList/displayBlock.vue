@@ -23,7 +23,7 @@
                                     </div>
                                 </li>
                             </ul> -->
-                            <el-button  slot="reference" size="medium" round ></el-button>
+                            <el-button class="join-circle" size="medium" round @click="openDialog">发新贴</el-button>
                             <!-- <a href="javascrip:;" class="join-circle" slot="reference">版块切换</a> -->
                         <!-- </el-popover> -->
                     </div>
@@ -44,10 +44,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="desc-right fr">
-                    <el-button @click="openDialog" class="send-post" round size="medium">发新贴</el-button>
-                    <!-- <a href="javascript:;" @click="openDialog" class="send-post"></a> -->
-                </div>
+                
             </div>
        
          <!--版块切换-->
@@ -278,12 +275,8 @@ export default {
                 // width: 80px;
                 // height: 28px;
                 // border-radius: 5px;
-                 color: #1C8CE9;
-                 border: 1px solid #1C8CE9;
-                // text-align: center;
-                // font-size: 13px;
-                // line-height: 28px;
-                // cursor: pointer;
+                color: #1C8CE9;
+                border: 1px solid #1C8CE9;
             }
         }
         .circle-name{
