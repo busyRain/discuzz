@@ -25,7 +25,7 @@ export default new Vuex.Store({
   },
   mutations: {
     GET_SECTIONID:(state,params) =>{
-      state.token = params
+      state.sectionIds = params
       console.log(params)
       localStorage.setItem("sectionIds",params)
     },
@@ -65,9 +65,7 @@ export default new Vuex.Store({
     
   },
   actions: {
-    Login: function({
-			commit
-		}, params) {
+    Login({commit}, params) {
 			commit("GET_SECTIONID", params);
 		},
     async getBlock({ commit }, params) {
