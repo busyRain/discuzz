@@ -126,8 +126,8 @@
             <div class="detailRight_site">
                 <a class="replayBtn" @click="addReplayIndex(detail.id,item.cid,item.nickname,item.id,index+2,item.content,item.ctime)">回复</a>
                 <!-- <a class="editBtn" v-if="loginStatus">编辑</a> -->
-                <span class="fr" @click="noAdd(item.userId)">禁言</span>
-                <span class="fr" v-if="islogin && item.isavailable==true">
+                <span class="fr" v-if="islogin && ismon" @click="noAdd(item.userId)">禁言</span>
+                <span class="fr" v-if="islogin && (item.isavailable==true || ismon)">
                     <!-- <span>举报</span> -->
                     <i class="el-icon-delete" @click="delDis(item.id)">删除</i> 
                 </span>
@@ -161,17 +161,19 @@
     :visible.sync="noAddDialog"
     width="30%"
     >
-    <span>
-       <el-date-picker
-        v-model="time"
-        type="date"
-        format="yyyy-MM-dd"
-        placeholder="选择日期时间">
-      </el-date-picker>
-    </span>
+    <el-form :model="ruleForm" :rules="rulesForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+      <el-form-item prop="time"> 
+        <el-date-picker
+          v-model="time"
+          type="date"
+          format="yyyy-MM-dd"
+          placeholder="选择日期时间">
+        </el-date-picker>
+      </el-form-item>
+    </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="noAddDialog = false">取 消</el-button>
-      <el-button type="primary" @click="noAddTopic">确 定</el-button>
+      <el-button type="primary" @click="noAddTopic('ruleForm')">确 定</el-button>
     </span>
   </el-dialog>
    <show-reply :replyDialog="replyDialog" :topicid="topicid" @cancel="cancel" :replyContent="replyContent" :noShow="noShow" @getNewList="getNewList" :sectionid="sectionid"></show-reply>
@@ -202,9 +204,8 @@ export default {
       time:"",//禁言时间
       noAddDialog:false,
       userId:"",
-      replyContent:{
-
-      },
+      replyContent:{},
+      ruleForm:{},
       config: {
         toolbars:[[
         'undo', 'redo', 'removeformat', 'formatmatch', '|',
@@ -229,6 +230,11 @@ export default {
         },
         'paragraph':{ 'h2':'标题 1', 'h3':'标题 2', 'h4':'标题 3', },
       },
+      rulesForm:{
+        time:[
+          { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+        ]
+      }
     }
   },
   components:{
@@ -243,12 +249,23 @@ export default {
       },
       set:function(){
       }
+    },
+    ismon:{
+      get:function(){
+        if(this.$store.state.sectionIds.indexOf(this.sectionid)>-1){
+          console.log("dfdfd")
+          return true;
+        }
+        return false;
+      }
     }
   },
   methods:{
     noAdd(id){
       this.noAddDialog = true
       this.userId = id
+     // console.log(this.ismon)
+      console.log(typeof(this.$store.state.sectionIds))
     },
      //时间格式化
         getTime(dt){
@@ -260,27 +277,33 @@ export default {
             var str = year + "-" + month + "-" + date;
             return str;
         },
-    async noAddTopic() {//禁言
+     noAddTopic(formName) {//禁言
       this.time =  this.getTime(new Date(this.time))
-      console.log(this.time)
+       this.$refs[formName].validate((valid) =>{
+        if(valid){
+           this.noTopic()
+        }
+       
+       })
+    },
+    async noTopic(){
       await api.noAddTopic({
-        id:this.userId,
-        time:this.time
-        }).then(res=>{
-           this.noAddDialog = false
-          if(res.code ==0 ){
-            this.$message({
-              message:'禁言成功',
-              type:'success'
-            })
-          }else {
-            this.$message({
-              message:res.msg,
-              type:'error'
-            })
-          }
-          
-      })
+          id:this.userId,
+          time:this.time
+          }).then(res=>{
+            this.noAddDialog = false
+            if(res.code ==0 ){
+              this.$message({
+                message:'禁言成功',
+                type:'success'
+              })
+            }else {
+              this.$message({
+                message:res.msg,
+                type:'error'
+              })
+            } 
+          })
     },
     getNewList(){
       this.replyDialog=false,
@@ -337,12 +360,22 @@ export default {
        document.body.scrollTop = document.documentElement.scrollTop = 0;
       this.getDetailReply(this.$route.params.id)
     },
+   
     async delDis(id){ //删除回复
       await this.$confirm('确定要删除该楼层的回复么？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
+          if(this.ismon){
+            api.deletebymoderator({id:id}).then(res=>{
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
+              this.getDetailReply(this.$route.params.id)
+            })
+          }
           api.deleteDis({id:id}).then(res=>{
             if(res.code == 0){
               this.$message({

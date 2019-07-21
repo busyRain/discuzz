@@ -20,9 +20,15 @@ export default new Vuex.Store({
     disList: {},
     isShowAdd:false,
     token: GetCookie("token"),
-		username: GetCookie("username"),
+    username: GetCookie("username"),
+    sectionIds:localStorage.getItem("sectionIds")||[],
   },
   mutations: {
+    GET_SECTIONID:(state,params) =>{
+      state.token = params
+      console.log(params)
+      localStorage.setItem("sectionIds",params)
+    },
     GET_DISLIST: (state, params) => {
       state.disList = params;
       console.log(params);
@@ -53,11 +59,17 @@ export default new Vuex.Store({
       console.log(document.cookie)
       state.token = "";
       state.username = "";
+      state.sectionIds = []
       console.log(GetCookie("token"))
 		}
     
   },
   actions: {
+    Login: function({
+			commit
+		}, params) {
+			commit("GET_SECTIONID", params);
+		},
     async getBlock({ commit }, params) {
       await api.getBlockTop(params).then(res => {
         const { data } = res;

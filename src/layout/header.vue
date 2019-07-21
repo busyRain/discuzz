@@ -97,6 +97,8 @@ export default {
       await api.getUser().then(res=>{
         if(res.code ==0 ){
           this.users = res.data
+          console.log(res.data.sectionid)
+          this.$store.dispatch('Login',res.data.sectionid)
         }
       })
     },

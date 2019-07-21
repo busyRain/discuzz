@@ -48,8 +48,9 @@ export function banned(data) {
 }
 export function deletebymoderator(data) {
   //版主删除
-  return request(`topiclogin/deletebymoderator/${data}`,{
-    method:"post"
+  return request(`topiclogin/deletebymoderator/${data.id}`,{
+    method:"post",
+    data
   })
 }
 export function noAddTopic(data) {
