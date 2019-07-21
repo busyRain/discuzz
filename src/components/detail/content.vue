@@ -252,7 +252,7 @@ export default {
     },
     ismon:{
       get:function(){
-        if(this.$store.state.sectionIds.indexOf(this.sectionid)>-1){
+        if(this.$store.state.sectionIds && this.$store.state.sectionIds.indexOf(this.sectionid)>-1){
           console.log("dfdfd")
           return true;
         }
