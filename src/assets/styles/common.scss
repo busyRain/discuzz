@@ -427,3 +427,14 @@ body {
 		}
 	}
 }
+.footer{
+	.footer-pane {
+		.copy-right {
+			background: #333;
+			color: $font-gray;
+			font-size: 16px;
+			padding: 30px 0;
+			text-align: center;
+		}
+	}
+}
