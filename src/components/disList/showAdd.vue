@@ -1,9 +1,9 @@
 <template>
     <div class="addTop">
         <div class="editor-container">
-            <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-                <el-form-item label="标题" prop="title">
-                    <el-input v-model="title"></el-input>
+            <el-form :model="ruleForm" :rules="rules" ref="ruleForm"  label-width="80px">
+                <el-form-item label="活动名称" prop="title">
+                    <el-input v-model="ruleForm.title"></el-input>
                 </el-form-item>
             </el-form>
             <ueditor 
@@ -11,7 +11,7 @@
                 :config=config 
                 ref="ue">
             </ueditor>
-            <el-button class="add" @click="save('form')" type="primary" size="medium">发表贴子</el-button>
+            <el-button class="add" @click="save('ruleForm')" type="primary" size="medium">发表贴子</el-button>
         </div>
     </div>
 </template>
@@ -32,9 +32,11 @@ export default {
     },
      data(){
         return {
-            form:{},
+            ruleForm: {
+                title: '',      
+            },
             defaultMsg: '',
-            title:'',
+            
             config: {
                toolbars:[[
                 'undo', 'redo', 'removeformat', 'formatmatch', '|',
@@ -77,7 +79,7 @@ export default {
                 if (valid) {
                     let data={
                         sid:parseInt(this.$route.query.id),
-                        title:this.title,
+                        title:this.ruleForm.title,
                         content:encodeURIComponent(this.$refs.ue.getUEContent()),
                     }
                     this.add(data)

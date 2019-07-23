@@ -309,6 +309,9 @@ body {
 .findPassword .el-form-item__error{
   left:10px !important;
 }
+.editor-container .el-form-item__error {
+	left:0px !important;
+}
 .el-form-item__error {
 	left: 70px;
 	font-size: 14px;
