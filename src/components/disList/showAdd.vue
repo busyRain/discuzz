@@ -2,7 +2,7 @@
     <div class="addTop">
         <div class="editor-container">
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm"  label-width="80px">
-                <el-form-item label="活动名称" prop="title">
+                <el-form-item label="标题" prop="title">
                     <el-input v-model="ruleForm.title"></el-input>
                 </el-form-item>
             </el-form>
