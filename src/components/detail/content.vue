@@ -93,7 +93,7 @@
                     </li>
                     <li>
                       <label  class="fl">经验值</label>
-                      <span class="proNum"> {{detail.userPoints}}</span>
+                      <span class="proNum"> {{item.userPoints}}</span>
                       <progress-bar :current="item.userPoints" :total="item.nextLvlPoints"></progress-bar>
                   </li>
                 </ul>
