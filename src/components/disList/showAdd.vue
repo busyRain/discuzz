@@ -44,7 +44,7 @@ export default {
                 'bold', 'italic', 'underline','|',
                'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|',
                 'simpleupload', 'insertvideo','horizontal','|',
-                'emotion',
+                'emotion','hide'
                 ]],
                 'insertorderedlist':{
                         decimal: "1,2,3...",

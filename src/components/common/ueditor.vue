@@ -41,6 +41,14 @@
                   _this.$emit('ready',_this.editor)
                 
               });
+              UE.getEditor('editor').commands['hide']={
+                execCommand:function(){
+                  var dfg = UE.getEditor('editor').selection.getRange().cloneContents();
+                  this.execCommand('insertHtml','&lt;隐藏&gt;'+dfg.textContent+"&lt;/隐藏&gt;");
+                  return true;
+                },
+                queryCommandState:function(){}
+              };
           })
       },
       getUEContent() { // 获取内容方法
