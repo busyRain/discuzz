@@ -141,7 +141,7 @@
         @current-change="handleCurrentChange"
         background
         layout="prev,pager,next,jumper"
-        :page-size="30"
+        :page-size="50"
         :total="count"
       ></el-pagination>
     </div>
