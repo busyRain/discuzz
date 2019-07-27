@@ -52,7 +52,10 @@
                         <strong>楼主</strong>				
                 </div>
                 <div class="contentDetail" >
-                    <p v-html="detail.content" ref="contentDetail"></p>
+                  <p v-html="detail.content" ref="contentDetail"></p>
+                  <div ref="openfullbtn" class="open-full-btn" v-if="detail.visible==0" >
+                    <i class="el-icon-unlock"></i>
+                   <a href="#editorTwo"> 回贴查看隐藏内容</a></div>
                 </div>
             </div>
         </div>
@@ -149,6 +152,7 @@
           :defaultMsg=defaultMsg
           :config=config
           ref='ue'
+          id="editorTwo"
         >
         </editortwo>
         <el-row :gutter="20" >
@@ -216,7 +220,7 @@ export default {
         'emotion',
         ]],
         'insertorderedlist':{
-                decimal: "1,2,3...",
+            decimal: "1,2,3...",
             "lower-alpha": "a,b,c...",
             "lower-roman": "i,ii,iii...",
             "upper-alpha": "A,B,C...",
@@ -261,6 +265,9 @@ export default {
     }
   },
   methods:{
+    goReplyTopic(){
+
+    },
     noAdd(id){
       this.noAddDialog = true
       this.userId = id
@@ -309,6 +316,7 @@ export default {
       this.replyDialog=false,
       console.log(this.$route.params.id)
       this.getDetailReply(this.$route.params.id)
+      this.getDetail(this.$route.params.id)
     },
     cancel(val){
       this.replyDialog=val
@@ -340,7 +348,7 @@ export default {
             type:'success'
           })
         // this.defaultMsg = ''
-        
+          this.getDetail(this.$route.params.id)
          //this.$refs.ue.execCommand('cleardoc');
           this.getDetailReply(this.$route.params.id)
           this.$refs.ue.clearContent()
@@ -360,7 +368,6 @@ export default {
        document.body.scrollTop = document.documentElement.scrollTop = 0;
       this.getDetailReply(this.$route.params.id)
     },
-   
     async delDis(id){ //删除回复
       await this.$confirm('确定要删除该楼层的回复么？', '提示', {
           confirmButtonText: '确定',
@@ -432,6 +439,13 @@ export default {
           this.detail = data
           this.detail.content = data.content
            this.sectionid = data.sectionid
+           if(this.detail.visible==1){
+            this.detail.content=this.detail.content.replace(/hide/g, "")
+            this.detail.content=this.detail.content.replace(/text-decoration/g,"")
+            
+            this.$refs.openfullbtn.css('display','none')
+           }
+           
            console.log(this.sectionid)
         }
       })
@@ -678,6 +692,27 @@ export default {
 }
 .add{
   margin-top:40px;
+}
+.open-full-btn {
+    width: 100%;
+    background-image: -webkit-gradient(linear,left top, left bottom,from(rgba(255,255,255,0)),color-stop(70%, #fff));
+    background-image: linear-gradient(-180deg,rgba(255,255,255,0) 0%,#fff 70%);
+    padding-bottom: 26px;
+    position: relative;
+    z-index: 999;
+    padding-top: 160px;
+    bottom: 2px;
+    margin-top: -200px;
+    color: #409efe;
+    cursor: pointer;
+    text-align: center;
+    a {
+      color: #409efe;
+      font-size: 18px;
+    }
+}
+.hide {
+  display: block !important;
 }
 
 </style>

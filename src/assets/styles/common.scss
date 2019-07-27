@@ -180,9 +180,12 @@ body {
 .fr {
   float: right
 }
-.hide,
 .none {
   display: none
+}
+.hide {
+	text-decoration: line-through;
+	display: none
 }
 .clearfix::before,.clearfix::after {
   display: table;
