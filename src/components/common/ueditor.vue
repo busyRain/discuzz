@@ -44,7 +44,7 @@
               UE.getEditor('editor').commands['hide']={
                 execCommand:function(){
                   var dfg = UE.getEditor('editor').selection.getRange().cloneContents();
-                  this.execCommand('insertHtml','<p class="hide" style="text-decoration: line-through;">'+dfg.textContent+"</p>");
+                  this.execCommand('insertHtml','<span class="hide" style="text-decoration: line-through;">'+dfg.textContent+"</span>");
                   return true;
                 },
                 queryCommandState:function(){}
