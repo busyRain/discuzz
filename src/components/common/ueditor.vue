@@ -44,7 +44,8 @@
               UE.getEditor('editor').commands['hide']={
                 execCommand:function(){
                   var dfg = UE.getEditor('editor').selection.getRange().cloneContents();
-                  this.execCommand('insertHtml','<span class="hide" style="text-decoration: line-through;">'+dfg.textContent+"</span>");
+                  
+                  this.execCommand('insertHtml','&lt;回复可见&gt;'+dfg.textContent+"&lt;/回复可见&gt;");
                   return true;
                 },
                 queryCommandState:function(){}
