@@ -443,11 +443,12 @@ export default {
            console.log(this.detail.visible==0)
            if(this.detail.content.indexOf('回复可见')>-1 && this.detail.visible==0){
               this.$refs.openfullbtn.css('display','true') 
+               this.detail.content=this.detail.content.replace(/&lt;回复可见&gt;/g, '')
            }
            else {
             // this.$refs.openfullbtn.css('display','false')
              console.log("dfdfdfd")
-             this.detail.content=this.detail.content.replace(/&lt;回复可见&gt;/g, '')
+              this.detail.content=this.detail.content.replace(/&lt;回复可见&gt;/g, '')
               this.detail.content=this.detail.content.replace(/&lt;\/回复可见&gt;/g, '')
            }
           

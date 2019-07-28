@@ -44,8 +44,19 @@
               UE.getEditor('editor').commands['hide']={
                 execCommand:function(){
                   var dfg = UE.getEditor('editor').selection.getRange().cloneContents();
-                  
-                  this.execCommand('insertHtml','&lt;回复可见&gt;'+dfg.textContent+"&lt;/回复可见&gt;");
+                  var temp='';
+                  console.log(dfg.childNodes);
+                  var node=dfg.childNodes;
+                  for(let i=0;i<node.length;i++){
+                    console.log(node[i].nodeName)
+                    if(node[i].nodeName.indexOf("#text") != -1){
+                        temp=temp+node[i].nodeValue;
+                    }else{
+                        console.log(node[i].outerHTML)
+                        temp=temp+node[i].outerHTML;
+                    }
+                  }
+                  this.execCommand('insertHtml','&lt;回复可见&gt;'+temp+"&lt;/回复可见&gt;");
                   return true;
                 },
                 queryCommandState:function(){}
