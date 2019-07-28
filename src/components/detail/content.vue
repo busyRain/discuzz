@@ -55,8 +55,10 @@
                   <p v-html="detail.content" ref="contentDetail"></p>
                   <div ref="openfullbtn" class="open-full-btn" v-if="detail.visible==0 && this.detail.content.indexOf('回复可见')>-1 " >
                     <i class="el-icon-unlock"></i>
-                   <a href="#editorTwo"> 回贴查看隐藏内容</a></div>
-                </div>
+                  <a href="#editorTwo"> 回贴查看隐藏内容</a></div>
+                  <vote-block :content="detail"  @getDetail="getDetail"></vote-block>
+                 
+                  </div>
             </div>
         </div>
         <div class="detailRight_site">    
@@ -189,6 +191,7 @@ import progressBar from '@/components/common/progressBar'
 import editortwo from "@/components/common/ueditortwo"
 import * as api from "@/api/detail"
 import showReply from '@/components/common/showReply'
+import voteBlock from '@/components/detail/voteBlock'
 export default {
   name:"detail",
   data(){
@@ -244,7 +247,8 @@ export default {
   components:{
     showReply,
     editortwo,
-    progressBar
+    progressBar,
+    voteBlock
   },
   computed:{
     islogin: {
@@ -267,6 +271,9 @@ export default {
   methods:{
     goReplyTopic(){
 
+    },
+    getDetail(){
+        this.getDetail(this.$route.params.id)
     },
     noAdd(id){
       this.noAddDialog = true

@@ -61,3 +61,9 @@ export function noAddTopic(data) {
     data
   })
 }
+export function addVoteTop(data) {
+  return request(`/topiclogin/addVoteByTopic`,{
+    method:"post",
+    data
+  })
+}

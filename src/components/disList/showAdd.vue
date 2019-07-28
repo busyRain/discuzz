@@ -1,7 +1,7 @@
 <template>
     <div class="addTop">
         <div class="editor-container">
-            <el-form :model="ruleForm" :rules="rules" ref="ruleForm"  label-width="80px">
+            <el-form :model="ruleForm" :rules="rules" ref="ruleForm"  label-width="100px">
                 <el-form-item label="板块切换" prop="sectionid">
                   <el-select v-model="sectionid" placeholder="请选择">
                         <el-option
@@ -13,8 +13,40 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="标题" prop="title">
-                    <el-input v-model="ruleForm.title"></el-input>
+                    <el-input v-model="ruleForm.title" style="width: 50%;"></el-input>
                 </el-form-item>
+                <el-form-item label="投票贴" prop="isvote">
+                    <el-checkbox v-model="isvote" @change="handleChange">是否投票贴</el-checkbox>
+                </el-form-item>
+            <div v-if="!!isvote">
+                <el-form-item label="投票形式" prop="votetype">
+                    <el-radio-group v-model="ruleForm.votetype">
+                        <el-radio :label="1">单选</el-radio>
+                        <el-radio :label="2">多选</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="过期时间" prop="voteendtime">
+                    <el-date-picker type="datetime" placeholder="选择日期" v-model="ruleForm.voteendtime"></el-date-picker>
+                </el-form-item>
+                <el-form-item
+                    v-for="(domain, index) in ruleForm.domains"
+                    :label="'选项' + (index+1)+'内容'"
+                    :key="domain.key"
+                    :prop="'domains.' + index + '.value'"
+                    :rules="{
+                        required: true, message: '名称', trigger: 'blur'
+                    }"
+                >
+                    <el-input v-model="domain.value" style="width: 50%;"></el-input>
+                    <el-button @click.prevent="removeDomain(domain)">删除</el-button>
+                </el-form-item>
+
+                <el-form-item>
+                   
+                    <el-button @click="addDomain">新增投票选项</el-button>
+                    <el-button @click="resetForm('ruleForm')">重置</el-button>
+                </el-form-item>
+            </div>
             </el-form>
             <ueditor 
                 :defaultMsg=defaultMsg
@@ -44,8 +76,12 @@ export default {
      data(){
         return {
             ruleForm: {
-                title: '',      
+                title: '',    
+                domains: [{
+                    value: ''
+                }],
             },
+            isvote:false,
             defaultMsg: '',
             sectionid:0,
             section:[],
@@ -91,6 +127,24 @@ export default {
         this.getSection()
     },
     methods:{
+         resetForm(formName) {
+            this.$refs[formName].resetFields();
+        },
+        removeDomain(item) {
+            var index = this.ruleForm.domains.indexOf(item)
+            if (index !== -1) {
+            this.ruleForm.domains.splice(index, 1)
+            }
+        },
+        addDomain() {
+            this.ruleForm.domains.push({
+                value: '',
+                key: Date.now()
+            });
+        },
+        handleChange(val){
+            this.isvote =val
+        },
         async getSection () {
             await apiSec.getAllSection().then(res=>{
                 const { data} = res
@@ -102,15 +156,55 @@ export default {
         cancel(){
             this.$emit('cancel',false)   
         },
+         //时间格式化
+        getTime(dt){
+            console.log(new Date(dt).getTime())
+            // var year = dt.getFullYear(); //年
+            // var month = dt.getMonth() +1; //月
+            // var date = dt.getDate(); //日
+            // var hour = dt.getHours();
+            // var minute = dt.getMinutes();
+            // var sec = dt.getSeconds();
+            // month = month < 10 ? "0" + month : month;
+            // date  = date <10 ? "0" + date : date;
+            // hour = hour <10 ? "0"+hour:hour;
+            // minute=minute<10?"0"+minute:minute;
+            // sec = sec<10?"0"+sec:sec;
+            // var str = year + "-" + month + "-" + date+" "+hour+":"+minute+":"+sec;
+            var str=new Date(dt).getTime();
+
+            return str;
+        },
         save(formName){
             this.$refs[formName].validate((valid) =>{
                 if (valid) {
-                    let data={
-                        sid:parseInt(this.sectionid),
-                        title:this.ruleForm.title,
-                        content:encodeURIComponent(this.$refs.ue.getUEContent()),
+                    if(this.isvote){
+                        let test=[]
+                        this.ruleForm.domains.map(index=>{
+                            console.log(index.value)
+                            test.push(index.value)
+                        })
+                        
+                        let data = {
+                            sid:parseInt(this.sectionid),
+                            title:this.ruleForm.title,
+                            isvote:this.isvote,
+                            votevals:test.join(","),
+                            votetype:this.ruleForm.votetype,
+                            voteendtime:this.getTime(this.ruleForm.voteendtime?this.ruleForm.voteendtime:''),
+                            content:encodeURIComponent(this.$refs.ue.getUEContent()),
+                        }
+                        this.add(data)
+                    }else {
+                        let data={
+                            sid:parseInt(this.sectionid),
+                            title:this.ruleForm.title,
+                            content:encodeURIComponent(this.$refs.ue.getUEContent()),
+                        }
+                        this.add(data)
                     }
-                    this.add(data)
+                   
+                   
                 }
             })
         },
