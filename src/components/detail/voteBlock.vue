@@ -12,16 +12,14 @@
                 </div>
                     <div v-else>
                         <el-form-item label="多选投票" prop="votevals">
-                           
+                           <el-checkbox-group  v-model="ruleForm.votevalsChk">
                                 <el-checkbox v-for="(value,index) in  content.topicvotelist" :label="value.votename"  name="votevals" @change="chooseItem(value.id)"></el-checkbox>
-                           
-
+                            </el-checkbox-group>
                         </el-form-item>
                     </div>
-                    <el-form-item>
-                        <el-button type="primary" @click="submitForm('ruleForm')">保存投票</el-button>
-                        
-                    </el-form-item>
+                    
+                        <el-button @click="submitForm('ruleForm')">保存投票</el-button>
+                   
 
             </el-form>
 
@@ -37,24 +35,43 @@ export default {
             val:[],
             form:{},
             ruleForm:{
-
+                votevalsChk:[]
             },
             rules:{}
         }
     },
     computed:{
-        
+        islogin: {
+            get:function (){
+                return !!this.$store.state.token;
+            },
+        },
     },
     props:['content'],
     methods:{
        submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-              let data = {
+              let data={}
+              if(this.content.votetype==1){
+                data = {
                   topicid:this.content.id,
                   votevals:this.ruleForm.votevals.toString()
+                }
+              }else {
+                  data = {
+                      topicid:this.content.id,
+                      votevals:this.ruleForm.votevalsChk.join(',')
+                  }
               }
-              console.log(data)
+            if(this.islogin){
+                 this.add(data)
+            }else {
+                this.$message({
+                    message:"用户未登录",
+                    type:'error'
+                })
+            }
             this.add(data)
           } else {
             console.log('error submit!!');
@@ -63,10 +80,9 @@ export default {
         });
       },
         async add(data){
-            
             await api.addVoteTop(data).then(res=>{
                 if(res.code ==0){
-                    this.$emit("getDetail")
+                    this.$emit("getDetailNew")
                 }
             })
         },
@@ -78,4 +94,11 @@ export default {
     }
 }
 </script>
+<style lang="scss" scoped>
+.demo-ruleForm{
+    border-top:2px solid #E6E6E6;
+    margin-top: 20px;
+}
+</style>
+
 

@@ -56,7 +56,7 @@
                   <div ref="openfullbtn" class="open-full-btn" v-if="detail.visible==0 && this.detail.content.indexOf('回复可见')>-1 " >
                     <i class="el-icon-unlock"></i>
                   <a href="#editorTwo"> 回贴查看隐藏内容</a></div>
-                  <vote-block :content="detail"  @getDetail="getDetail"></vote-block>
+                  <vote-block :content="detail"  @getDetailNew="getDetailNew"></vote-block>
                  
                   </div>
             </div>
@@ -272,8 +272,9 @@ export default {
     goReplyTopic(){
 
     },
-    getDetail(){
-        this.getDetail(this.$route.params.id)
+    getDetailNew(){
+      console.log(this.$route.params.id)
+      this.getDetail(this.$route.params.id)
     },
     noAdd(id){
       this.noAddDialog = true
@@ -501,9 +502,7 @@ export default {
   },
   mounted(){
     this.$nextTick(()=>{
-      //console.log(window.getComputedStyle(this.$refs.detailLeft).height)
       this.wrapperHeight = this.$refs.detailLeft.clientHeight 
-      //console.log(this.wrapperHeight)
     })
   },
   created(){
@@ -511,8 +510,7 @@ export default {
     //this.init()
     this.getDetail(this.$route.params.id)
     this.getDetailReply(this.$route.params.id)
-   
-    console.log(JSON.parse(sessionStorage.getItem('navList')))
+    console.log(this.$route.params.id)
   }
 }
 </script>

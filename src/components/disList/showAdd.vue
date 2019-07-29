@@ -3,14 +3,13 @@
         <div class="editor-container">
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm"  label-width="100px">
                 <el-form-item label="板块切换" prop="sectionid">
-                  <el-select v-model="sectionid" placeholder="请选择">
-                        <el-option
-                        v-for="item in section"
-                        :key="item.id"
-                        :label="item.name"
-                        :value="item.id">
-                        </el-option>
-                    </el-select>
+                    <el-cascader
+                        v-model="sectionid"
+                        :options="section"
+                        :props="props"
+                        @change="handleChangeEl"
+                        >
+                    </el-cascader>
                 </el-form-item>
                 <el-form-item label="标题" prop="title">
                     <el-input v-model="ruleForm.title" style="width: 50%;"></el-input>
@@ -40,9 +39,7 @@
                     <el-input v-model="domain.value" style="width: 50%;"></el-input>
                     <el-button @click.prevent="removeDomain(domain)">删除</el-button>
                 </el-form-item>
-
                 <el-form-item>
-                   
                     <el-button @click="addDomain">新增投票选项</el-button>
                     <el-button @click="resetForm('ruleForm')">重置</el-button>
                 </el-form-item>
@@ -84,7 +81,8 @@ export default {
             isvote:false,
             defaultMsg: '',
             sectionid:0,
-            section:[],
+            section: [],
+                
             config: {
                toolbars:[[
                 'undo', 'redo', 'removeformat', 'formatmatch', '|',
@@ -118,7 +116,8 @@ export default {
             },
             props: {
                 label: "name",
-                children: "childList"
+                children: "childList",
+                value:"id"
             },
         }
     },
@@ -127,6 +126,10 @@ export default {
         this.getSection()
     },
     methods:{
+        handleChangeEl(val){
+            this.sectionid=val[val.length-1]
+            console.log(this.sectionid)
+        },
          resetForm(formName) {
             this.$refs[formName].resetFields();
         },
@@ -146,9 +149,19 @@ export default {
             this.isvote =val
         },
         async getSection () {
-            await apiSec.getAllSection().then(res=>{
+            await apiSec.getSection().then(res=>{
                 const { data} = res
                 if(res.code == 0){
+                    data.map(item=>{
+                        if(item.childList.length>0){
+                            item.childList.map(index=>{
+                                if(index.childList.length==0){
+                                    delete index.childList 
+                                }
+                            })
+                        }
+                    })
+                    console.log(data)
                     this.section = data
                 }
             })
