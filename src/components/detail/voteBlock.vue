@@ -1,6 +1,6 @@
 <template>
     <div>
-       <div>
+       <div v-if="!!content.isvote">
            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
 
                 <div v-if="content.votetype==1">
