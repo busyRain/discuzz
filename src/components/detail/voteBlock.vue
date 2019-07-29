@@ -1,8 +1,7 @@
 <template>
     <div>
-       <div v-if="!!content.isvote">
+       <div v-if="!!content.isvote && content.userisvote==false">
            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-
                 <div v-if="content.votetype==1">
                         <el-form-item label="单选投票" prop="votevals">
                             <el-radio-group v-model="ruleForm.votevals">
@@ -13,16 +12,20 @@
                     <div v-else>
                         <el-form-item label="多选投票" prop="votevals">
                            <el-checkbox-group  v-model="ruleForm.votevalsChk">
-                                <el-checkbox v-for="(value,index) in  content.topicvotelist" :label="value.votename"  name="votevals" @change="chooseItem(value.id)"></el-checkbox>
+                                <el-checkbox v-for="(value,index) in  content.topicvotelist" :label="value.id"  name="votevals" @change="chooseItem(value.id)">{{value.votename}}</el-checkbox>
                             </el-checkbox-group>
                         </el-form-item>
                     </div>
-                    
-                        <el-button @click="submitForm('ruleForm')">保存投票</el-button>
-                   
-
+                    <el-button @click="submitForm('ruleForm')">保存投票</el-button>
             </el-form>
-
+       </div>
+       <div v-else-if="!!content.userisvote" class="demo-ruleForm">
+           <h3>投票结果：</h3>
+           <ul>
+               <li v-for="(value,index) in content.topicvotelist">
+                   {{value.votename}}: <span class="voteblock" :style="{width:value.votecount+'px'}"></span>
+                   {{value.votecount}}票</li>
+           </ul>
        </div>
     </div>
 </template>
@@ -98,6 +101,11 @@ export default {
 .demo-ruleForm{
     border-top:2px solid #E6E6E6;
     margin-top: 20px;
+}
+.voteblock {
+    background: #409EFF;
+    display:inline-block;
+    height:10px;
 }
 </style>
 

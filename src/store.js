@@ -9,8 +9,8 @@ Vue.use(Vuex);
 let _domain = "";
 if (process.env.NODE_ENV == 'development') {
 
-	_domain = '.feileyuan.club'; 
-	// _domain = 'localhost'; 
+//	_domain = '.feileyuan.club'; 
+	 _domain = 'localhost'; 
 } else if (process.env.NODE_ENV == 'production') {
 
 	_domain = '.feileyuan.com';
