@@ -275,6 +275,7 @@ export default {
     },
     handleCurrentChange(val){
       this.page=val
+      console.log(this.page)
        document.body.scrollTop = document.documentElement.scrollTop = 0;
       this.getDetailReply(this.$route.params.id)
     },

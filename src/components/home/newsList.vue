@@ -12,7 +12,7 @@
                     <li v-for="(item,index) in hotList.slice(0,7)" :key="index">
                         <i v-text="index+1"></i>
                         <span>[{{item.sectionName}}]</span>
-                        <router-link :to="{path:`/disDetail/${item.id}`,query:{sectionid:item.sectionid}}" tag="a" target="_blank">{{item.title}}</router-link>
+                        <router-link :to="{path:`/disDetail/${item.id}`,query:{sectionid:item.sectionid}}" tag="a" target="_blank" v-html="item.title"></router-link>
                         <em class="time">{{$formatDate(item.lasttime,"yyyy-MM-dd")}}</em>
                     </li>  
                 </ul>       
