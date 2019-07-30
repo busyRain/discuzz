@@ -27,17 +27,15 @@ module.exports = {
     open: true, //配置自动启动浏览器
     hotOnly: false,
     disableHostCheck: true,
-    port: 80,
+    port: 8080,
     hot: true,
     proxy: {
       "/api": {
-        target: "http://api.feileyuan.com/",
+        target: "https://api.feileyuan.club/",
         changeOrigin: true,
         secure: false,
         ws: true,
-        pathRewrite: {
-          "^/api": ""
-        }
+       
       }
     }
   }

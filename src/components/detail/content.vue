@@ -32,16 +32,12 @@
               <label  class="fl">用户等级</label>
               <span>{{detail.userLvl}}</span>
             </li>
-            <li>
-              <label  class="fl">用户积分</label>
-              <span>{{detail.userPoints}}</span>
-            </li>
-           
+            
             <li>
               <label  class="fl">经验值</label>
-              <span class="progress">
-                <el-progress :text-inside="true" :stroke-width="15" :percentage="parseInt((this.detail.userPoints)/(this.detail.nextLvlPoints)*100) || 0"></el-progress>
-              </span>
+              <span class="proNum"> {{detail.userPoints}}</span>
+              <progress-bar :current="detail.userPoints" :total="detail.nextLvlPoints"></progress-bar>
+                 
             </li>
           </ul>
         </div>
@@ -52,19 +48,25 @@
             <div class="detailRight_info_content ov" ref="detailRight_info_content">
                 <div class="pi">
                     <img src="@/assets/images/ico_lz.png" class="authincn vm">
-                        <em>楼主 | 发表于 <span class="highlight-color">{{detail.ctime|dateNewComment}}</span></em>
+                        <em>楼主 | 发表于 <span class="highlight-color">{{detail.ctime|dateComment}}</span></em>
                         <strong>楼主</strong>				
                 </div>
                 <div class="contentDetail" >
-                    <p v-html="detail.content" ref="contentDetail"></p>
-                </div>
+                  <p v-html="detail.content" ref="contentDetail"></p>
+                  <div ref="openfullbtn" class="open-full-btn" v-if="detail.visible==0 && this.detail.content.indexOf('回复可见')>-1 " >
+                    <i class="el-icon-unlock"></i>
+                  <a href="#editorTwo"> 回贴查看隐藏内容</a></div>
+                  <vote-block :content="detail"  @getDetailNew="getDetailNew"></vote-block>
+                 
+                  </div>
             </div>
         </div>
         <div class="detailRight_site">    
             <a class="replayBtn" @click="addReplay(detail.id)">回复</a>
             <!-- <a class="editBtn" v-if="loginStatus">编辑</a> -->
             <p class="fr">
-                <!-- <span>举报</span> -->
+                <!-- <span>删除</span>
+                <span>禁言</span> -->
             </p>
         </div>
       </div>
@@ -95,15 +97,9 @@
                       <span>{{item.userLvl}}</span>
                     </li>
                     <li>
-                      <label  class="fl">用户积分</label>
-                      <span>{{item.userPoints}}</span>
-                    </li>
-                    
-                    <li>
-                    <label  class="fl">经验值</label>
-                    <span class="progress">
-                      <el-progress :text-inside="true" :stroke-width="15" :percentage="parseInt((item.userPoints)/(item.nextLvlPoints)*100) || 0"></el-progress>
-                    </span>
+                      <label  class="fl">经验值</label>
+                      <span class="proNum"> {{item.userPoints}}</span>
+                      <progress-bar :current="item.userPoints" :total="item.nextLvlPoints"></progress-bar>
                   </li>
                 </ul>
             </div>
@@ -113,18 +109,20 @@
                 <div class="detailRight_info_content">
                     <div class="pi">
                       <img src="@/assets/images/ico_lz.png" class="authincn vm">
-                        <em>{{item.nickname}} | 发表于 <span class="highlight-color">{{item.ctime|dateTime}}</span></em>
+                        <em>{{item.nickname}} | 发表于 <span class="highlight-color">{{item.ctime|dateComment}}</span></em>
                         <strong>{{(page-1)*limit+index+2}}楼</strong>				
                     </div>
                     <div class="contentDetail" >
-                        <div class="quote" v-if="item.replyModel!=null">
-                            <blockquote>
-                               {{item.replyModel.nickname}} 表示于 {{detail.ctime|dateNewComment}}
-                                <strong>楼层{{item.buildingno}}</strong>
-                                <br>
-                                <p v-html="item.content"></p>
-                            </blockquote>
-                            <p  class="replyContent" v-html="item.replyModel.content"></p>
+                        <div  v-if="item.replyModel!=null">
+                            <div class="quote">
+                              <blockquote>
+                                {{item.replyModel.nickname}} 表示于 {{item.replyModel.ctime|dateComment}}
+                                  <strong>楼层{{item.buildingno}}</strong>
+                                  <br>
+                                  <p v-html="item.replyModel.content"></p>
+                              </blockquote>
+                            </div>
+                            <p  class="replyContent" v-html="item.content"></p>
                         </div>
                         <p v-html="item.content" v-else></p>
                     </div>  
@@ -133,10 +131,12 @@
             <div class="detailRight_site">
                 <a class="replayBtn" @click="addReplayIndex(detail.id,item.cid,item.nickname,item.id,index+2,item.content,item.ctime)">回复</a>
                 <!-- <a class="editBtn" v-if="loginStatus">编辑</a> -->
-                <p class="fr" v-if="islogin && item.isavailable==true">
+                <span class="fr" v-if="islogin && ismon" @click="noAdd(item.userId)">禁言</span>
+                <span class="fr" v-if="islogin && (item.isavailable==true || ismon)">
                     <!-- <span>举报</span> -->
-                    <i class="el-icon-delete" @click="delDis(item.id)">删除</i>
-                </p>
+                    <i class="el-icon-delete" @click="delDis(item.id)">删除</i> 
+                </span>
+               
             </div>
         </div>
     </div>
@@ -146,7 +146,7 @@
         @current-change="handleCurrentChange"
         background
         layout="prev,pager,next,jumper"
-        :page-size="10"
+        :page-size="50"
         :total="count"
       ></el-pagination>
     </div>
@@ -154,6 +154,7 @@
           :defaultMsg=defaultMsg
           :config=config
           ref='ue'
+          id="editorTwo"
         >
         </editortwo>
         <el-row :gutter="20" >
@@ -161,14 +162,36 @@
             <el-button class="add" @click="reply(detail.id)" type="primary" size="medium">发表回复</el-button>
           </el-col>
         </el-row>
+  <el-dialog
+    title="禁言时间"
+    :visible.sync="noAddDialog"
+    width="30%"
+    >
+    <el-form :model="ruleForm" :rules="rulesForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+      <el-form-item prop="time"> 
+        <el-date-picker
+          v-model="time"
+          type="date"
+          format="yyyy-MM-dd"
+          placeholder="选择日期时间">
+        </el-date-picker>
+      </el-form-item>
+    </el-form>
+    <span slot="footer" class="dialog-footer">
+      <el-button @click="noAddDialog = false">取 消</el-button>
+      <el-button type="primary" @click="noAddTopic('ruleForm')">确 定</el-button>
+    </span>
+  </el-dialog>
    <show-reply :replyDialog="replyDialog" :topicid="topicid" @cancel="cancel" :replyContent="replyContent" :noShow="noShow" @getNewList="getNewList" :sectionid="sectionid"></show-reply>
 </div>
 </template>
 <script>
 // import ueditor from '@/components/common/ueditor';
+import progressBar from '@/components/common/progressBar'
 import editortwo from "@/components/common/ueditortwo"
 import * as api from "@/api/detail"
 import showReply from '@/components/common/showReply'
+import voteBlock from '@/components/detail/voteBlock'
 export default {
   name:"detail",
   data(){
@@ -183,22 +206,24 @@ export default {
       topicid:"",
       //loginStatus:false,
       noShow:false,
-      limit:10,
+      limit:50,
       sectionid:0,//贴子id
-      replyContent:{
-
-      },
+      time:"",//禁言时间
+      noAddDialog:false,
+      userId:"",
+      replyContent:{},
+      ruleForm:{},
       config: {
         toolbars:[[
         'undo', 'redo', 'removeformat', 'formatmatch', '|',
-        'paragraph',  'fontsize', '|',
+        'paragraph',  'fontfamily','fontsize', 'forecolor','|',
         'bold', 'italic', 'underline','|',
-        'insertorderedlist', 'insertunorderedlist','|', 
-        'indent', 'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|',
-        'simpleupload',  'horizontal','|'
+        'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|',
+        'simpleupload', 'insertvideo','horizontal','|',
+        'emotion',
         ]],
         'insertorderedlist':{
-                decimal: "1,2,3...",
+            decimal: "1,2,3...",
             "lower-alpha": "a,b,c...",
             "lower-roman": "i,ii,iii...",
             "upper-alpha": "A,B,C...",
@@ -211,13 +236,19 @@ export default {
             dash: "— 破折號"
         },
         'paragraph':{ 'h2':'标题 1', 'h3':'标题 2', 'h4':'标题 3', },
-        'fontsize':[14, 16, 18, 20, 24]
       },
+      rulesForm:{
+        time:[
+          { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+        ]
+      }
     }
   },
   components:{
     showReply,
-    editortwo
+    editortwo,
+    progressBar,
+    voteBlock
   },
   computed:{
     islogin: {
@@ -226,22 +257,84 @@ export default {
       },
       set:function(){
       }
+    },
+    ismon:{
+      get:function(){
+        if(this.$store.state.sectionIds && this.$store.state.sectionIds.indexOf(this.sectionid)>-1){
+          console.log("dfdfd")
+          return true;
+        }
+        return false;
+      }
     }
   },
   methods:{
+    goReplyTopic(){
+
+    },
+    getDetailNew(){
+      console.log(this.$route.params.id)
+      this.getDetail(this.$route.params.id)
+    },
+    noAdd(id){
+      this.noAddDialog = true
+      this.userId = id
+     // console.log(this.ismon)
+      console.log(typeof(this.$store.state.sectionIds))
+    },
+     //时间格式化
+        getTime(dt){
+            var year = dt.getFullYear(); //年
+            var month = dt.getMonth() +1; //月
+            var date = dt.getDate(); //日
+            month = month < 10 ? "0" + month : month;
+            date  = date <10 ? "0" + date : date;
+            var str = year + "-" + month + "-" + date;
+            return str;
+        },
+     noAddTopic(formName) {//禁言
+      this.time =  this.getTime(new Date(this.time))
+       this.$refs[formName].validate((valid) =>{
+        if(valid){
+           this.noTopic()
+        }
+       
+       })
+    },
+    async noTopic(){
+      await api.noAddTopic({
+          id:this.userId,
+          time:this.time
+          }).then(res=>{
+            this.noAddDialog = false
+            if(res.code ==0 ){
+              this.$message({
+                message:'禁言成功',
+                type:'success'
+              })
+            }else {
+              this.$message({
+                message:res.msg,
+                type:'error'
+              })
+            } 
+          })
+    },
     getNewList(){
       this.replyDialog=false,
       console.log(this.$route.params.id)
       this.getDetailReply(this.$route.params.id)
+      this.getDetail(this.$route.params.id)
     },
     cancel(val){
       this.replyDialog=val
     },
     reply(id){//发表回复
-      if(this.islogin){
+    
+     if(this.islogin){
           let data = {
           topicid:id,
-          content:this.$refs.ue.getUEContent()
+          content:encodeURIComponent(this.$refs.ue.getUEContent())
         }  
         this.commonReply(data)
       }else{
@@ -249,7 +342,7 @@ export default {
             message:"用户未登录",
             type:'error'
           })
-        //window.open('http://www.feileyuan.club/login')
+   
       } 
     },
     async commonReply(data){
@@ -263,10 +356,15 @@ export default {
             type:'success'
           })
         // this.defaultMsg = ''
-        
+          this.getDetail(this.$route.params.id)
          //this.$refs.ue.execCommand('cleardoc');
-         this.getDetailReply(this.$route.params.id)
+          this.getDetailReply(this.$route.params.id)
           this.$refs.ue.clearContent()
+        }else if(res.status==403){
+            this.$message({
+            message:"用户未登录",
+            type:'error'
+          })
         }
       })
     },
@@ -285,6 +383,15 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
+          if(this.ismon){
+            api.deletebymoderator({id:id}).then(res=>{
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
+              this.getDetailReply(this.$route.params.id)
+            })
+          }
           api.deleteDis({id:id}).then(res=>{
             if(res.code == 0){
               this.$message({
@@ -308,11 +415,10 @@ export default {
         this.topicid=id
         this.replyDialog = true
       }else{
-         this.$message({
-            message:"用户未登录",
-            type:'error'
-          })
-        //window.open('http://www.feileyuan.club/login')
+        this.$message({
+          message:"用户未登录",
+          type:'error'
+        })
       }
     },
     addReplayIndex(topicid,replyuserid,replyusername,replyid,buildingno,content,ctime){
@@ -340,6 +446,29 @@ export default {
         const data = res.data
         if(res.code == 0 ) {
           this.detail = data
+          this.detail.content = data.content
+           this.sectionid = data.sectionid
+           console.log(this.detail.content.indexOf("回复可见")>-1)
+           console.log(this.detail.visible==0)
+           if(this.detail.content.indexOf('回复可见')>-1 && this.detail.visible==0){
+              this.$refs.openfullbtn.css('display','true') 
+               this.detail.content=this.detail.content.replace(/&lt;回复可见&gt;/g, '')
+           }
+           else {
+            // this.$refs.openfullbtn.css('display','false')
+             console.log("dfdfdfd")
+              this.detail.content=this.detail.content.replace(/&lt;回复可见&gt;/g, '')
+              this.detail.content=this.detail.content.replace(/&lt;\/回复可见&gt;/g, '')
+           }
+          
+          //  if(this.detail.visible==1){
+          //   this.detail.content=this.detail.content.replace(/hide/g, "")
+          //   this.detail.content=this.detail.content.replace(/text-decoration/g,"")
+            
+          //   this.$refs.openfullbtn.css('display','none')
+          //  }
+           
+           console.log(this.sectionid)
         }
       })
     },
@@ -352,6 +481,12 @@ export default {
         const data = res.data
         console.log(res)
         if(res.code ==0 ) {
+          data.map(item => {
+            item.content = item.content;
+            if (item.replyModel) {
+              item.replyModel.content = item.replyModel.content
+            }
+          });
           this.replyList = data
           this.count = res.count
         }
@@ -368,9 +503,7 @@ export default {
   },
   mounted(){
     this.$nextTick(()=>{
-      //console.log(window.getComputedStyle(this.$refs.detailLeft).height)
       this.wrapperHeight = this.$refs.detailLeft.clientHeight 
-      //console.log(this.wrapperHeight)
     })
   },
   created(){
@@ -378,8 +511,7 @@ export default {
     //this.init()
     this.getDetail(this.$route.params.id)
     this.getDetailReply(this.$route.params.id)
-    this.sectionid = this.$route.query.sectionid
-    console.log(JSON.parse(sessionStorage.getItem('navList')))
+    console.log(this.$route.params.id)
   }
 }
 </script>
@@ -437,11 +569,14 @@ export default {
         margin: 5px 10px 5px 20px;
         li{
           overflow: hidden;
-          height: 28px;
+          // height: 28px;
           line-height: 28px;
           position: relative;
           label{
             width: 80px;
+          }
+          .proNum {
+            // margin-left:-5px;
           }
           .admin{
             color:#9933CC;
@@ -482,16 +617,21 @@ export default {
             top: 5px;
             margin-right: 10px;
           }
+          em {
+            font-style: normal;
+          }
           strong{
             border: 1px solid #FFFFFF;
             float: right;
             font-weight: 400;
             margin-top: -6px;
             padding: 4px 6px;
+            font-style: normal;
           }
         }
         .contentDetail{
             line-height: 30px;
+             
             .quote{
                 overflow: hidden;
                 margin: 10px 0;
@@ -527,6 +667,9 @@ export default {
   width: 972px;
   cursor: pointer;
   opacity: 0.2;
+  span {
+    margin:0 5px;
+  }
   a {
     padding: 0 20px 0 25px;
   }
@@ -568,6 +711,27 @@ export default {
 }
 .add{
   margin-top:40px;
+}
+.open-full-btn {
+    width: 100%;
+    background-image: -webkit-gradient(linear,left top, left bottom,from(rgba(255,255,255,0)),color-stop(70%, #fff));
+    background-image: linear-gradient(-180deg,rgba(255,255,255,0) 0%,#fff 70%);
+    padding-bottom: 26px;
+    position: relative;
+    z-index: 999;
+    padding-top: 160px;
+    bottom: 2px;
+    margin-top: -200px;
+    color: #409efe;
+    cursor: pointer;
+    text-align: center;
+    a {
+      color: #409efe;
+      font-size: 18px;
+    }
+}
+.hide {
+  display: block !important;
 }
 
 </style>

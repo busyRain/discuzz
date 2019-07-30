@@ -109,6 +109,7 @@ export default {
         }
         dd,dd em,dd a{
           color:#999;
+          font-style: inherit;
         }
       }
     }

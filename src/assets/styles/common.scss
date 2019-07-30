@@ -13,7 +13,6 @@ h4,
 h5,
 h6,
 p,
-blockquote,
 pre,
 a,
 abbr,
@@ -24,7 +23,6 @@ cite,
 code,
 del,
 dfn,
-em,
 img,
 ins,
 kbd,
@@ -33,7 +31,6 @@ s,
 samp,
 small,
 strike,
-strong,
 sub,
 sup,
 tt,
@@ -183,9 +180,12 @@ body {
 .fr {
   float: right
 }
-.hide,
 .none {
   display: none
+}
+.hide {
+	text-decoration: line-through;
+	display: none
 }
 .clearfix::before,.clearfix::after {
   display: table;
@@ -312,6 +312,9 @@ body {
 .findPassword .el-form-item__error{
   left:10px !important;
 }
+.editor-container .el-form-item__error {
+	left:0px !important;
+}
 .el-form-item__error {
 	left: 70px;
 	font-size: 14px;
@@ -323,4 +326,121 @@ body {
 
 .is-error .el-form-item__content .phone {
 	border-color: #F56C6C;
+}
+.edui-default{
+  z-index:5000px !important;
+}
+.cnzzImg {
+  img {
+    display: none;
+  }
+}
+.contentDetail{
+  line-height: 30px;
+    img {
+      max-width: 80%;
+  }
+}
+.bottom {
+  margin-top: 20px;
+	box-shadow: 0px -2px 5px 0px rgba(195, 195, 195, 0.4);
+	.bottom-pane {
+		background-color: #fff;
+		padding: 15px 0;
+		.bottom-inner {
+			width: $content-width;
+			margin: 0 auto;
+			.pane-header {
+				display: flex;
+				flex-basis: 50%;
+				border-bottom: solid $borderColor 1px;
+				.title {
+					width: 50%;
+					text-align: center;
+					color: #333333;
+					font-size: 16px;
+					line-height: 3;
+				}
+			}
+			.pane-content {
+				display: flex;
+				.content {
+					&.declare {
+						width: 60%;
+						font-size: 12px;
+						color: $font-gray;
+						line-height: 2.2;
+						padding: 20px 20px;
+						position: relative;
+						box-sizing: border-box;
+						&::after {
+							position: absolute;
+							content: '';
+							border-right: solid 1px $borderColor;
+							top: 8%;
+							right: 0;
+							bottom: 8%;
+						}
+					}
+					&.contact {
+						width: 40%;
+						display: flex;
+						justify-content: space-around;
+						align-items: center;
+						.contact-internet {
+							font-size: 0px;
+							line-height: 0;
+							img {
+								width: 152px;
+								height: 152px;
+								margin-left: 20px;
+							}
+							.contact-font {
+								display: block;
+								width: 100%;
+								color: $font-gray;
+								font-size: 12px;
+								margin-top: 20px;
+								margin-left: 5px;
+							}
+						}
+						.contact-tel {
+							text-align: center;
+							.tel-number {
+								font-size: 24px;
+								color: $font-blue;
+								line-height: 1.5;
+							}
+							.work-date {
+								font-size: 14px;
+								color: #333333;
+								line-height: 2;
+								padding: 10px 0;
+							}
+
+							.callcenter {
+								.button {
+									display: inline-block;
+									color: #63acff;
+									border: solid 1px $font-blue;
+									padding: 5px 30px;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+.footer{
+	.footer-pane {
+		.copy-right {
+			background: #333;
+			color: $font-gray;
+			font-size: 16px;
+			padding: 30px 0;
+			text-align: center;
+		}
+	}
 }

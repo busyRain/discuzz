@@ -32,7 +32,7 @@ service.interceptors.request.use(config => {
     
 	var token = store.state.token ? Base64.decode(unescape(store.state.token)) : "";
 	var username = store.state.username ? Base64.decode(unescape(store.state.username)) : "";
-
+	
     if (token) {
       config.headers["TOKEN"] = token;
       config.headers["UN"] = username;
@@ -80,10 +80,12 @@ error => {
 //   }
 // );
 service.interceptors.response.use(
+
 	response => {
 		return response.data;
 	},
 	err => {
+		
 		if (err && err.response) {
 			switch (err.response.status) {
 				case 400:
@@ -94,6 +96,11 @@ service.interceptors.response.use(
 					break;
 				case 403:
 					err.message = "用户未登录";
+					Message({
+						message:err.message ,
+						type:'error',
+						duration:5000
+					})
 					break;
 				case 404:
 					err.message = "请求错误,未找到该资源";
@@ -125,9 +132,11 @@ service.interceptors.response.use(
 				default:
 					err.message = `连接错误${err.response.status}`;
 			}
+		
 		} else {
 			err.message = "连接到服务器失败";
 		}
+		
 		return Promise.resolve(err.response);
 	}
 );

@@ -41,13 +41,13 @@ export default {
         return {
             defaultMsg:"",
             config: {
-                toolbars:[[
+               toolbars:[[
                 'undo', 'redo', 'removeformat', 'formatmatch', '|',
-                'paragraph',  'fontsize', '|',
+                'paragraph',  'fontfamily','fontsize', 'forecolor','|',
                 'bold', 'italic', 'underline','|',
-                'insertorderedlist', 'insertunorderedlist','|', 
-                'indent', 'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|',
-                'simpleupload',  'horizontal','|'
+                'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|',
+                'simpleupload', 'insertvideo','horizontal','|',
+                'emotion',
                 ]],
                 'insertorderedlist':{
                         decimal: "1,2,3...",
@@ -63,7 +63,8 @@ export default {
                     dash: "— 破折號"
                 },
                 'paragraph':{ 'h2':'标题 1', 'h3':'标题 2', 'h4':'标题 3', },
-                'fontsize':[14, 16, 18, 20, 24]
+                'fontsize':[14, 16, 18, 20, 24],
+                zIndex:2000
             },
             data:{}
         }
@@ -73,7 +74,7 @@ export default {
             this.$emit("cancel",false)
         },
         async replay(){
-            let content = this.$refs.ueditor.getUEContent()
+            let content = encodeURIComponent(this.$refs.ueditor.getUEContent())
             if(this.noShow){
                 this.data = {
                     sectionid:this.sectionid,
@@ -100,6 +101,11 @@ export default {
                     })
                     this.$refs.ueditor.clearContent()
                     this.$emit("getNewList")
+                }else if(res.status==403){
+                    this.$message({
+                        message:"用户未登录",
+                        type:'error'
+                    })
                 }
             })
         }

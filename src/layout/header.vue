@@ -10,6 +10,7 @@
         <el-menu-item index="/" ref="topic" :style="styleTab">论坛</el-menu-item>
         <a class="el-menu-item" :href="$BBS_URL+'topic'" target="_blank">专题</a>
         <a class="el-menu-item" :href="$BBS_URL+'activity'" target="_blank">活动</a>
+        <a class="el-menu-item" href="http://live.feileyuan.com" target="_blank">便民</a>
       </el-menu>
       <div class="search fl ov">
 				<el-input class="fl" prefix-icon="el-icon-search" placeholder="请输入您要搜索的关键字" v-model="keywords"  @keyup.enter.native="search"></el-input>
@@ -89,13 +90,15 @@ export default {
       var e = event || window.event || arguments.callee.caller.arguments[0];
 				if (e && e.keyCode == 13) {
          // window.open("http://www.feileyuan.com/search?keyword="+this.keywords)
-				  location.href="http://www.feileyuan.com/search?keyword="+this.keywords
+				  location.href=$BBS_URL+"/search?keyword="+this.keywords
 				}
     },
     async getUser(){
       await api.getUser().then(res=>{
         if(res.code ==0 ){
           this.users = res.data
+          console.log(res.data.sectionid)
+          this.$store.dispatch('Login',res.data.sectionid)
         }
       })
     },
@@ -131,7 +134,7 @@ export default {
 										type: 'success',
 										duration: 500
 									});
-								
+								//that.$router.go(0);
 								}, 2000);
              this.islogin = false
             }

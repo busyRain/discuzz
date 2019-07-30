@@ -4,43 +4,45 @@
       <ul class="post-list" >
         <li v-for="(item,index) in list" :key="index">
           <!--主题标题-->
-          <div class="post-title cleardis">
-            <router-link :to="{path:`/disDetail/${item.id}`,query:{sectionid:sectionid}}" tag="a" target="_blank">{{item.title}}</router-link>
-            <span class="uscat_pt" v-if="item.isrecommend">
-              置顶
-            </span>
-            <span class="uscat_pt" v-if="item.isessence">
-              精
-            </span>
-          </div>
-          <!-- <div class="info1 cleardis">
-            {{item.signTxt}}
-          </div> -->
-          <div class="info2 cleardis">
-            <span class="fr">
-              发布于 
-              <i class="change-time">{{$formatDate(item.ctime,"yyyy-MM-dd hh:mm:ss")}}</i>
-            </span>
-            <a href="javascript:;" class="usre-avatar fl" target="_blank">
-              <el-image
-                style="width: 30px; 
-                height:30px;
-                border-radius: 50%;
-                margin-right: 10px;
-                cursor: pointer;"
-                :src="$IMG_URL+ item.userImgUrl"
-                :fit="'contain'">
-                <div slot="error" class="image-slot">
-                  <i class="el-icon-picture-outline"></i>
-                </div>
-              </el-image>
-                <span class="author">{{item.nickName}}</span>
-            </a>
-          </div>
-          <div class="price">
-            <strong>{{item.viewcount}}</strong>浏览
-            <strong>{{item.replycount}}</strong>回复
-          </div>
+          <div class="postLi">
+            <div class="post-title cleardis">
+              <router-link :to="{path:`/disDetail/${item.id}`}" tag="a" target="_blank">{{item.title}}</router-link>
+              <span class="uscat_pt" v-if="item.isrecommend">
+                置顶
+              </span>
+              <span class="uscat_pt" v-if="item.isessence">
+                精
+              </span>
+            </div>
+            <!-- <div class="info1 cleardis">
+              {{item.signTxt}}
+            </div> -->
+            <div class="info2 cleardis">
+              <span class="fr">
+                发布于 
+                <i class="change-time">{{item.ctime|dateTime}}</i>
+              </span>
+              <a href="javascript:;" class="usre-avatar fl" target="_blank">
+                <el-image
+                  style="width: 30px; 
+                  height:30px;
+                  border-radius: 50%;
+                  margin-right: 10px;
+                  cursor: pointer;"
+                  :src="$IMG_URL+ item.userImgUrl"
+                  :fit="'contain'">
+                  <div slot="error" class="image-slot">
+                    <i class="el-icon-picture-outline"></i>
+                  </div>
+                </el-image>
+                  <span class="author">{{item.nickName}}</span>
+              </a>
+            </div>
+            <div class="price">
+              <strong>{{item.viewcount}}</strong>浏览
+              <strong>{{item.replycount}}</strong>回复
+            </div>
+           </div>
         </li>
         <!-- <div class="bankuai" >版块主题</div> -->
       </ul>
@@ -76,13 +78,13 @@
         </li>
       </ul>
     </div>
-    <show-add :show="isShowAdd" :id="id" @cancel="cancel"></show-add>
+    <!-- <show-add :show="isShowAdd" :id="id" @cancel="cancel"></show-add> -->
   </div>
 </template>
 <script>
 import * as api from "@/api/list"
 import { mapGetters, mapActions } from 'vuex'
-import showAdd from "@/components/common/showAdd"
+// import showAdd from "@/components/common/showAdd"
 
 export default {
     name:"blockList",
@@ -99,8 +101,7 @@ export default {
       }
     },
     components:{
-      showAdd,
-  
+      // showAdd,
     },
     computed:{
       islogin: {
@@ -115,17 +116,8 @@ export default {
       goTop(){
         document.body.scrollTop = document.documentElement.scrollTop = 0;
       },
-      init(){
-          // if (this.islogin) {
-          //     this.loginStatus = true;
-          // } else {
-          //     this.loginStatus = false;
-          // }
-      },
       handleCurrentChange(val){
-        console.log(val)
         document.body.scrollTop = document.documentElement.scrollTop = 0;
-       
         this.$emit("getPage",val)
       },
       cancel(val){
@@ -134,25 +126,18 @@ export default {
       },
       addBlock(){
         if(this.islogin){
+          window.open('/addTop?id='+this.$route.params.id)
           this.id=this.$route.params.id
-          this.$store.dispatch("getIsShowAdd",true)
+          //this.$store.dispatch("getIsShowAdd",true)
           this.$refs.boardBox.scrollTop = 0
-         // document.body.scrollTop = document.documentElement.scrollTop = 0;
         }else{
           this.$message({
             message:"用户未登录",
             type:'error'
           })
         }
-        
       }
-    },
-    mounted(){
-      // console.log(this.blocklist)
-    },
-    created(){        
-        //this.init();
-    }
+    },  
 }
 </script>
 
@@ -161,16 +146,33 @@ export default {
   margin-top:-20px;
   margin: 0;
   text-align: left;
-  padding: 20px;
+  padding: 20px 20px 20px 0px;
   ul.post-list{
-    >li{
-      padding: 18px 0 0;
-      border-bottom: 1px dashed #c3c3c3;
-      position: relative;
+    >li {
+      padding: 18px 0px 0px 0px;
       margin-top: 10px;
       padding-bottom: 10px;
+      border-bottom: 1px dashed #c3c3c3;
     }
-    li{
+   .postLi{
+      // padding: 18px 0 0;
+      // border-bottom: 1px dashed #c3c3c3;
+      // position: relative;
+      // margin-top: 10px;
+      // padding-bottom: 10px;
+          // border-bottom: 1px dashed #c3c3c3;
+          position: relative;
+          padding-left:20px;
+          // padding: 18px 0px 0px 20px;
+          overflow: hidden;
+          border-left-width: 5px;
+          border-left-color: transparent;
+          border-left-style: solid;  
+    }
+    .postLi:hover{
+      border-left-color:#409EFF;
+    }
+    .postLi{
       .post-title{
         font-size: 18px;
         padding-bottom: 12px;
@@ -201,6 +203,7 @@ export default {
         position: relative;
         .author{
           position: absolute;
+          color:#a0a0a0;
         }
       }
       .usre-avatar .el-image__inner{
@@ -213,7 +216,7 @@ export default {
       >.price{
         position: absolute;
         right: 10px;
-        top: 20px;
+        top: 5px;
         color: #999;
         strong{
           color: #f6a11e;
@@ -282,6 +285,7 @@ export default {
       height: 20px;
       position: relative;
       top: -10px;
+      font-style: inherit;
     }
   }
 }

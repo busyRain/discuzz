@@ -21,3 +21,8 @@ export function getSection() {
     method: "post"
   });
 }
+export function getAllSection(){
+  return request("/section/all",{
+    method:"post"
+  })
+}
