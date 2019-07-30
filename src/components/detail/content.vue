@@ -53,7 +53,7 @@
                 </div>
                 <div class="contentDetail" >
                   <p v-html="detail.content" ref="contentDetail"></p>
-                  <div ref="openfullbtn" class="open-full-btn" v-if="detail.visible==0 && this.detail.content.indexOf('回复可见')>-1 " >
+                  <div ref="openfullbtn" class="open-full-btn" v-if="isShowReplay==true" >
                     <i class="el-icon-unlock"></i>
                   <a href="#editorTwo"> 回贴查看隐藏内容</a></div>
                   <vote-block :content="detail"  @getDetailNew="getDetailNew"></vote-block>
@@ -213,6 +213,7 @@ export default {
       userId:"",
       replyContent:{},
       ruleForm:{},
+      isShowReplay:false,//没有回复可见
       config: {
         toolbars:[[
         'undo', 'redo', 'removeformat', 'formatmatch', '|',
@@ -448,26 +449,22 @@ export default {
           this.detail = data
           this.detail.content = data.content
            this.sectionid = data.sectionid
-           console.log(this.detail.content.indexOf("回复可见")>-1)
-           console.log(this.detail.visible==0)
+           
            if(this.detail.content.indexOf('回复可见')>-1 && this.detail.visible==0){
-              this.$refs.openfullbtn.css('display','true') 
-               this.detail.content=this.detail.content.replace(/&lt;回复可见&gt;/g, '')
+             this.isShowReplay=true
+             this.$nextTick(function(){
+               
+              this.$refs.openfullbtn.style.display='block'
+              this.detail.content=this.detail.content.replace(/&lt;回复可见&gt;.*&lt;\/回复可见&gt;/g, '')
+             })
            }
            else {
+             this.isShowReplay=false;
             // this.$refs.openfullbtn.css('display','false')
              console.log("dfdfdfd")
               this.detail.content=this.detail.content.replace(/&lt;回复可见&gt;/g, '')
               this.detail.content=this.detail.content.replace(/&lt;\/回复可见&gt;/g, '')
            }
-          
-          //  if(this.detail.visible==1){
-          //   this.detail.content=this.detail.content.replace(/hide/g, "")
-          //   this.detail.content=this.detail.content.replace(/text-decoration/g,"")
-            
-          //   this.$refs.openfullbtn.css('display','none')
-          //  }
-           
            console.log(this.sectionid)
         }
       })
