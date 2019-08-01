@@ -21,7 +21,7 @@
           <li  v-for="(item,index) in section" :key="index" class="listLi">
               <label class="fl">{{item.name}}</label>
               <div class="childUL" v-if="item.childList.length>0">
-                    <router-link  v-for="(childItem,childIndex) in item.childList" :key="childIndex" :to="{path:`/disList/${childItem.id}`}" tag="a" target="_blank" >{{childItem.name}}</router-link>
+                    <router-link  v-for="(childItem,childIndex) in item.childList" :key="childIndex" :to="{path:`/disList/${childItem.id}`}" >{{childItem.name}}</router-link>
               </div>
           </li>
       </ul>

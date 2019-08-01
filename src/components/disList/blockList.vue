@@ -131,10 +131,11 @@ export default {
           //this.$store.dispatch("getIsShowAdd",true)
           this.$refs.boardBox.scrollTop = 0
         }else{
-          this.$message({
-            message:"用户未登录",
-            type:'error'
-          })
+           location.href='http://www.feileyuan.com/login'
+          // this.$message({
+          //   message:"用户未登录",
+          //   type:'error'
+          // })
         }
       }
     },  

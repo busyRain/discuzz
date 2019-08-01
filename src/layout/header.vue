@@ -5,12 +5,13 @@
 			  <img src="@/assets/images/logo.png" alt>
 			</router-link>
       <el-menu :default-active="$route.path" :router=true class="fl" mode="horizontal" :routePath="currentMenu">
-        <a class="el-menu-item" :href="$BBS_URL" target="_blank">首页</a>
-        <a class="el-menu-item" :href="$BBS_URL+'news'" target="_blank">资讯</a>
+        <a class="el-menu-item" :href="$BBS_URL" >首页</a>
+        <a class="el-menu-item" :href="$BBS_URL+'news'" >资讯</a>
         <el-menu-item index="/" ref="topic" :style="styleTab">论坛</el-menu-item>
-        <a class="el-menu-item" :href="$BBS_URL+'topic'" target="_blank">专题</a>
-        <a class="el-menu-item" :href="$BBS_URL+'activity'" target="_blank">活动</a>
-        <a class="el-menu-item" href="http://live.feileyuan.com" target="_blank">便民</a>
+        <a class="el-menu-item" :href="$BBS_URL+'topic'" >专题</a>
+        <a class="el-menu-item" :href="$BBS_URL+'activity'" >活动</a>
+        <a class="el-menu-item" href="http://live.feileyuan.com" >便民</a>
+        <a class="el-menu-item" href="http://zhaopin.feileyuan.com">招聘</a>
       </el-menu>
       <div class="search fl ov">
 				<el-input class="fl" prefix-icon="el-icon-search" placeholder="请输入您要搜索的关键字" v-model="keywords"  @keyup.enter.native="search"></el-input>

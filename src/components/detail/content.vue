@@ -298,7 +298,6 @@ export default {
         if(valid){
            this.noTopic()
         }
-       
        })
     },
     async noTopic(){
@@ -338,10 +337,7 @@ export default {
         }  
         this.commonReply(data)
       }else{
-        this.$message({
-            message:"用户未登录",
-            type:'error'
-          })
+         location.href='http://www.feileyuan.com/login'
    
       } 
     },
@@ -361,10 +357,7 @@ export default {
           this.getDetailReply(this.$route.params.id)
           this.$refs.ue.clearContent()
         }else if(res.status==403){
-            this.$message({
-            message:"用户未登录",
-            type:'error'
-          })
+             location.href='http://www.feileyuan.com/login'
         }
       })
     },
@@ -414,10 +407,7 @@ export default {
         this.topicid=id
         this.replyDialog = true
       }else{
-        this.$message({
-          message:"用户未登录",
-          type:'error'
-        })
+         location.href='http://www.feileyuan.com/login'
       }
     },
     addReplayIndex(topicid,replyuserid,replyusername,replyid,buildingno,content,ctime){
@@ -434,10 +424,7 @@ export default {
         this.replyDialog = true
         this.noShow=true
       }else{
-       this.$message({
-            message:"用户未登录",
-            type:'error'
-          })
+        location.href='http://www.feileyuan.com/login'
       }
     },
     async getDetail(id){
@@ -447,27 +434,16 @@ export default {
           this.detail = data
           this.detail.content = data.content
            this.sectionid = data.sectionid
-           console.log(this.detail.content.indexOf("回复可见")>-1)
-           console.log(this.detail.visible==0)
+          
            if(this.detail.content.indexOf('回复可见')>-1 && this.detail.visible==0){
               this.$refs.openfullbtn.css('display','true') 
                this.detail.content=this.detail.content.replace(/&lt;回复可见&gt;/g, '')
            }
            else {
-            // this.$refs.openfullbtn.css('display','false')
-             console.log("dfdfdfd")
+           
               this.detail.content=this.detail.content.replace(/&lt;回复可见&gt;/g, '')
               this.detail.content=this.detail.content.replace(/&lt;\/回复可见&gt;/g, '')
            }
-          
-          //  if(this.detail.visible==1){
-          //   this.detail.content=this.detail.content.replace(/hide/g, "")
-          //   this.detail.content=this.detail.content.replace(/text-decoration/g,"")
-            
-          //   this.$refs.openfullbtn.css('display','none')
-          //  }
-           
-           console.log(this.sectionid)
         }
       })
     },

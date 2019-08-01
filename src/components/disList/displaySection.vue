@@ -12,7 +12,6 @@
                     v-for="(childItem,childIndex) in item.childList" 
                     :key="childIndex"
                     :to="{path:`/disList/${childItem.id}`}" 
-                    tag="a" target="_blank" 
                     :class="{ 'is-active': selectId == childItem.id }"
                     >{{childItem.name}}</router-link>
                 </div>

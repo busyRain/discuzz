@@ -235,11 +235,9 @@ export default {
                     })
                     this.$router.push(`/disDetail/${res.data}`)
                 } else if(res.status==403){
-                        this.$message({
-                        message:"用户未登录",
-                        type:'error'
-                    })
-                } 
+                        location.href='http://www.feileyuan.com/login'
+                    }
+               
             })
         }
     },

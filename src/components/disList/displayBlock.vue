@@ -136,6 +136,22 @@ export default {
         set:function(){
         }}
     },
+    watch:{
+        $route: {
+            handler: function(val, oldVal){
+                this.loading={
+                    status:true,
+                    text:'数据正在加载中...'
+                }
+                this.sectionid = this.$route.params.id
+                this.getSection()
+                this.getBlockList()
+                this.getBlockTop(this.$route.params.id)
+            },
+            // 深度观察监听
+            deep: true
+        }
+    },
     methods:{
         getPage(val){
             this.page=val
@@ -157,10 +173,7 @@ export default {
                 window.open('/addTop?id='+this.$route.params.id)
                 this.id=this.$route.params.id
             }else{
-                this.$message({
-                    message:"用户未登录",
-                    type:'error'
-                })
+                location.href='http://www.feileyuan.com/login'
             }
         },
         async getBlockList(){

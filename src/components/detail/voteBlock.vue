@@ -70,10 +70,7 @@ export default {
             if(this.islogin){
                  this.add(data)
             }else {
-                this.$message({
-                    message:"用户未登录",
-                    type:'error'
-                })
+                location.href='http://www.feileyuan.com/login'
             }
             this.add(data)
           } else {
