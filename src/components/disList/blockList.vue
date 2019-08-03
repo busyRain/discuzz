@@ -78,13 +78,14 @@
         </li>
       </ul>
     </div>
+     <login-block :loginVisible="loginVisible" @cancel="cancelLogin"></login-block>
     <!-- <show-add :show="isShowAdd" :id="id" @cancel="cancel"></show-add> -->
   </div>
 </template>
 <script>
 import * as api from "@/api/list"
 import { mapGetters, mapActions } from 'vuex'
-// import showAdd from "@/components/common/showAdd"
+import loginBlock from '@/components/common/login'
 
 export default {
     name:"blockList",
@@ -96,12 +97,12 @@ export default {
         limit:80,
         orderbytype:1,
         isShowAdd:false,
-        //loginStatus:false,
-        // count:0,
+        loginVisible:false,
+       
       }
     },
     components:{
-      // showAdd,
+      loginBlock
     },
     computed:{
       islogin: {
@@ -131,13 +132,16 @@ export default {
           //this.$store.dispatch("getIsShowAdd",true)
           this.$refs.boardBox.scrollTop = 0
         }else{
-           location.href='http://www.feileyuan.com/login'
+           this.loginVisible = true
           // this.$message({
           //   message:"用户未登录",
           //   type:'error'
           // })
         }
-      }
+      },
+      cancelLogin(data){
+          this.loginVisible=data
+      },
     },  
 }
 </script>

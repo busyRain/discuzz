@@ -51,3 +51,9 @@ export function forgetPasswordEmail (data) {//重置email密码
         data
     })
 }
+export function loginName(data){
+    return request("/users/register/loginName",{
+        method:"post",
+        data
+    })
+}

@@ -24,18 +24,20 @@
                 </ueditor>
                 <el-button class="add" @click="replay" type="primary" size="medium">发表回复</el-button>
             </div>
+             <login-block :loginVisible="loginVisible" @cancel="loginCancel"></login-block>
         </el-dialog>
     </div>
 </template>
 <script>
 import ueditor from '@/components/common/ueditor';
 import * as api from '@/api/detail';
-
+import loginBlock from '@/components/common/login'
 export default {
     name:"replay",
     props:['replyDialog','topicid','replyContent','noShow','sectionid'],
     components:{
         ueditor,
+        loginBlock
     },
     data(){
         return {
@@ -66,10 +68,14 @@ export default {
                 'fontsize':[14, 16, 18, 20, 24],
                 zIndex:2000
             },
-            data:{}
+            data:{},
+            loginVisible:false,
         }
     },
     methods:{
+        loginCancel(data){
+            this.loginVisible=data
+        },
         cancel(){
             this.$emit("cancel",false)
         },
@@ -102,10 +108,7 @@ export default {
                     this.$refs.ueditor.clearContent()
                     this.$emit("getNewList")
                 }else if(res.status==403){
-                    this.$message({
-                        message:"用户未登录",
-                        type:'error'
-                    })
+                   this.loginVisible = true
                 }
             })
         }

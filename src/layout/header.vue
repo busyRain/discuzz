@@ -19,13 +19,13 @@
       <div class="user fr ov" v-if="islogin">
 				<a :href="$BBS_URL+'member/posting'" class="ov user-link">
           <div class="user-avatar fl">
-					  <img :src="$IMG_URL+users.imgurl" class="fl" alt="">
+					  <img :src="$IMG_URL+getUserInfo.imgurl" class="fl" alt="">
           </div>
 					<div class="user-info fl">
-						<h4 class="user-name" v-text="users.nickname"></h4>
+						<h4 class="user-name" v-text="getUserInfo.nickname"></h4>
 						<div class="user-level">
-							<span class="inline lv">LV{{ users.userlvl }}</span> 
-							<span class="inline point">经验：{{ users.userpoints }}</span>
+							<span class="inline lv">LV{{ getUserInfo.userlvl }}</span> 
+							<span class="inline point">经验：{{ getUserInfo.userpoints }}</span>
 						</div>
 					</div>
 				</a>
@@ -65,7 +65,12 @@ export default {
          return !!this.$store.state.token;
 			},
 		  set:function(){
-			}}	
+      }},
+      getUserInfo:{
+        get:function(){
+          return this.$store.state.getUsers
+        }
+      }	
 		},
   updated(){
     this.setCurrentMenu()
@@ -94,15 +99,19 @@ export default {
 				  location.href=$BBS_URL+"/search?keyword="+this.keywords
 				}
     },
-    async getUser(){
-      await api.getUser().then(res=>{
-        if(res.code ==0 ){
-          this.users = res.data
-          console.log(res.data.sectionid)
-          this.$store.dispatch('Login',res.data.sectionid)
-        }
-      })
+    getUser(){
+      this.$store.dispatch('getUser')
     },
+    // async getUser(){
+    //   await api.getUser().then(res=>{
+    //     if(res.code ==0 ){
+    //       this.users = res.data
+    //       this.$store.dispatch('getUser',res.data)
+    //       console.log(res.data.sectionid)
+    //       this.$store.dispatch('Login',res.data.sectionid)
+    //     }
+    //   })
+    // },
     // refresh() {
     //     this.uName = "";
     //     this.$store.dispatch('init',{username:'',token:''})

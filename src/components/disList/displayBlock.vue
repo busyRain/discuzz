@@ -89,6 +89,7 @@
         <div class="board-box border-right">
             <moderator-info></moderator-info>
         </div>
+        <login-block :loginVisible="loginVisible" @cancel="cancel"></login-block>
     </div>
     <block-list :list="blockList" @getPage="getPage" :count="count" :sectionid="blockTop.id"></block-list>
 </div>
@@ -100,12 +101,14 @@ import blockList from '@/components/disList/blockList'
 import moderatorInfo from '@/components/disList/moderatorInfo'
 import { mapGetters } from 'vuex';
 import displaySection from '@/components/disList/displaySection'
+import loginBlock from '@/components/common/login'
 export default {
     name:"displayBlock",
     components:{
       blockList,
         displaySection,
-        moderatorInfo
+        moderatorInfo,
+        loginBlock
     },
     data(){
         return{
@@ -117,12 +120,12 @@ export default {
             blockList:{},
             blockTop:{},
             count:0,
-            //loginStatus:false,
             section:{},
             loading:{
                 status:true,
                 text:'数据正在加载中...'
-            }
+            },
+            loginVisible:false,
         }
     },
     computed:{
@@ -153,6 +156,9 @@ export default {
         }
     },
     methods:{
+        cancel(data){
+            this.loginVisible=data
+        },
         getPage(val){
             this.page=val
             this.getBlockList()
@@ -168,12 +174,13 @@ export default {
             this.getBlockList()
         },
         openDialog(){
-            console.log(this.islogin)
+            //console.log(this.islogin)
             if(this.islogin){
                 window.open('/addTop?id='+this.$route.params.id)
                 this.id=this.$route.params.id
             }else{
-                location.href='http://www.feileyuan.com/login'
+                this.loginVisible = true
+                //location.href='http://www.feileyuan.com/login'
             }
         },
         async getBlockList(){
@@ -207,15 +214,7 @@ export default {
                 }
             })
         },
-        init(){
-            // let cookie = this.$getCookie('uInfo');
-            // let userInfo = JSON.parse(cookie);
-            // if (userInfo && userInfo.token) {
-            //     this.loginStatus = true;
-            // } else {
-            //     this.loginStatus = false;
-            // }
-        },
+       
         async getSection () {
             await apiSec.getSection().then(res=>{
                 const { data} = res
@@ -226,7 +225,7 @@ export default {
         },
     },
     mounted() {
-        //this.init();
+       
     },
     created(){
         sessionStorage.removeItem('navList')
@@ -234,7 +233,7 @@ export default {
         this.getSection()
         this.getBlockList()
         this.getBlockTop(this.$route.params.id)
-        //this.init();
+       
     }
 }
 </script>

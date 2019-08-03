@@ -335,7 +335,9 @@ body {
     display: none;
   }
 }
+
 .contentDetail{
+	font:17px/32px Microsoft Yahei;
   line-height: 30px;
     img {
       max-width: 80%;
@@ -441,6 +443,158 @@ body {
 			font-size: 16px;
 			padding: 30px 0;
 			text-align: center;
+		}
+	}
+}
+
+.loginBlock {
+	.el-dialog {
+		width:400px !important;
+	}
+	.el-dialog__header {
+		padding:0;
+	}
+	.el-dialog__body {
+		padding:0;
+	}
+	.el-dialog__headerbtn .el-dialog__close {
+		color:#fff;
+		font-size:40px;
+	}
+}
+.wrapper-form-inner {
+	.el-form{
+		padding:40px 30px;
+		.el-form-item{
+			margin-bottom: 20px;
+			.el-button--primary {
+				margin-top:15px;
+			}
+			.el-form-item__content{
+				.el-input
+				{
+					.el-input__inner{
+						border-color: transparent;
+						border-radius: 0; 
+						background-color: transparent;
+					}
+					.el-input-group__append{
+						border-color: transparent;
+						border-radius: 0;
+						background-color: transparent; 
+						
+						>i{
+							font-size: 26px;
+						}
+						.el-button{
+							color: $font-blue;
+						}
+					}
+					
+					font-size: 18px;
+					border-bottom: solid 1px $borderColor;
+				}
+			}
+			
+			.el-form-item__error{
+				left: 0;
+				
+			} 
+		}
+		.other{
+			.el-checkbox{
+				.el-checkbox__label{
+					font-size: 16px;
+				}
+			}
+			.el-link{
+				.el-link--inner{
+					font-size: 16px;
+				}
+			}
+		} 
+								
+		.bottom-button-box{
+			padding:30px 40px;
+			text-align: center;
+			display: flex;
+			justify-content: space-between;
+			.el-button{
+				width:100%;
+				padding:20px 0px;
+				font-size: 18px;
+				width: 180px;
+				border-radius: 10px;
+				margin:0 20px;
+				&.is-plain{
+					background: transparent;
+					&:hover{
+						background: $bg-blue;
+					}
+				}
+			}
+		}
+		button {
+			width:100%;
+		}
+	}
+}
+.loginbg,.registerB {
+    background: url(../../assets/images/login_bg.png) no-repeat center center;
+    background-size: 100% 100%;
+    width: 100%;
+    height: 210px;
+    .title {
+        font-size: 21px;
+        text-align: center;
+        padding-top: 70px;
+    }
+    .sub-title {
+        margin-top:12px;
+        font-size: 28.8px;
+        text-align: center;
+        color:#409eff;
+        span:first-child {
+            color: #0a0a0a;
+            font-weight: 400;
+            border-bottom: 7px solid #409eff;
+        }
+    }
+    .wrapper-form-inner {
+        margin: 0 auto;
+	}
+	
+	
+	
+	
+}
+.registerBlock {
+	.form-register {
+		padding:20px 30px 20px 30px;
+	}
+	.el-tabs__item{
+		font-size:18px;
+	}
+	.el-tabs__item.is-active{
+		color: #000;
+    	font-weight: bold;
+	}
+	.el-input__inner {
+		padding:0;
+	}
+	.el-tabs__header {
+		margin:20px 30px 0 30px;
+	}
+	.other {
+		padding:0px 30px 20px 30px;
+	}
+	.already {
+		float:right;
+	}
+	.bottom-button-box {
+		padding:0px 30px 20px 30px;
+		button{
+			width:100%;
 		}
 	}
 }

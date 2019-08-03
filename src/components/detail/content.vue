@@ -182,6 +182,7 @@
       <el-button type="primary" @click="noAddTopic('ruleForm')">确 定</el-button>
     </span>
   </el-dialog>
+   <login-block :loginVisible="loginVisible" @cancel="loginCancel"></login-block>
    <show-reply :replyDialog="replyDialog" :topicid="topicid" @cancel="cancel" :replyContent="replyContent" :noShow="noShow" @getNewList="getNewList" :sectionid="sectionid"></show-reply>
 </div>
 </template>
@@ -192,6 +193,7 @@ import editortwo from "@/components/common/ueditortwo"
 import * as api from "@/api/detail"
 import showReply from '@/components/common/showReply'
 import voteBlock from '@/components/detail/voteBlock'
+import loginBlock from '@/components/common/login'
 export default {
   name:"detail",
   data(){
@@ -214,6 +216,7 @@ export default {
       replyContent:{},
       ruleForm:{},
       isShowReplay:false,//没有回复可见
+      loginVisible:false,
       config: {
         toolbars:[[
         'undo', 'redo', 'removeformat', 'formatmatch', '|',
@@ -249,7 +252,8 @@ export default {
     showReply,
     editortwo,
     progressBar,
-    voteBlock
+    voteBlock,
+    loginBlock
   },
   computed:{
     islogin: {
@@ -270,6 +274,9 @@ export default {
     }
   },
   methods:{
+    loginCancel(data){
+        this.loginVisible=data
+    },
     goReplyTopic(){
 
     },
@@ -338,7 +345,7 @@ export default {
         }  
         this.commonReply(data)
       }else{
-         location.href='http://www.feileyuan.com/login'
+         this.loginVisible=true
    
       } 
     },
@@ -358,7 +365,7 @@ export default {
           this.getDetailReply(this.$route.params.id)
           this.$refs.ue.clearContent()
         }else if(res.status==403){
-             location.href='http://www.feileyuan.com/login'
+             this.loginVisible=true
         }
       })
     },
@@ -409,7 +416,7 @@ export default {
         this.topicid=id
         this.replyDialog = true
       }else{
-         location.href='http://www.feileyuan.com/login'
+        this.loginVisible = true
       }
     },
     addReplayIndex(topicid,replyuserid,replyusername,replyid,buildingno,content,ctime){
@@ -426,7 +433,7 @@ export default {
         this.replyDialog = true
         this.noShow=true
       }else{
-        location.href='http://www.feileyuan.com/login'
+        this.loginVisible = true
       }
     },
     async getDetail(id){
