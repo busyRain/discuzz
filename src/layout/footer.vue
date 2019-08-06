@@ -1,7 +1,7 @@
 <template>
 	<div class="footer">
 		<div class="footer-pane">
-			<div class="copy-right">Copyright © 1996-2019 SINA Corporation, All Rights Reserved bbs</div>
+			<div class="copy-right">Copyright © 2018-2020 FEILEYUAN Corporation, All Rights Reserved.</div>
 		</div>
 	</div>	
 </template>
