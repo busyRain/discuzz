@@ -1,6 +1,8 @@
 <template>
 	<div class="default">
 		<Header />
+		<Search />
+		<Navigator />
 		<router-view class="inner ov" />
 		<Bottom />
 		<Footer />
@@ -8,7 +10,9 @@
 </template>
 
 <script>
-	import Header from "@/layout/header";
+	import Header from "@/layout/components/header";
+	import Search from "@/layout/components/search";
+	import Navigator from "@/layout/components/navigator"; 
 	import Footer from "@/layout/footer";
 	import Bottom from '@/layout/bottom';
 
@@ -16,6 +20,8 @@
 		name: "home",
 		components: {
 			Header,
+			Search,
+			Navigator,
 			Footer,
 			Bottom
 		},

@@ -5,6 +5,7 @@ import store from "./store";
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import "@/assets/styles/common.scss";
+import "@/assets/styles/layout.scss";
 import "@/assets/icon/iconfont.css";
 import axios from "@/utils/request.js";
 import { formatDate } from "@/utils/formatDate";

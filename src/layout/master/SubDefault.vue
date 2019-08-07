@@ -1,6 +1,7 @@
 <template>
 	<div class="default">
-		<Header />
+		<Header /> 
+		<Navigator />
 		<router-view class="inner ov" />
 		<Bottom />
 		<Footer />
@@ -8,14 +9,16 @@
 </template>
 
 <script>
-	import Header from "@/layout/header";
+	import Header from "@/layout/components/header.mini"; 
+	import Navigator from "@/layout/components/navigator"; 
 	import Footer from "@/layout/footer";
 	import Bottom from '@/layout/bottom';
 
 	export default {
 		name: "home",
 		components: {
-			Header,
+			Header, 
+			Navigator,
 			Footer,
 			Bottom
 		},
