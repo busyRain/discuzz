@@ -199,6 +199,33 @@ body {
 		}
 	}
 }
+.subpage{	
+	.header-pane {
+		height: 45px;
+		.header-inner{
+			height: 45px;
+			.logo{
+				padding:5px 0;
+			}
+			
+			.mini-menu {
+				.menu-item{
+					line-height: 45px;
+					
+					&.menu-user{
+						&::before{
+							top:20px;
+						}
+						
+						&::after{
+							top:18px;
+						}
+					}
+				} 
+			}
+		}
+	}	
+}
 .search-pane {
 	padding: 10px 0;
 	background-color: #fff;

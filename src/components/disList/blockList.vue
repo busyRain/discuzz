@@ -14,9 +14,6 @@
 								精
 							</span>
 						</div>
-						<!-- <div class="info1 cleardis">
-              {{item.signTxt}}
-            </div> -->
 						<div class="info2 cleardis">
 							<span class="fr">
 								发布于
@@ -42,13 +39,9 @@
 						</div>
 					</div>
 				</li>
-				<!-- <div class="bankuai" >版块主题</div> -->
 			</ul>
 			<div class="page">
 				<el-row :gutter="20">
-					<!-- <el-col :span="4">
-						<el-button type="primary" @click="addBlock" size="mini">发表</el-button>
-					</el-col> -->
 					<el-col :span="24">
 						<el-pagination v-if="count!=0" background @current-change="handleCurrentChange" layout="prev,pager,next,jumper"
 						 :page-size="limit" :total="count">
@@ -72,7 +65,6 @@
 			</ul>
 		</div>
 		<login-block :loginVisible="loginVisible" @cancel="cancelLogin"></login-block>
-		<!-- <show-add :show="isShowAdd" :id="id" @cancel="cancel"></show-add> -->
 	</div>
 </template>
 <script>
@@ -85,12 +77,19 @@
 
 	export default {
 		name: "blockList",
-		props: ['list', 'count', 'sectionid'],
+		props: {
+			'list': Array,
+			'count': Number,
+			'sectionid': Number,
+			limit: {
+				type: Number,
+				default: 80
+			}
+		},
 		data() {
 			return {
 				id: '',
 				page: 1,
-				limit: 80,
 				orderbytype: 1,
 				isShowAdd: false,
 				loginVisible: false,
@@ -124,15 +123,10 @@
 			addBlock() {
 				if (this.islogin) {
 					window.open('/addTop?id=' + this.$route.params.id)
-					this.id = this.$route.params.id
-					//this.$store.dispatch("getIsShowAdd",true)
+					this.id = this.$route.params.id;
 					this.$refs.boardBox.scrollTop = 0
 				} else {
-					this.loginVisible = true
-					// this.$message({
-					//   message:"用户未登录",
-					//   type:'error'
-					// })
+					this.loginVisible = true;
 				}
 			},
 			cancelLogin(data) {
@@ -144,8 +138,7 @@
 
 <style lang="scss" scoped>
 	.main {
-		margin-top: -20px;
-		margin: 0;
+		margin: -20px 0 0 0;
 		text-align: left;
 		padding: 20px 20px 20px 0px;
 

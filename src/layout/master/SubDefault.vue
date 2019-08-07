@@ -1,5 +1,5 @@
 <template>
-	<div class="default">
+	<div class="default subpage">
 		<Header /> 
 		<Navigator />
 		<router-view class="inner ov" />

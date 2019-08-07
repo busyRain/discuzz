@@ -32,6 +32,11 @@ export default new Router({
 					path: "", //论坛首页
 					name: "home",
 					component: () => import("./views/Home")
+				},
+				{
+					path: "search",
+					name:'search',
+					component: () => import("./views/Search")
 				}
 			]
 		},

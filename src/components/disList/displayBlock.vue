@@ -8,21 +8,7 @@
 				<div class="desc-left fl">
 					<div class="circle-img fl">
 						<img class="board-icon" :src="$IMG_URL+blockTop.imgurl" />
-						<!-- <el-popover
-                            placement="right"
-                            trigger="hover"
-                            >
-                            <ul class="sectionList">
-                                <li  v-for="(item,index) in section" :key="index" class="listLi">
-                                    <label class="fl">{{item.name}}</label>
-                                    <div class="childUL" v-if="item.childList.length>0">
-                                        <router-link  v-for="(childItem,childIndex) in item.childList" :key="childIndex" :to="{path:`/disList/${childItem.id}`}" tag="a" target="_blank" >{{childItem.name}}</router-link>
-                                    </div>
-                                </li>
-                            </ul> -->
 						<el-button class="join-circle" size="medium" round @click="openDialog">发新贴</el-button>
-						<!-- <a href="javascrip:;" class="join-circle" slot="reference">版块切换</a> -->
-						<!-- </el-popover> -->
 					</div>
 					<div class="circle-name fl">
 						<div class="club-name">{{blockTop.name}}</div>
@@ -42,15 +28,7 @@
 					</div>
 				</div>
 
-			</div>
-
-			<!--版块切换-->
-			<!-- <div class="master-header clear ov">
-            <div class="master-intro clear">
-                <h4 class="title clear">版块切换</h4>
-                
-            </div>
-        </div> -->
+			</div> 
 			<div class="classify-list " style="margin-left:20px;">
 				<div class="classify-item">
 					<span class="classify-title">看贴：</span>
@@ -87,7 +65,6 @@
 			<moderator-info></moderator-info>
 		</div>
 		<login-block :loginVisible="loginVisible" @cancel="cancel"></login-block>
-
 		<block-list :list="blockList" @getPage="getPage" :count="count" :sectionid="blockTop.id"></block-list>
 	</div>
 </template>

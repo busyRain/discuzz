@@ -42,12 +42,12 @@
 		},
 		methods: {
 			doSearch: function() {
-				// this.$router.push({
-				// 	name: 'search',
-				// 	query: {
-				// 		keyword: this.keyword
-				// 	}
-				// });
+				this.$router.push({
+					name: 'search',
+					query: {
+						keyword: this.keyword
+					}
+				});
 			},
 			shopEnter() {
 				this.$message({
