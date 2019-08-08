@@ -5,13 +5,15 @@
 				<i class="el-icon-map-location"></i>
 				首页
 			</el-breadcrumb-item>
-			<span v-if="navList.length==2">
-				<el-breadcrumb-item :to="{path:navList[0].url}">{{navList[0].name}}</el-breadcrumb-item>
-				<el-breadcrumb-item :to="{path:navList[1].url}">{{navList[1].name}}</el-breadcrumb-item>
-			</span>
-			<span v-else>
-				<el-breadcrumb-item :to="{path:navList[0].url}">{{navList[0].name}}</el-breadcrumb-item>
-			</span>
+			<template v-if="navList.length>0">
+				<span v-if="navList.length==2">
+					<el-breadcrumb-item :to="{path:navList[0].url}">{{navList[0].name}}</el-breadcrumb-item>
+					<el-breadcrumb-item :to="{path:navList[1].url}">{{navList[1].name}}</el-breadcrumb-item>
+				</span>
+				<span v-else>
+					<el-breadcrumb-item :to="{path:navList[0].url}">{{navList[0].name}}</el-breadcrumb-item>
+				</span>
+			</template>
 		</el-breadcrumb>
 		<el-popover placement="left" trigger="hover">
 			<ul class="sectionList">
@@ -24,7 +26,6 @@
 			</ul>
 			<el-button class="sectionBtn fr" size="small" slot="reference">版块切换</el-button>
 		</el-popover>
-
 		<keep-alive>
 			<content-list></content-list>
 		</keep-alive>
@@ -58,8 +59,6 @@
 							url: this.$route.path,
 							name: this.detail.title
 						})
-						//console.log(this.navList)
-						//JSON.stringify(sessionStorage.setItem('navList'),this.navList)
 					}
 				})
 			},
@@ -79,7 +78,6 @@
 			if (sessionStorage.getItem('navList')) {
 				this.navList = JSON.parse(sessionStorage.getItem('navList'))
 			}
-			//this.navList = JSON.parse(sessionStorage.getItem('navList'))
 			this.getDetail(this.$route.params.id)
 		}
 	}

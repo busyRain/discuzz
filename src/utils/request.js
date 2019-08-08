@@ -1,91 +1,50 @@
 import axios from "axios";
-import { Message } from "element-ui";
+import {
+	Message
+} from "element-ui";
 
 import store from '../store';
-// axios.defaults.transformRequest = [
-//   function(data) {
-//     let ret = "";
-//     for (let it in data) {
-//       ret += encodeURIComponent(it) + "=" + encodeURIComponent(data[it]) + "&";
-//     }
-//     return ret;
-//   }
-// ];
+
 let service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API,
-  timeout: 10000,
-  headers: {
-    // "Content-Type": "application/x-www-form-urlencoded"
-    "X-Requested-With": "XMLHttpRequest",
-    "Content-Type": "application/json;charset=utf-8"
-  }
+	baseURL: process.env.VUE_APP_BASE_API,
+	timeout: 10000,
+	headers: {
+		"X-Requested-With": "XMLHttpRequest",
+		"Content-Type": "application/json;charset=utf-8"
+	}
 });
 //请求
 service.interceptors.request.use(config => {
-  if (config.url.indexOf("?") >= 0) {
-    config.url += "&_t=" + new Date().getTime();
-  } else {
-    config.url += "?_t=" + new Date().getTime();
-  }
-  //token放到header里
-  try {
-    
-	var token = store.state.token ? Base64.decode(unescape(store.state.token)) : "";
-	var username = store.state.username ? Base64.decode(unescape(store.state.username)) : "";
-	
-    if (token) {
-      config.headers["TOKEN"] = token;
-      config.headers["UN"] = username;
-    }
-  } catch (e) {
-    console.log(e);
-  }
-  return config;
+	if (config.url.indexOf("?") >= 0) {
+		config.url += "&_t=" + new Date().getTime();
+	} else {
+		config.url += "?_t=" + new Date().getTime();
+	}
+	//token放到header里
+	try {
+
+		var token = store.state.token ? Base64.decode(unescape(store.state.token)) : "";
+		var username = store.state.username ? Base64.decode(unescape(store.state.username)) : "";
+
+		if (token) {
+			config.headers["TOKEN"] = token;
+			config.headers["UN"] = username;
+		}
+	} catch (e) {
+		console.log(e);
+	}
+	return config;
 });
 error => {
-  console.log(error);
-  return Promise.reject(error);
+	return Promise.reject(error);
 };
-//响应
-// service.interceptors.response.use(
-//   response => {
-//     const res = response.data;
-//     switch (res.code) {
-//       case 0:
-//         return response.data;
-//       case 403:
-//         Message({
-//           message:'用户未登录，请先登录',
-//           type:'error',
-//           duration:5000
-//         })
-//         DelCookies("uInfo");
-//         this.$store.dispatch('getIsLogin',false)
-//       default:
-//         Message({
-//           message: res.msg,
-//           type: "error",
-//           duration: 5000
-//         });
-//     }
-//   },
-//   error => {
-//     console.log("err" + error);
-//     Message({
-//       message: error.message,
-//       type: "error",
-//       duration: 5 * 1000
-//     });
-//     return Promise.reject(error);
-//   }
-// );
 service.interceptors.response.use(
 
 	response => {
 		return response.data;
 	},
 	err => {
-		
+
 		if (err && err.response) {
 			switch (err.response.status) {
 				case 400:
@@ -97,9 +56,9 @@ service.interceptors.response.use(
 				case 403:
 					err.message = "用户未登录";
 					Message({
-						message:err.message ,
-						type:'error',
-						duration:5000
+						message: err.message,
+						type: 'error',
+						duration: 5000
 					})
 					break;
 				case 404:
@@ -132,11 +91,11 @@ service.interceptors.response.use(
 				default:
 					err.message = `连接错误${err.response.status}`;
 			}
-		
+
 		} else {
 			err.message = "连接到服务器失败";
 		}
-		
+
 		return Promise.resolve(err.response);
 	}
 );

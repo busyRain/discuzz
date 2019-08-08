@@ -1,8 +1,6 @@
 <template>
-	<div>
-		<div class="progressBar">
-			<div class="bar" :style="{width:progress}">{{(current||'')+"/"+(total ||'')}}</div>
-		</div>
+	<div class="progressBar">
+		<div class="bar" :style="{width:progress}">{{(current ||0)+"/"+(total || 1)}}</div>
 	</div>
 </template>
 <script>
@@ -22,19 +20,15 @@
 		display: inline-block;
 		width: 100%;
 		font-size: 12px;
-
-		// margin-left: -25px;
-		/* padding: 0px 0; */
 		background: #ebeef5;
 		line-height: 20px;
 		border-radius: 32px;
 		color: #585858;
-
+		overflow: hidden;
 	}
 
 	.bar {
-		background-color: #409EFF;
-		border-radius: 30px;
+		background-color: #409EFF; 
 		padding-left: 5px;
 	}
 </style>

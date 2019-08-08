@@ -28,7 +28,7 @@
 					</div>
 				</div>
 
-			</div> 
+			</div>
 			<div class="classify-list " style="margin-left:20px;">
 				<div class="classify-item">
 					<span class="classify-title">看贴：</span>

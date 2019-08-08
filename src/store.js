@@ -87,7 +87,6 @@ export default new Vuex.Store({
 		},
 		GET_DISLIST: (state, params) => {
 			state.disList = params;
-			console.log(params);
 		},
 		GET_ISSHOWADD: (state, params) => {
 			state.isShowAdd = params
@@ -121,7 +120,7 @@ export default new Vuex.Store({
 			state.member = "";
 		},
 		GET_USER: (state, params) => {
-			state.getUsers = params; 
+			state.getUsers = params;
 		}
 	},
 	actions: {
@@ -167,7 +166,7 @@ export default new Vuex.Store({
 				const {
 					data
 				} = res;
-				if (res.code == 0) { 
+				if (res.code == 0) {
 					commit("GET_DISLIST", data);
 				}
 			});
@@ -193,11 +192,11 @@ export default new Vuex.Store({
 			await apiLogin.getUser().then(res => {
 				if (res.code == 0) {
 					dispatch('Login', res.data.sectionid);
-					commit('GET_USER', res.data); 
-					
-					if (user.imgurl)
-						user.imgurl = _IMG_URL + user.imgurl;
-					
+					commit('GET_USER', res.data);
+
+					if (res.data.imgurl)
+						res.data.imgurl = _IMG_URL + res.data.imgurl;
+
 					commit("SET_NICKNAME", res.data.nickname);
 					commit("SET_HEADIMAGE", res.data.imgurl);
 					commit("SET_MOBILE", res.data.tel);
