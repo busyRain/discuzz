@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="content board-box">
-			<div class="ov commit">
+			<div class="ov commit" id="floor__1">
 				<div class="detailLeft fl" ref="detailLeft">
 					<div class="detailLeft_top">
 						<span>查看：<span class="highlight-color">{{detail.viewcount}}</span></span>
@@ -20,15 +20,15 @@
 							</a>
 						</div>
 						<ul class="otherinfo">
-							<li>
+							<li class="other-group">
 								<label class="fl">组别</label>
-								<span class="admin">{{detail.vip?'管理员':"用户"}}</span>
+								<span class="admin" :class="{'is-admin':detail.systemUser==1}">{{detail.systemUser==1?'版主':"用户"}}</span>
 							</li>
-							<li>
+							<li class="other-level">
 								<label class="fl">用户等级</label>
 								<span>{{detail.userLvl}}</span>
 							</li>
-							<li>
+							<li class="other-exp">
 								<label class="fl">经验值</label>
 								<span class="proNum"> {{detail.userPoints}}</span>
 								<progress-bar :current="detail.userPoints" :total="detail.nextLvlPoints"></progress-bar>
@@ -40,7 +40,7 @@
 					<div class="detailRight_info">
 						<div class="detailRight_info_title">{{detail.title}}</div>
 						<div class="detailRight_info_content ov" ref="detailRight_info_content">
-							<div class="pi">
+							<div class="pi" @click="selectText(1)">
 								<img src="@/assets/images/ico_lz.png" class="authincn vm">
 								<em>楼主 | 发表于 <span class="highlight-color">{{detail.ctime|dateComment}}</span></em>
 								<strong>楼主</strong>
@@ -64,7 +64,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="ov commit replay" v-for="(item,index) in replyList" :key="index.id">
+			<div class="ov commit replay" v-for="(item,index) in replyList" :key="index.toString()" :id="'floor__'+((page-1)*limit+index+2)">
 				<div class="detailLeft fl">
 					<div class="detailLeft_content">
 						<h3 class="author">{{item.nickname}}</h3>
@@ -78,15 +78,15 @@
 							</a>
 						</div>
 						<ul class="otherinfo">
-							<li>
+							<li class="other-group">
 								<label class="fl">组别</label>
 								<span class="admin">{{item.vip?'管理员':"用户"}}</span>
 							</li>
-							<li>
+							<li class="other-level">
 								<label class="fl">用户等级</label>
 								<span>{{item.userLvl}}</span>
 							</li>
-							<li>
+							<li class="other-exp">
 								<label class="fl">经验值</label>
 								<span class="proNum"> {{item.userPoints}}</span>
 								<progress-bar :current="item.userPoints" :total="item.nextLvlPoints"></progress-bar>
@@ -135,7 +135,7 @@
 			<el-pagination class="pagination" @current-change="handleCurrentChange" background layout="prev,pager,next,jumper"
 			 :page-size="50" :total="count"></el-pagination>
 		</div>
-		<editortwo :defaultMsg=defaultMsg :config=config ref='ue' id="editorTwo">
+		<editortwo :defaultMsg='defaultMsg' :config='config' ref='ue' id="editorTwo">
 		</editortwo>
 		<el-row :gutter="20">
 			<el-col :span="4">
@@ -250,9 +250,24 @@
 					}
 					return false;
 				}
+			},
+			reachFloor: function() {
+				return this.$route.query.floor || 0;
 			}
 		},
 		methods: {
+			selectText: function(floor) {
+				var text = this.$BBS_domain + "disDetail/" + this.$route.params.id + "?floor=" + floor;
+				const textarea = document.createElement('textarea');
+				textarea.value = text;
+				document.body.appendChild(textarea);
+				textarea.select();
+				if (document.execCommand('copy')) {
+					document.execCommand('copy');
+					alert(text);
+				}
+				document.body.removeChild(textarea);
+			},
 			loginCancel(data) {
 				this.loginVisible = data
 			},
@@ -260,7 +275,6 @@
 
 			},
 			getDetailNew() {
-				console.log(this.$route.params.id)
 				this.getDetail(this.$route.params.id)
 			},
 			noAdd(id) {
@@ -313,7 +327,6 @@
 				this.replyDialog = val
 			},
 			reply(id) { //发表回复
-
 				if (this.islogin) {
 					let data = {
 						topicid: id,
@@ -433,6 +446,7 @@
 				})
 			},
 			async getDetailReply(id) {
+				var that = this;
 				await api.getReplay({
 					topicid: id,
 					page: this.page,
@@ -449,11 +463,26 @@
 						this.replyList = data
 						this.count = res.count
 					}
+
+					that.$nextTick(function() {
+						setTimeout(function() {
+							that.scrollToFloor();
+						}, 600);
+					});
 				})
-			},			
+			},
 			async updateCount(id) {
-				await api.updateCount(id).then(res => {
-				})
+				await api.updateCount(id).then(res => {})
+			},
+			scrollToFloor: function() {
+				if (this.$route.query.floor) {
+					if (document.getElementById("floor__" + this.$route.query.floor))
+						document.getElementById("floor__" + this.$route.query.floor).scrollIntoView({
+							behavior: "smooth",
+							block: "start",
+							inline: "nearest"
+						});
+				}
 			}
 		},
 		mounted() {
@@ -463,8 +492,12 @@
 		},
 		created() {
 			this.updateCount(this.$route.params.id)
-			this.getDetail(this.$route.params.id)
-			this.getDetailReply(this.$route.params.id)
+			this.getDetail(this.$route.params.id);
+			if (this.$route.query.floor) {
+				var _page = Math.ceil(this.$route.query.floor / this.limit);
+				this.handleCurrentChange(_page);
+			} else
+				this.getDetailReply(this.$route.params.id)
 		}
 	}
 </script>
@@ -545,6 +578,14 @@
 
 						.admin {
 							color: #9933CC;
+
+							&.is-admin {
+								background-image: url('../../assets/images/icon-crown-admin.png');
+								background-repeat: no-repeat;
+								background-position: right center;
+								background-size: contain;
+								padding-right: 30px;
+							}
 						}
 					}
 				}
