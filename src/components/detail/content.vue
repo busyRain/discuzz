@@ -264,7 +264,7 @@
 				textarea.select();
 				if (document.execCommand('copy')) {
 					document.execCommand('copy');
-					alert(text);
+					alert("楼层复制成功");
 				}
 				document.body.removeChild(textarea);
 			},
