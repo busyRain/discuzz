@@ -80,7 +80,7 @@
 						<ul class="otherinfo">
 							<li class="other-group">
 								<label class="fl">组别</label>
-								<span class="admin">{{item.vip?'管理员':"用户"}}</span>
+								<span class="admin" :class="{'is-admin':item.systemUser==1}">{{item.systemUser==1?'版主':"用户"}}</span>
 							</li>
 							<li class="other-level">
 								<label class="fl">用户等级</label>
@@ -97,7 +97,7 @@
 				<div class="detailRight fr">
 					<div class="detailRight_info">
 						<div class="detailRight_info_content">
-							<div class="pi">
+							<div class="pi" @click="selectText((page-1)*limit+index+2)">
 								<img src="@/assets/images/ico_lz.png" class="authincn vm">
 								<em>{{item.nickname}} | 发表于 <span class="highlight-color">{{item.ctime|dateComment}}</span></em>
 								<strong>{{(page-1)*limit+index+2}}楼</strong>
