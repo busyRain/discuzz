@@ -20,7 +20,7 @@ if (process.env.NODE_ENV == 'development') {
 } else if (process.env.NODE_ENV == 'production') {
 	Vue.prototype.$IMG_URL = 'http://images.feileyuan.com/';
 	Vue.prototype.$BBS_URL = 'http://www.feileyuan.com/';
-	Vue.prototype.$BBS_domain = 'https://bbs.feileyuan.com/';
+	Vue.prototype.$BBS_domain = 'http://bbs.feileyuan.com/';
 }
 Vue.prototype.$setCookie = SetCookies;
 Vue.prototype.$getCookie = GetCookies;
