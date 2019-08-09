@@ -70,7 +70,7 @@ export default {
             if(this.islogin){
                  this.add(data)
             }else {
-                location.href='http://www.feileyuan.com/login'
+                location.href='https://www.feileyuan.com/login'
             }
             this.add(data)
           } else {

@@ -24,8 +24,8 @@
 				</li>
 				<li class="menu-item menu-login" v-show="!isLogin"><a :href="domain + page.login">登录</a></li>
 				<li class="menu-item" v-show="!isLogin"><a :href="domain + page.register">免费注册</a></li>
-				<li class="menu-item"><a>了解我们</a></li>
-				<li class="menu-item"><a>商务合作</a></li>
+				<li class="menu-item"><a href="https://t.me/finleyXL" target="_blank">了解我们</a></li>
+				<li class="menu-item"><a href="https://t.cn/AijMezQl" target="_blank">商务合作</a></li>
 			</ul>
 		</div>
 	</div>
@@ -114,10 +114,10 @@ export default {
 	},
 	mounted: function() {
 		if (process.env.NODE_ENV == 'development') {
-			this.domain = 'http://www.feileyuan.club';
+			this.domain = 'https://www.feileyuan.club';
 			// this.domain = 'localhost';
 		} else if (process.env.NODE_ENV == 'production') {
-			this.domain = 'http://www.feileyuan.com';
+			this.domain = 'https://www.feileyuan.com';
 		}
 	}
 };

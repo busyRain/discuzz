@@ -10,11 +10,11 @@ Vue.use(Vuex);
 let _IMG_URL = "",
 	_domain = "";
 if (process.env.NODE_ENV == 'development') {
-	_IMG_URL = 'http://www.feileyuan.com/';
+	_IMG_URL = 'https://www.feileyuan.com/';
 	_domain = '.feileyuan.club';
 	// _domain = 'localhost';
 } else if (process.env.NODE_ENV == 'production') {
-	_IMG_URL = 'http://www.feileyuan.com/';
+	_IMG_URL = 'https://www.feileyuan.com/';
 	_domain = '.feileyuan.com';
 }
 export default new Vuex.Store({

@@ -18,9 +18,9 @@ if (process.env.NODE_ENV == 'development') {
 	Vue.prototype.$BBS_URL = 'https://www.feileyuan.club/';
 	Vue.prototype.$BBS_domain = 'https://bbs.feileyuan.club/';
 } else if (process.env.NODE_ENV == 'production') {
-	Vue.prototype.$IMG_URL = 'http://images.feileyuan.com/';
-	Vue.prototype.$BBS_URL = 'http://www.feileyuan.com/';
-	Vue.prototype.$BBS_domain = 'http://bbs.feileyuan.com/';
+	Vue.prototype.$IMG_URL = 'https://images.feileyuan.com/';
+	Vue.prototype.$BBS_URL = 'https://www.feileyuan.com/';
+	Vue.prototype.$BBS_domain = 'https://bbs.feileyuan.com/';
 }
 Vue.prototype.$setCookie = SetCookies;
 Vue.prototype.$getCookie = GetCookies;

@@ -10,8 +10,8 @@
 				<el-menu-item index="/" ref="topic" :style="styleTab">论坛</el-menu-item>
 				<a class="el-menu-item" :href="$BBS_URL+'topic'">专题</a>
 				<a class="el-menu-item" :href="$BBS_URL+'activity'">活动</a>
-				<a class="el-menu-item" href="http://live.feileyuan.com">便民</a>
-				<a class="el-menu-item" href="http://zhaopin.feileyuan.com">招聘</a>
+				<a class="el-menu-item" href="https://live.feileyuan.com">便民</a>
+				<a class="el-menu-item" href="https://zhaopin.feileyuan.com">招聘</a>
 			</el-menu>
 			<div class="search fl ov">
 				<el-input class="fl" prefix-icon="el-icon-search" placeholder="请输入您要搜索的关键字" v-model="keywords" @keyup.enter.native="search"></el-input>
@@ -34,7 +34,7 @@
 				<img @click='logout' src="@/assets/images/quit.png" alt="" class="icon cursor out">
 			</div>
 			<div class="user fr ov" v-else>
-				<!-- <a href="http://www.feileyuan.com/login" class="el-button--primary">登录</a> -->
+				<!-- <a href="https://www.feileyuan.com/login" class="el-button--primary">登录</a> -->
 				<el-button type="primary" @click="goPath($BBS_URL+'login')">登录</el-button>
 				<el-button @click="goPath($BBS_URL+'register')">注册</el-button>
 				<!-- <router-link to='/login' tag="el-button" class="el-button--primary">登录</router-link>
@@ -97,7 +97,7 @@
 			search(e) {
 				var e = event || window.event || arguments.callee.caller.arguments[0];
 				if (e && e.keyCode == 13) {
-					// window.open("http://www.feileyuan.com/search?keyword="+this.keywords)
+					// window.open("https://www.feileyuan.com/search?keyword="+this.keywords)
 					location.href = $BBS_URL + "/search?keyword=" + this.keywords
 				}
 			},

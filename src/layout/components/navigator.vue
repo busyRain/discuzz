@@ -44,15 +44,15 @@
 		},
 		mounted: function() {
 			if (process.env.NODE_ENV == 'development') {
-				this.domain = 'localhost';
-				this.bbs = 'http://bbs.feileyuan.club';
-				this.live = 'http://live.feileyuan.club';
-				this.job='http://zhaopin.feileyuan.club';
+				this.domain = 'https://www.feileyuan.club';
+				this.bbs = 'https://bbs.feileyuan.club';
+				this.live = 'https://live.feileyuan.club';
+				this.job='https://zhaopin.feileyuan.club';
 			} else if (process.env.NODE_ENV == 'production') {
-				this.domain = 'http://www.feileyuan.com';
-				this.bbs = 'http://bbs.feileyuan.com';
-				this.live = 'http://live.feileyuan.com';
-				this.job='http://zhaopin.feileyuan.com';
+				this.domain = 'https://www.feileyuan.com';
+				this.bbs = 'https://bbs.feileyuan.com';
+				this.live = 'https://live.feileyuan.com';
+				this.job='https://zhaopin.feileyuan.com';
 			} 
 		}
 	};

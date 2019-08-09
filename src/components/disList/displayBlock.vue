@@ -155,8 +155,7 @@
 					window.open('/addTop?id=' + this.$route.params.id)
 					this.id = this.$route.params.id
 				} else {
-					this.loginVisible = true
-					//location.href='http://www.feileyuan.com/login'
+					this.loginVisible = true 
 				}
 			},
 			async getBlockList() {

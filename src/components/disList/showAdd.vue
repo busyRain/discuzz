@@ -235,7 +235,7 @@ export default {
                     })
                     this.$router.push(`/disDetail/${res.data}`)
                 } else if(res.status==403){
-                        location.href='http://www.feileyuan.com/login'
+                        location.href='https://www.feileyuan.com/login'
                     }
                
             })
