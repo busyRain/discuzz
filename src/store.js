@@ -82,8 +82,27 @@ export default new Vuex.Store({
 			state.member = value;
 		},
 		GET_SECTIONID: (state, params) => {
+			
+			localStorage.removeItem("sectionIds");			
+			var dateExpire = new Date(),
+				siteCookies = document.cookie.split("; ");
+			
+			dateExpire.setTime(dateExpire.getTime() - 100000);
+			for (var idx = 0; idx < siteCookies.length; idx++) {
+				var itemCookie = siteCookies[idx],
+					keyvalues = itemCookie.split("=");
+				if (keyvalues[0].toLocaleLowerCase() == "sectionids") {
+					document.cookie = keyvalues[0] + "=" + keyvalues[1] + "; domain=" + _domain + ";expires=" + dateExpire.toGMTString() +
+						";path=/;";
+				}
+			}
+			
 			state.sectionIds = params;
-			localStorage.setItem("sectionIds", params)
+			localStorage.setItem("sectionIds", params);
+			var exdate = new Date();
+			exdate.setTime(exdate.getTime() + 24 * 60 * 60 * 1000);
+			document.cookie = "sectionIds=" + params + "; domain=" + _domain + ";expires=" + exdate.toGMTString() +
+				';path=/;';
 		},
 		GET_DISLIST: (state, params) => {
 			state.disList = params;
