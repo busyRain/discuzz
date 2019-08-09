@@ -11,8 +11,8 @@ let _IMG_URL = "",
 	_domain = "";
 if (process.env.NODE_ENV == 'development') {
 	_IMG_URL = 'http://www.feileyuan.com/';
-	//	_domain = '.feileyuan.club'; 
-	_domain = 'localhost';
+	_domain = '.feileyuan.club';
+	// _domain = 'localhost';
 } else if (process.env.NODE_ENV == 'production') {
 	_IMG_URL = 'http://www.feileyuan.com/';
 	_domain = '.feileyuan.com';
@@ -21,7 +21,7 @@ export default new Vuex.Store({
 	state: {
 		disList: {},
 		isShowAdd: false,
-		sectionIds: localStorage.getItem("sectionIds") || [],
+		sectionIds: GetCookie("sectionIds") || [],
 		auth: GetCookie("auth") || "",
 		token: GetCookie("token") || "",
 		username: GetCookie("username") || "",
