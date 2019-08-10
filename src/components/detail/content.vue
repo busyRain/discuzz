@@ -660,7 +660,11 @@
 							font-style: normal;
 						}
 					}
-
+					
+					a{
+						text-decoration: underline;
+					}
+					
 					.contentDetail {
 						line-height: 30px;
 
@@ -684,13 +688,7 @@
 							strong {
 								font-weight: bold
 							}
-						}
-						
-						.replyContent{
-							a{
-								text-decoration: underline;
-							}
-						}
+						} 
 					}
 				}
 			}
