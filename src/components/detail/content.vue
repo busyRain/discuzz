@@ -685,6 +685,12 @@
 								font-weight: bold
 							}
 						}
+						
+						.replyContent{
+							a{
+								text-decoration: underline;
+							}
+						}
 					}
 				}
 			}
