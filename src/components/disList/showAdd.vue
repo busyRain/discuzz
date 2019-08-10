@@ -87,10 +87,13 @@ export default {
                toolbars:[[
                 'undo', 'redo', 'removeformat', 'formatmatch', '|',
                 'paragraph',  'fontfamily','fontsize', 'forecolor','|',
-                'bold', 'italic', 'underline','|',
+                'bold', 'italic', 'underline','|','link','|',
                'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|',
                 'simpleupload', 'insertvideo','horizontal','|',
-                'emotion','hide'
+                'emotion','hide',
+				,'|',
+				'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 
+				'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols'
                 ]],
                 'insertorderedlist':{
                         decimal: "1,2,3...",

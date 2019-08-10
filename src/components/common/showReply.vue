@@ -44,13 +44,15 @@ export default {
             defaultMsg:"",
             config: {
                toolbars:[[
-                'undo', 'redo', 'removeformat', 'formatmatch', '|',
-                'paragraph',  'fontfamily','fontsize', 'forecolor','|',
-                'bold', 'italic', 'underline','|',
-                'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|',
-                'simpleupload', 'insertvideo','horizontal','|',
-                'emotion',
-                ]],
+							'undo', 'redo', 'removeformat', 'formatmatch', '|',
+							'paragraph', 'fontfamily', 'fontsize', 'forecolor', '|',
+							'bold', 'italic', 'underline', '|','link','|',
+							'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|',
+							'simpleupload', 'insertvideo', 'horizontal', '|',
+							'emotion','|',
+							'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 
+							'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols'
+						]],
                 'insertorderedlist':{
                         decimal: "1,2,3...",
                     "lower-alpha": "a,b,c...",

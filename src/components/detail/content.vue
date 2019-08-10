@@ -10,7 +10,7 @@
 					</div>
 					<div class="detailLeft_content">
 						<h3 class="author">{{detail.nickName}}</h3>
-						<div class="avatar">
+						<div class="avatar"  :class="{'is-admin':detail.systemUser==1}">
 							<a href="javascript:;">
 								<el-image style="width: 130px; height: 130px" :src="$IMG_URL+ detail.userImgUrl" :fit="'contain'">
 									<div slot="error" class="image-slot">
@@ -22,7 +22,7 @@
 						<ul class="otherinfo">
 							<li class="other-group">
 								<label class="fl">组别</label>
-								<span class="admin" :class="{'is-admin':detail.systemUser==1}">{{detail.systemUser==1?'版主':"用户"}}</span>
+								<span class="admin">{{detail.systemUser==1?'版主':"用户"}}</span>
 							</li>
 							<li class="other-level">
 								<label class="fl">用户等级</label>
@@ -68,7 +68,7 @@
 				<div class="detailLeft fl">
 					<div class="detailLeft_content">
 						<h3 class="author">{{item.nickname}}</h3>
-						<div class="avatar">
+						<div class="avatar" :class="{'is-admin':item.systemUser==1}">
 							<a href="">
 								<el-image style="width: 130px; height: 130px" :src="$IMG_URL+ item.userImgUrl" :fit="'contain'">
 									<div slot="error" class="image-slot">
@@ -80,7 +80,7 @@
 						<ul class="otherinfo">
 							<li class="other-group">
 								<label class="fl">组别</label>
-								<span class="admin" :class="{'is-admin':item.systemUser==1}">{{item.systemUser==1?'版主':"用户"}}</span>
+								<span class="admin">{{item.systemUser==1?'版主':"用户"}}</span>
 							</li>
 							<li class="other-level">
 								<label class="fl">用户等级</label>
@@ -194,10 +194,12 @@
 						[
 							'undo', 'redo', 'removeformat', 'formatmatch', '|',
 							'paragraph', 'fontfamily', 'fontsize', 'forecolor', '|',
-							'bold', 'italic', 'underline', '|',
+							'bold', 'italic', 'underline', '|','link','|',
 							'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|',
 							'simpleupload', 'insertvideo', 'horizontal', '|',
-							'emotion',
+							'emotion','|',
+							'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 
+							'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols'
 						]
 					],
 					'insertorderedlist': {
@@ -550,11 +552,26 @@
 				}
 
 				.avatar {
-					width: 120px;
+					width: 130px;
 					margin: 10px 20px;
 
 					img {
 						border: 5px solid #e6e6e6;
+					}
+					
+					&.is-admin{
+						position: relative;
+						&::after{
+							display: block;
+							content: "";
+							position: absolute;
+							background: url("../../assets/images/icon-admin-flag.png") no-repeat 22px -17px;
+							width: 95px;
+							height: 70px;
+							position: absolute;
+							top:0;
+							right: 0;
+						}
 					}
 				}
 
@@ -621,7 +638,7 @@
 						line-height: 36px;
 						border-bottom: 1px dashed #E6E7E1;
 						position: relative;
-
+						cursor: pointer;
 						img {
 							width: 16px;
 							margin-top: 4px;
