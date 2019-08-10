@@ -504,12 +504,12 @@ UE.I18N['zh-cn'] = {
     'emotion':{
         'static':{
             'lang_input_choice':'精选',
+            'lang_input_default':'默认',
             'lang_input_Tuzki':'兔斯基',
             'lang_input_BOBO':'BOBO',
-            'lang_input_lvdouwa':'绿豆蛙',
-            'lang_input_babyCat':'baby猫',
-            'lang_input_bubble':'泡泡',
-            'lang_input_youa':'有啊'
+            'lang_input_ali':'阿狸',
+            'lang_input_babyCat':'嘀嗒兔',
+            'lang_input_yangcongtou':'洋葱头'
         }
     },
     'gmap':{
