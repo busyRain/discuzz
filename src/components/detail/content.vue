@@ -661,7 +661,7 @@
 						}
 					}
 					
-					a{
+					a {
 						text-decoration: underline;
 					}
 					
