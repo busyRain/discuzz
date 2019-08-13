@@ -56,6 +56,10 @@ export default new Router({
 				{
 					path: "disDetail/:id",
 					component: () => import("./views/DisDetail")
+				},
+				{
+					path:"editTopic",
+					component:() =>import("./components/detail/editContent")
 				}
 			]
 		},		 

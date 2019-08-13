@@ -58,6 +58,7 @@
 						<a class="replayBtn" @click="addReplay(detail.id)">回复</a>
 						<!-- <a class="editBtn" v-if="loginStatus">编辑</a> -->
 						<p class="fr">
+							<a class="editBtn"  v-if="topCid==getUserId" @click="goEdit(detail.id)" >编辑</a>
 							<!-- <span>删除</span>
                 <span>禁言</span> -->
 						</p>
@@ -170,6 +171,7 @@
 		name: "detail",
 		data() {
 			return {
+				topCid:'',//发贴人id
 				detail: [],
 				defaultMsg: '',
 				replyList: [],
@@ -255,9 +257,18 @@
 			},
 			reachFloor: function() {
 				return this.$route.query.floor || 0;
+			},
+			getUserId:{
+				get:function(){
+					return this.$store.state.userId;
+				},
+				set:function(){}
 			}
 		},
 		methods: {
+			goEdit(id){
+				window.open('/editTopic?id=' + id)
+			},
 			selectText: function(floor) {
 				var text = this.$BBS_domain + "disDetail/" + this.$route.params.id + "?floor=" + floor;
 				const textarea = document.createElement('textarea');
@@ -337,7 +348,6 @@
 					this.commonReply(data)
 				} else {
 					this.loginVisible = true
-
 				}
 			},
 			async commonReply(data) {
@@ -433,6 +443,7 @@
 						this.detail = data
 						this.detail.content = data.content
 						this.sectionid = data.sectionid
+						this.topCid = data.cid
 						if (this.detail.content.indexOf('回复可见') > -1 && this.detail.visible == 0) {
 							this.isShowReplay = true
 							this.$nextTick(function() {

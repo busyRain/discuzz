@@ -81,8 +81,7 @@ export default {
             isvote:false,
             defaultMsg: '',
             sectionid:0,
-            section: [],
-                
+            section: [],  
             config: {
                toolbars:[[
                 'undo', 'redo', 'removeformat', 'formatmatch', '|',
@@ -216,6 +215,7 @@ export default {
                             sid:parseInt(this.sectionid),
                             title:this.ruleForm.title,
                             content:encodeURIComponent(this.$refs.ue.getUEContent()),
+                            isvote:this.isvote,
                         }
                         this.add(data)
                     }

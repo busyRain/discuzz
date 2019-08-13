@@ -11,8 +11,8 @@ let _IMG_URL = "",
 	_domain = "";
 if (process.env.NODE_ENV == 'development') {
 	_IMG_URL = 'https://www.feileyuan.com/';
-	_domain = '.feileyuan.club';
-	// _domain = 'localhost';
+	//_domain = '.feileyuan.club';
+	_domain = 'localhost';
 } else if (process.env.NODE_ENV == 'production') {
 	_IMG_URL = 'https://www.feileyuan.com/';
 	_domain = '.feileyuan.com';
@@ -30,7 +30,8 @@ export default new Vuex.Store({
 		mobile: localStorage.getItem("mobile") || "",
 		email: localStorage.getItem("email") || "",
 		member: localStorage.getItem("member") || "",
-		getUsers: {}
+		getUsers: {},
+		userId:localStorage.getItem("userId") || "",
 	},
 	mutations: {
 		SET_HTTPAUTH: function(state, value) {
@@ -55,6 +56,10 @@ export default new Vuex.Store({
 			state.token = token;
 			state.username = username;
 			state.auth = auth;
+		},
+		SET_URSERID:function(state,value){
+			localStorage.setItem("userId", value);
+			state.userId = value;
 		},
 		SET_NICKNAME: function(state, value) {
 			localStorage.setItem("nickname", value);
@@ -155,7 +160,8 @@ export default new Vuex.Store({
 				function(response) {
 					if (response.code == 0) {
 						var user = response.data;
-
+						console.log(response.data)
+						commit("SET_URSERID",user.id)
 						if (user.imgurl)
 							user.imgurl = _IMG_URL + user.imgurl;
 
@@ -212,7 +218,7 @@ export default new Vuex.Store({
 				if (res.code == 0) {
 					dispatch('Login', res.data.sectionid);
 					commit('GET_USER', res.data);
-
+					commit("SET_URSERID",user.id)
 					if (res.data.imgurl)
 						res.data.imgurl = _IMG_URL + res.data.imgurl;
 

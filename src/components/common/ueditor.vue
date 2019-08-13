@@ -26,8 +26,9 @@
       this.initEditor() 
     },
     watch:{
-        defaultMsg:function(old,newold){
-            this.editor.setContent(old);
+        defaultMsg:function(newval,oldval){
+          console.log(newval)
+            this.editor.setContent(newval);
         }
     },
     methods: {
@@ -37,7 +38,7 @@
               this.editor = UE.getEditor('editor',this.config); // 初始化UE
               this.editor.addListener("ready", ()=>{
                   _this.editor.setHeight(300);
-                  //_this.editor.setContent(_this.defaultMsg); // 确保UE加载完成后，放入内容。
+                  _this.editor.setContent(_this.defaultMsg); // 确保UE加载完成后，放入内容。
                   _this.$emit('ready',_this.editor)
                 
               });

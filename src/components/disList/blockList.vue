@@ -78,7 +78,7 @@
 	export default {
 		name: "blockList",
 		props: {
-			'list': Array,
+			list: {},
 			'count': Number,
 			'sectionid': Number,
 			limit: {

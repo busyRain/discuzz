@@ -67,3 +67,9 @@ export function addVoteTop(data) {
 		data
 	})
 }
+export function updateTopic(data) { //更新贴子详情
+	return request(`/topiclogin/updatetopic`,{
+		method:"post",
+		data
+	})
+}
