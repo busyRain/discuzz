@@ -6,7 +6,7 @@
 					<!--主题标题-->
 					<div class="postLi">
 						<div class="post-title cleardis">
-							<router-link :to="{path:`/disDetail/${item.id}`}" tag="a" target="_blank">{{item.title}}</router-link>
+							<router-link :to="{path:`/disDetail/${item.id}`}" tag="a" target="_blank" v-html="item.title"></router-link>
 							<span class="uscat_pt" v-if="item.isrecommend">
 								置顶
 							</span>
@@ -21,10 +21,10 @@
 							</span>
 							<a href="javascript:;" class="usre-avatar fl" target="_blank">
 								<el-image style="width: 30px; 
-                  height:30px;
-                  border-radius: 50%;
-                  margin-right: 10px;
-                  cursor: pointer;"
+									height:30px;
+									border-radius: 50%;
+									margin-right: 10px;
+									cursor: pointer;"
 								 :src="$IMG_URL+ item.userImgUrl" :fit="'contain'">
 									<div slot="error" class="image-slot">
 										<i class="el-icon-picture-outline"></i>
@@ -141,7 +141,6 @@
 		margin: -20px 0 0 0;
 		text-align: left;
 		padding: 20px 20px 20px 0px;
-
 		ul.post-list {
 			>li {
 				padding: 18px 0px 0px 0px;

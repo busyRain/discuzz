@@ -5,7 +5,7 @@
 				<div class="logo"><img src="@/assets/images/logo.png" /></div>				
 			</div>
 			<div class="search-box">
-				<el-input v-model="keyword">
+				<el-input v-model="keyword" @keyup.enter.native="doSearch">
 					<template slot="append">
 						<el-button type="primary" @click="doSearch">搜索</el-button>
 					</template>

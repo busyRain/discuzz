@@ -70,12 +70,9 @@ export default {
            })
        },
        async updateTopic () {
-           //let s=this.$refs.ue.getUEContent().replace(/<\/?p[^>]*>/gi,'')
-           //console.log(s)
            let data = {
                id:this.detail.id,
                content:encodeURIComponent(this.$refs.ue.getUEContent()),
-               //content:encodeURIComponent(s),
                title:this.detail.title,
                isvote:this.detail.isvote,
                votetype:this.detail.votetype,
@@ -84,7 +81,13 @@ export default {
            }
 
            await api.updateTopic(data).then(res =>{
-               console.log(res)
+               if(res.code ==0 ) {
+                   this.$message({
+                        message:'修改成功',
+                        type:'success'
+                    })
+                    this.$router.push(`/disDetail/${this.$route.query.id}`)
+               }
            })
        }
     },
