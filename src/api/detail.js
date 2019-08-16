@@ -83,3 +83,21 @@ export function delFollow(data){ //用户关注贴子
 		method:'get'
 	})
 }
+export function getCollected(data) { //检测收藏
+	return request("collect/getcollect",{
+		method:"get",
+		params: data
+	});
+}
+export function setCollected(data) { //收藏
+	return request("collect/addCollect",{
+		method:"post",
+		data
+	});
+}
+export function cancelCollected(data) { //取消收藏
+	return request("/collect/cancelcollect",{
+		method:"post",
+		data
+	});
+}
