@@ -9,31 +9,25 @@
 						<span>回复：<span class="highlight-color">{{detail.replycount}}</span></span>
 					</div>
 					<div class="detailLeft_content">
-						<h3 class="author">{{detail.nickName}}</h3>
 						<div class="avatar"  :class="{'is-admin':detail.systemUser==1}">
-							<a href="javascript:;">
-								<el-image style="width: 130px; height: 130px" :src="$IMG_URL+ detail.userImgUrl" :fit="'contain'">
-									<div slot="error" class="image-slot">
-										<i class="el-icon-picture-outline"></i>
-									</div>
-								</el-image>
-							</a>
+							<el-image style="width: 130px; height: 130px" :src="$IMG_URL+ detail.userImgUrl" :fit="'contain'">
+								<div slot="error" class="image-slot">
+									<i class="el-icon-picture-outline"></i>
+								</div>
+							</el-image>
 						</div>
-						<ul class="otherinfo">
-							<li class="other-group">
-								<label class="fl">组别</label>
-								<span class="admin">{{detail.systemUser==1?'版主':"用户"}}</span>
-							</li>
-							<li class="other-level">
-								<label class="fl">用户等级</label>
-								<span>{{detail.userLvl}}</span>
-							</li>
-							<li class="other-exp">
-								<label class="fl">经验值</label>
-								<span class="proNum"> {{detail.userPoints}}</span>
-								<progress-bar :current="detail.userPoints" :total="detail.nextLvlPoints"></progress-bar>
-							</li>
-						</ul>
+						<div class="userTopic">
+							<span class="author">{{detail.nickName}}</span>
+							<span class="level"><img src="@/assets/images/icon-level.png" />Lv{{detail.userLvl}}</span>
+						</div>
+						<div class="probar">
+							<progress-bar :current="detail.userPoints" :total="detail.nextLvlPoints"></progress-bar>
+						</div>
+						<div class="followBtn">
+							<span class="follow" v-if="!islogin" @click="goLogin">未关注</span>
+							<span class="follow" v-else-if="islogin && !detail.isfollow" @click="getFollow(detail.cid,'detail')">立即关注</span>
+							<span class="follow" v-else-if="islogin && detail.isfollow" @click="delFollow(detail.cid,'detail')">已关注</span>
+						</div>
 					</div>
 				</div>
 				<div class="detailRight fr">
@@ -68,7 +62,7 @@
 			<div class="ov commit replay" v-for="(item,index) in replyList" :key="index.toString()" :id="'floor__'+((page-1)*limit+index+2)">
 				<div class="detailLeft fl">
 					<div class="detailLeft_content">
-						<h3 class="author">{{item.nickname}}</h3>
+						
 						<div class="avatar" :class="{'is-admin':item.systemUser==1}">
 							<a href="">
 								<el-image style="width: 130px; height: 130px" :src="$IMG_URL+ item.userImgUrl" :fit="'contain'">
@@ -78,21 +72,18 @@
 								</el-image>
 							</a>
 						</div>
-						<ul class="otherinfo">
-							<li class="other-group">
-								<label class="fl">组别</label>
-								<span class="admin">{{item.systemUser==1?'版主':"用户"}}</span>
-							</li>
-							<li class="other-level">
-								<label class="fl">用户等级</label>
-								<span>{{item.userLvl}}</span>
-							</li>
-							<li class="other-exp">
-								<label class="fl">经验值</label>
-								<span class="proNum"> {{item.userPoints}}</span>
-								<progress-bar :current="item.userPoints" :total="item.nextLvlPoints"></progress-bar>
-							</li>
-						</ul>
+						<div class="userTopic">
+							<h3 class="author">{{item.nickname}}</h3>
+							<span class="level"><img src="@/assets/images/icon-level.png" />Lv{{item.userLvl}}</span>
+						</div>
+						<div class="probar">
+							<progress-bar :current="item.userPoints" :total="item.nextLvlPoints"></progress-bar>
+						</div>
+						<div class="followBtn">
+							<span class="follow" v-if="!islogin" @click="goLogin">未关注</span>
+							<span class="follow" v-else-if="islogin && !item.isfollow" @click="getFollow(item.userId,'list')">立即关注</span>
+							<span class="follow" v-else-if="islogin && item.isfollow" @click="delFollow(item.userId,'list')">已关注</span>
+						</div>
 					</div>
 				</div>
 				<div class="detailRight fr">
@@ -127,7 +118,6 @@
 							<!-- <span>举报</span> -->
 							<i class="el-icon-delete" @click="delDis(item.id)">删除</i>
 						</span>
-
 					</div>
 				</div>
 			</div>
@@ -266,6 +256,35 @@
 			}
 		},
 		methods: {
+			async getFollow (id,type) { //关注
+				await api.getFollow(id).then(res=>{
+					if(res.code ==0){
+						this.$message({
+							message: '关注成功',
+							type: 'success'
+						})
+						type=='detail'?
+							this.getDetail(this.$route.params.id)
+						:	this.getDetailReply(this.$route.params.id)
+					}
+				})
+			},
+			async delFollow(id,type){
+				await api.delFollow(id).then(res=>{
+					if(res.code ==0){
+						this.$message({
+							message:'取消关注成功',
+							type:'success'
+						})
+						type=='detail'?
+							this.getDetail(this.$route.params.id)
+						:	this.getDetailReply(this.$route.params.id)
+					}
+				})
+			},
+			goLogin(){ 
+				this.loginVisible=true
+			},
 			goEdit(id){
 				window.open('/editTopic?id=' + id)
 			},
@@ -505,6 +524,7 @@
 		},
 		created() {
 			this.updateCount(this.$route.params.id)
+			this.$store.dispatch('getUser')
 			this.getDetail(this.$route.params.id);
 			if (this.$route.query.floor) {
 				var _page = Math.ceil(this.$route.query.floor / this.limit);
@@ -554,14 +574,43 @@
 
 			.detailLeft_content {
 				.author {
-					overflow: hidden;
-					height: 36px;
-					line-height: 36px;
-					border-bottom: 1px dashed #CDCDCD;
 					font-weight: 700;
-					padding-left: 20px;
+					padding-left: 10px;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+					width: 90px;
+					display: inline-block;
 				}
-
+				.level {
+					background: #ffbe24;
+					padding:1px 5px;
+					border-radius: 4px;
+					color:#fff;
+					margin-left:5px;
+					img {
+						margin-right:5px;
+					}
+				}
+				.probar {
+					width: 160px;
+					/* margin-top: 15px; */
+					margin: 0 auto;
+					margin-top: 15px;
+				}
+				.follow {
+					color: #409eff;
+					border: 1px solid #409eff;
+					display: block;
+					margin: 0 auto;
+					text-align: center;
+					width: 75px;
+					padding: 5px 10px;
+					margin-top: 10px;
+					border-radius: 4px;
+					background: #ebf5ff;
+					cursor: pointer;
+				}
 				.avatar {
 					width: 130px;
 					margin: 10px 20px;
@@ -604,17 +653,17 @@
 							// margin-left:-5px;
 						}
 
-						.admin {
-							color: #9933CC;
+						// .admin {
+						// 	color: #9933CC;
 
-							&.is-admin {
-								background-image: url('../../assets/images/icon-crown-admin.png');
-								background-repeat: no-repeat;
-								background-position: right center;
-								background-size: contain;
-								padding-right: 30px;
-							}
-						}
+						// 	&.is-admin {
+						// 		background-image: url('../../assets/images/icon-crown-admin.png');
+						// 		background-repeat: no-repeat;
+						// 		background-position: right center;
+						// 		background-size: contain;
+						// 		padding-right: 30px;
+						// 	}
+						// }
 					}
 				}
 			}
@@ -794,8 +843,8 @@
 			font-size: 18px;
 		}
 	}
-
 	.hide {
 		display: block !important;
 	}
+
 </style>

@@ -218,7 +218,7 @@ export default new Vuex.Store({
 				if (res.code == 0) {
 					dispatch('Login', res.data.sectionid);
 					commit('GET_USER', res.data);
-					commit("SET_URSERID",user.id)
+					commit("SET_URSERID",res.data.id)
 					if (res.data.imgurl)
 						res.data.imgurl = _IMG_URL + res.data.imgurl;
 

@@ -73,3 +73,13 @@ export function updateTopic(data) { //更新贴子详情
 		data
 	})
 }
+export function getFollow(data){ //用户关注贴子
+	return request(`/usersCenter/addfollow/${data}`,{
+		method:'get'
+	})
+}
+export function delFollow(data){ //用户关注贴子
+	return request(`/usersCenter/delfollow/${data}`,{
+		method:'get'
+	})
+}

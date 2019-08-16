@@ -30,5 +30,6 @@
 	.bar {
 		background-color: #409EFF; 
 		padding-left: 5px;
+		color: #fff;
 	}
 </style>
