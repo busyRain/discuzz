@@ -10,7 +10,7 @@
 					</div>
 					<div class="detailLeft_content">
 						<div class="avatar" :class="{1:'is-admin',2:'is-writer'}[detail.systemUser]">
-							<el-image style="width: 130px; height: 130px" :src="$IMG_URL+ detail.userImgUrl" :fit="'contain'">
+							<el-image style="width: 130px; height: 130px" :src="$IMG_URL+ detail.userImgUrl" :fit="'cover'">
 								<div slot="error" class="image-slot">
 									<i class="el-icon-picture-outline"></i>
 								</div>
@@ -65,7 +65,7 @@
 
 						<div class="avatar" :class="{1:'is-admin',2:'is-writer'}[item.systemUser]">
 							<a href="">
-								<el-image style="width: 130px; height: 130px" :src="$IMG_URL+ item.userImgUrl" :fit="'contain'">
+								<el-image style="width: 130px; height: 130px" :src="$IMG_URL+ item.userImgUrl" :fit="'cover'">
 									<div slot="error" class="image-slot">
 										<i class="el-icon-picture-outline"></i>
 									</div>
@@ -703,6 +703,7 @@
 						&.followed{
 							background:#f3f3f3;
 							color: #a0a0a0;
+							border-color: #ccc;
 						}
 					}
 				}
