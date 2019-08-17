@@ -9,7 +9,7 @@
 						<span>回复：<span class="highlight-color">{{detail.replycount}}</span></span>
 					</div>
 					<div class="detailLeft_content">
-						<div class="avatar"  :class="{'is-admin':detail.systemUser==1}">
+						<div class="avatar" :class="{1:'is-admin',2:'is-writer'}[detail.systemUser]">
 							<el-image style="width: 130px; height: 130px" :src="$IMG_URL+ detail.userImgUrl" :fit="'contain'">
 								<div slot="error" class="image-slot">
 									<i class="el-icon-picture-outline"></i>
@@ -24,9 +24,9 @@
 							<progress-bar :current="detail.userPoints" :total="detail.nextLvlPoints"></progress-bar>
 						</div>
 						<div class="followBtn">
-							<span class="follow" v-if="!islogin" @click="goLogin">未关注</span>
-							<span class="follow" v-else-if="islogin && !detail.isfollow" @click="getFollow(detail.cid,'detail')">立即关注</span>
-							<span class="follow" v-else-if="islogin && detail.isfollow" @click="delFollow(detail.cid,'detail')">已关注</span>
+							<span class="follow" v-if="!islogin" @click="goLogin"><i class="el-icon-plus"></i>&nbsp;未关注</span>
+							<span class="follow" v-else-if="islogin && !detail.isfollow" @click="getFollow(detail.cid,'detail')"><i class="el-icon-plus"></i>&nbsp;立即关注</span>
+							<span class="follow followed" v-else-if="islogin && detail.isfollow" @click="delFollow(detail.cid,'detail')">已关注</span>
 						</div>
 					</div>
 				</div>
@@ -52,7 +52,7 @@
 						<a class="replayBtn" @click="addReplay(detail.id)">回复</a>
 						<!-- <a class="editBtn" v-if="loginStatus">编辑</a> -->
 						<p class="fr">
-							<a class="editBtn"  v-if="topCid==getUserId" @click="goEdit(detail.id)" >编辑</a>
+							<a class="editBtn" v-if="topCid==getUserId" @click="goEdit(detail.id)">编辑</a>
 							<!-- <span>删除</span>
                 <span>禁言</span> -->
 						</p>
@@ -62,8 +62,8 @@
 			<div class="ov commit replay" v-for="(item,index) in replyList" :key="index.toString()" :id="'floor__'+((page-1)*limit+index+2)">
 				<div class="detailLeft fl">
 					<div class="detailLeft_content">
-						
-						<div class="avatar" :class="{'is-admin':item.systemUser==1}">
+
+						<div class="avatar" :class="{1:'is-admin',2:'is-writer'}[item.systemUser]">
 							<a href="">
 								<el-image style="width: 130px; height: 130px" :src="$IMG_URL+ item.userImgUrl" :fit="'contain'">
 									<div slot="error" class="image-slot">
@@ -80,11 +80,11 @@
 							<progress-bar :current="item.userPoints" :total="item.nextLvlPoints"></progress-bar>
 						</div>
 						<div class="followBtn">
-							<span class="follow" v-if="!islogin" @click="goLogin">未关注</span>
-							
-							<span class="follow" v-else-if="islogin && !item.isfollow" @click="getFollow(item.userId,'list')">立即关注</span>
-							<span class="follow" v-else-if="islogin && item.isfollow" @click="delFollow(item.userId,'list')">已关注</span>
-							
+							<span class="follow" v-if="!islogin" @click="goLogin"><i class="el-icon-plus"></i>&nbsp;未关注</span>
+
+							<span class="follow" v-else-if="islogin && !item.isfollow" @click="getFollow(item.userId,'list')"><i class="el-icon-plus"></i>&nbsp;立即关注</span>
+							<span class="follow followed" v-else-if="islogin && item.isfollow" @click="delFollow(item.userId,'list')">已关注</span>
+
 						</div>
 					</div>
 				</div>
@@ -152,10 +152,10 @@
 		 @getNewList="getNewList" :sectionid="sectionid"></show-reply>
 		<div class="scroll-top-btn">
 			<el-button type="text" class="el-button-collect" :disabled="colDisabled" @click="doCollected">
-				<img src="@/assets/images/addCollect.png" v-show="!isCollected"/>
-				<img src="@/assets/images/delCollect.png" v-show="isCollected"/>
+				<img src="@/assets/images/addCollect.png" v-show="!isCollected" />
+				<img src="@/assets/images/delCollect.png" v-show="isCollected" />
 			</el-button>
-			
+
 		</div>
 	</div>
 </template>
@@ -170,7 +170,7 @@
 		name: "detail",
 		data() {
 			return {
-				topCid:'',//发贴人id
+				topCid: '', //发贴人id
 				detail: [],
 				defaultMsg: '',
 				replyList: [],
@@ -190,19 +190,20 @@
 				ruleForm: {},
 				isShowReplay: false, //没有回复可见
 				loginVisible: false,
-				isCollected: false,//是否收藏
-				colDisabled:false, //收藏按钮
-				followDisabled:false,//关注按钮
+				isCollected: false, //是否收藏
+				colDisabled: false, //收藏按钮
+				followDisabled: false, //关注按钮
 				config: {
 					toolbars: [
 						[
 							'undo', 'redo', 'removeformat', 'formatmatch', '|',
 							'paragraph', 'fontfamily', 'fontsize', 'forecolor', '|',
-							'bold', 'italic', 'underline', '|','link','|',
+							'bold', 'italic', 'underline', '|', 'link', '|',
 							'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|',
 							'simpleupload', 'insertvideo', 'horizontal', '|',
-							'emotion','|',
-							'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 
+							'emotion', '|',
+							'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol',
+							'mergecells',
 							'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols'
 						]
 					],
@@ -260,11 +261,11 @@
 			reachFloor: function() {
 				return this.$route.query.floor || 0;
 			},
-			getUserId:{
-				get:function(){
+			getUserId: {
+				get: function() {
 					return this.$store.state.userId;
 				},
-				set:function(){}
+				set: function() {}
 			}
 		},
 		methods: {
@@ -273,7 +274,7 @@
 					await api.getCollected({
 						"outid": this.$route.params.id,
 						"typeid": 4
-					}).then(res=>{
+					}).then(res => {
 						if (res.code === 0) {
 							this.isCollected = res.data;
 						}
@@ -288,16 +289,16 @@
 						this.setCollected();
 					}
 				} else {
-					this.loginVisible=true
+					this.loginVisible = true
 				}
 			},
 			async setCollected() { //去收藏		
-				this.colDisabled = true;	
+				this.colDisabled = true;
 				await api.setCollected({
 					"outid": this.$route.params.id,
 					"typeid": 4
-				}).then(res=>{
-					
+				}).then(res => {
+
 					if (res.code == 0) {
 						this.colDisabled = false;
 						this.$message({
@@ -310,23 +311,23 @@
 						this.$message({
 							message: '收藏贴子失败~',
 							type: 'warning',
-							
+
 						});
 					}
 				});
 			},
 			async cancelCollected() {
-				this.colDisabled = true;	
+				this.colDisabled = true;
 				await api.cancelCollected({
 					"outid": this.$route.params.id,
 					"typeid": 4
-				}).then(res =>{
+				}).then(res => {
 					if (res.code == 0) {
 						this.colDisabled = false;
 						this.$message({
 							message: '取消收藏~',
 							type: 'success',
-							
+
 						});
 						this.isCollected = false;
 					} else {
@@ -334,41 +335,41 @@
 						this.$message({
 							message: '取消贴子失败~',
 							type: 'warning',
-						
+
 						});
 					}
 				});
 			},
-			async getFollow (id,type) { //关注
-				await api.getFollow(id).then(res=>{
-					if(res.code ==0){
+			async getFollow(id, type) { //关注
+				await api.getFollow(id).then(res => {
+					if (res.code == 0) {
 						this.$message({
 							message: '关注成功~',
 							type: 'success'
 						})
-						type=='detail'?
-							this.getDetail(this.$route.params.id)
-						:	this.getDetailReply(this.$route.params.id)
+						type == 'detail' ?
+							this.getDetail(this.$route.params.id) :
+							this.getDetailReply(this.$route.params.id)
 					}
 				})
 			},
-			async delFollow(id,type){
-				await api.delFollow(id).then(res=>{
-					if(res.code ==0){
+			async delFollow(id, type) {
+				await api.delFollow(id).then(res => {
+					if (res.code == 0) {
 						this.$message({
-							message:'取消关注成功~',
-							type:'success'
+							message: '取消关注成功~',
+							type: 'success'
 						})
-						type=='detail'?
-							this.getDetail(this.$route.params.id)
-						:	this.getDetailReply(this.$route.params.id)
+						type == 'detail' ?
+							this.getDetail(this.$route.params.id) :
+							this.getDetailReply(this.$route.params.id)
 					}
 				})
 			},
-			goLogin(){ 
-				this.loginVisible=true
+			goLogin() {
+				this.loginVisible = true
 			},
-			goEdit(id){
+			goEdit(id) {
 				window.open('/editTopic?id=' + id)
 			},
 			selectText: function(floor) {
@@ -666,46 +667,57 @@
 					width: 90px;
 					display: inline-block;
 				}
+
 				.level {
 					background: #ffbe24;
-					padding:1px 5px;
+					padding: 1px 5px;
 					border-radius: 4px;
-					color:#fff;
-					margin-left:5px;
+					color: #fff;
+					margin-left: 5px;
+
 					img {
-						margin-right:5px;
+						margin-right: 5px;
 					}
 				}
+
 				.probar {
-					width: 160px;
-					/* margin-top: 15px; */
-					margin: 0 auto;
-					margin-top: 15px;
+					width: 150px; 
+					margin: 15px auto 0 auto; 
 				}
-				.follow {
-					color: #409eff;
-					border: 1px solid #409eff;
-					display: block;
-					margin: 0 auto;
+
+				.followBtn {
 					text-align: center;
-					width: 75px;
-					padding: 5px 10px;
-					margin-top: 10px;
-					border-radius: 4px;
-					background: #ebf5ff;
-					cursor: pointer;
+					padding-top: 15px;
+
+					.follow {
+						color: #409eff;
+						border: 1px solid #409eff;
+						display: inline-block;
+						text-align: center;
+						padding: 8px 10px;
+						border-radius: 4px;
+						background: #ebf5ff;
+						cursor: pointer;
+						box-sizing: border-box;
+						
+						&.followed{
+							background:#f3f3f3;
+							color: #a0a0a0;
+						}
+					}
 				}
+
 				.avatar {
 					width: 130px;
 					margin: 10px 20px;
+					position: relative;
 
 					img {
 						border: 5px solid #e6e6e6;
 					}
-					
-					&.is-admin{
-						position: relative;
-						&::after{
+
+					&.is-admin {
+						&::after {
 							display: block;
 							content: "";
 							position: absolute;
@@ -713,14 +725,30 @@
 							width: 95px;
 							height: 70px;
 							position: absolute;
-							top:0;
+							top: 0;
+							right: 0;
+						}
+					}
+
+					&.is-writer {
+						&::after {
+							display: block;
+							content: "";
+							position: absolute;
+							background: url("../../assets/images/icon-writer-flag.png") no-repeat 32px -5px;
+							width: 95px;
+							height: 70px;
+							position: absolute;
+							top: 0;
 							right: 0;
 						}
 					}
 				}
+
 				.otherinfo {
 					overflow: hidden;
 					margin: 5px 10px 5px 20px;
+
 					li {
 						overflow: hidden;
 						// height: 28px;
@@ -730,6 +758,7 @@
 						label {
 							width: 80px;
 						}
+
 						.proNum {
 							// margin-left:-5px;
 						}
@@ -737,12 +766,15 @@
 				}
 			}
 		}
+
 		.detailRight {
 			width: 1019px;
 			min-height: 400px;
 			border-left: 1px solid #CDCDCD;
+
 			.detailRight_info {
 				margin-bottom: 40px;
+
 				.detailRight_info_title {
 					border-bottom: 4px solid #E6E6E6;
 					overflow: hidden;
@@ -752,9 +784,11 @@
 					font-size: 16px;
 					font-weight: bold;
 				}
+
 				.detailRight_info_content {
 					padding: 0 20px;
 					vertical-align: top;
+
 					.pi {
 						margin-bottom: 10px;
 						overflow: hidden;
@@ -763,6 +797,7 @@
 						border-bottom: 1px dashed #E6E7E1;
 						position: relative;
 						cursor: pointer;
+
 						img {
 							width: 16px;
 							margin-top: 4px;
@@ -784,11 +819,11 @@
 							font-style: normal;
 						}
 					}
-					
+
 					a {
 						text-decoration: underline;
 					}
-					
+
 					.contentDetail {
 						line-height: 30px;
 
@@ -812,7 +847,7 @@
 							strong {
 								font-weight: bold
 							}
-						} 
+						}
 					}
 				}
 			}
@@ -907,9 +942,11 @@
 			font-size: 18px;
 		}
 	}
+
 	.hide {
 		display: block !important;
 	}
+
 	.scroll-top-btn {
 		position: fixed;
 		bottom: 100px;
@@ -917,5 +954,4 @@
 		z-index: 99;
 		margin-left: 1210px;
 	}
-
 </style>
