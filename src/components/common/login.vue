@@ -3,7 +3,7 @@
 		<el-dialog :visible.sync="loginVisible" :before-close="cancel" :close-on-click-modal="false">
 			<div class="loginbg">
 				<div class="form-header">
-					<div class="title">会员注册</div>
+					<div class="title">会员登录</div>
 					<div class="sub-title">
 						<span>Welcome to</span>&nbsp;
 						<span>Fei Le Yuan.</span>

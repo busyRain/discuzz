@@ -439,8 +439,11 @@
 				this.getDetailReply(this.$route.params.id);
 				this.getDetail(this.$route.params.id);
 			},
-			cancel(val) {
+			cancel(val,showLogin) {
 				this.replyDialog = val
+				if(showLogin=='showLogin'){
+					this.loginVisible=true
+				}
 			},
 			reply(id) { //发表回复
 				if (this.islogin) {

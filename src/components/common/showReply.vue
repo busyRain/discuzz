@@ -24,7 +24,7 @@
                 </ueditor>
                 <el-button class="add" @click="replay" type="primary" size="medium">发表回复</el-button>
             </div>
-             <login-block :loginVisible="loginVisible" @cancel="loginCancel"></login-block>
+            <!-- <login-block :loginVisible="loginVisible" @cancel="loginCancel"></login-block> -->
         </el-dialog>
     </div>
 </template>
@@ -32,6 +32,7 @@
 import ueditor from '@/components/common/ueditor';
 import * as api from '@/api/detail';
 import loginBlock from '@/components/common/login'
+import { setTimeout } from 'timers';
 export default {
     name:"replay",
     props:['replyDialog','topicid','replyContent','noShow','sectionid'],
@@ -44,17 +45,17 @@ export default {
             defaultMsg:"",
             config: {
                toolbars:[[
-							'undo', 'redo', 'removeformat', 'formatmatch', '|',
-							'paragraph', 'fontfamily', 'fontsize', 'forecolor', '|',
-							'bold', 'italic', 'underline', '|','link','|',
-							'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|',
-							'simpleupload', 'insertvideo', 'horizontal', '|',
-							'emotion','|',
-							'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 
-							'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols'
-						]],
+                    'undo', 'redo', 'removeformat', 'formatmatch', '|',
+                    'paragraph', 'fontfamily', 'fontsize', 'forecolor', '|',
+                    'bold', 'italic', 'underline', '|','link','|',
+                    'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|',
+                    'simpleupload', 'insertvideo', 'horizontal', '|',
+                    'emotion','|',
+                    'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 
+                    'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols'
+                ]],
                 'insertorderedlist':{
-                        decimal: "1,2,3...",
+                    decimal: "1,2,3...",
                     "lower-alpha": "a,b,c...",
                     "lower-roman": "i,ii,iii...",
                     "upper-alpha": "A,B,C...",
@@ -71,15 +72,14 @@ export default {
                 zIndex:2000
             },
             data:{},
-            loginVisible:false,
         }
     },
     methods:{
-        loginCancel(data){
-            this.loginVisible=data
-        },
+        // loginCancel(data){
+        //     this.loginVisible=data
+        // },
         cancel(){
-            this.$emit("cancel",false)
+            this.$emit("cancel",false,'')
         },
         async replay(){
             let content = encodeURIComponent(this.$refs.ueditor.getUEContent())
@@ -98,7 +98,6 @@ export default {
                     sectionid:this.sectionid,
                     topicid:this.topicid,
                     content:content,
-                    
                 }
             }
             await api.addReply(this.data).then(res=>{
@@ -109,8 +108,9 @@ export default {
                     })
                     this.$refs.ueditor.clearContent()
                     this.$emit("getNewList")
-                }else if(res.status==403){
-                   this.loginVisible = true
+                }else if(res.status==403){ 
+                     this.$emit("cancel",false,'showLogin')
+                    
                 }
             })
         }
