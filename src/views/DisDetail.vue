@@ -59,23 +59,25 @@
 						if (sessionStorage.getItem('navList')) {
 							that.navList = JSON.parse(sessionStorage.getItem('navList'))
 						} else {
-							that.section.forEach(function(item) {
-								if (item.id == currentSectionId) {
-									that.navList.push({
-										url: 'disList/' + item.id,
-										name: item.name
-									})
-								} else {
-									item.childList.forEach(function(itemChild) {
-										if (itemChild.id == currentSectionId) {
-											that.navList.push({
-												url: 'disList/' + itemChild.id,
-												name: itemChild.name
-											})
-										}
-									})
-								}
-							});
+							if (that.section.length > 0) {
+								that.section.forEach(function(item) {
+									if (item.id == currentSectionId) {
+										that.navList.push({
+											url: '/disList/' + item.id,
+											name: item.name
+										})
+									} else {
+										item.childList.forEach(function(itemChild) {
+											if (itemChild.id == currentSectionId) {
+												that.navList.push({
+													url: '/disList/' + itemChild.id,
+													name: itemChild.name
+												})
+											}
+										})
+									}
+								});
+							}
 						}
 						that.navList.push({
 							url: that.$route.path,

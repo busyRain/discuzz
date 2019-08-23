@@ -24,8 +24,8 @@
 							<progress-bar :current="detail.userPoints" :total="detail.nextLvlPoints"></progress-bar>
 						</div>
 						<div class="followBtn">
-							<span class="follow" v-if="!islogin" @click="goLogin"><i class="el-icon-plus"></i>&nbsp;未关注</span>
-							<span class="follow" v-else-if="islogin && !detail.isfollow" @click="getFollow(detail.cid,'detail')"><i class="el-icon-plus"></i>&nbsp;立即关注</span>
+							<!-- <span class="follow" v-if="!islogin" @click="goLogin"><i class="el-icon-plus"></i>&nbsp;未关注</span> -->
+							<span class="follow" v-if="islogin || !detail.isfollow" @click="getFollow(detail.cid,'detail')"><i class="el-icon-plus"></i>&nbsp;关注</span>
 							<span class="follow followed" v-else-if="islogin && detail.isfollow" @click="delFollow(detail.cid,'detail')">已关注</span>
 						</div>
 					</div>
@@ -80,9 +80,9 @@
 							<progress-bar :current="item.userPoints" :total="item.nextLvlPoints"></progress-bar>
 						</div>
 						<div class="followBtn">
-							<span class="follow" v-if="!islogin" @click="goLogin"><i class="el-icon-plus"></i>&nbsp;未关注</span>
+							<!-- <span class="follow" v-if="!islogin" @click="goLogin"><i class="el-icon-plus"></i>&nbsp;未关注</span> -->
 
-							<span class="follow" v-else-if="islogin && !item.isfollow" @click="getFollow(item.userId,'list')"><i class="el-icon-plus"></i>&nbsp;立即关注</span>
+							<span class="follow" v-if="islogin || !item.isfollow" @click="getFollow(item.userId,'list')"><i class="el-icon-plus"></i>&nbsp;关注</span>
 							<span class="follow followed" v-else-if="islogin && item.isfollow" @click="delFollow(item.userId,'list')">已关注</span>
 
 						</div>
@@ -341,17 +341,21 @@
 				});
 			},
 			async getFollow(id, type) { //关注
-				await api.getFollow(id).then(res => {
-					if (res.code == 0) {
-						this.$message({
-							message: '关注成功~',
-							type: 'success'
-						})
-						type == 'detail' ?
-							this.getDetail(this.$route.params.id) :
-							this.getDetailReply(this.$route.params.id)
-					}
-				})
+				if (this.islogin) {
+					await api.getFollow(id).then(res => {
+						if (res.code == 0) {
+							this.$message({
+								message: '关注成功~',
+								type: 'success'
+							})
+							type == 'detail' ?
+								this.getDetail(this.$route.params.id) :
+								this.getDetailReply(this.$route.params.id)
+						}
+					})
+				} else {
+					this.goLogin();
+				}
 			},
 			async delFollow(id, type) {
 				await api.delFollow(id).then(res => {
