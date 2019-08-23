@@ -50,14 +50,36 @@
 		methods: {
 			sitDiscuzz() {},
 			async getDetail(id) {
+				var that = this;
 				await api.getDetail(id).then(res => {
 					const data = res.data
 					if (res.code == 0) {
-						this.detail = data
-
-						this.navList.push({
-							url: this.$route.path,
-							name: this.detail.title
+						that.detail = data;
+						var currentSectionId = that.detail.sectionid;
+						if (sessionStorage.getItem('navList')) {
+							that.navList = JSON.parse(sessionStorage.getItem('navList'))
+						} else {
+							that.section.forEach(function(item) {
+								if (item.id == currentSectionId) {
+									that.navList.push({
+										url: 'disList/' + item.id,
+										name: item.name
+									})
+								} else {
+									item.childList.forEach(function(itemChild) {
+										if (itemChild.id == currentSectionId) {
+											that.navList.push({
+												url: 'disList/' + itemChild.id,
+												name: itemChild.name
+											})
+										}
+									})
+								}
+							});
+						}
+						that.navList.push({
+							url: that.$route.path,
+							name: that.detail.title
 						})
 					}
 				})
@@ -68,16 +90,13 @@
 						data
 					} = res
 					if (res.code == 0) {
-						this.section = data
+						this.section = data;
 					}
 				})
 			},
 		},
 		created() {
-			this.getSection()
-			if (sessionStorage.getItem('navList')) {
-				this.navList = JSON.parse(sessionStorage.getItem('navList'))
-			}
+			this.getSection();
 			this.getDetail(this.$route.params.id)
 		}
 	}

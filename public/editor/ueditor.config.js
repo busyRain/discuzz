@@ -20,7 +20,6 @@
      * window.UEDITOR_HOME_URL = "/xxxx/xxxx/";
      */
     var URL = window.UEDITOR_HOME_URL || getUEBasePath();
-    console.log(URL)
     var serverUrl = ''
      if(process.env.NODE_ENV === 'production'){
         serverUrl='https://api.feileyuan.com/'

@@ -6,13 +6,13 @@
 					<!--主题标题-->
 					<div class="postLi">
 						<div class="post-title cleardis">
-							<router-link :to="{path:`/disDetail/${item.id}`}" tag="a" target="_blank" v-html="item.title"></router-link>
 							<span class="uscat_pt" v-if="item.isrecommend">
 								置顶
 							</span>
 							<span class="uscat_pt" v-if="item.isessence">
 								精
 							</span>
+							<router-link :to="{path:`/disDetail/${item.id}`}" tag="a" target="_blank" v-html="item.title"></router-link>
 						</div>
 						<div class="info2 cleardis">
 							<span class="fr">
@@ -185,13 +185,13 @@
 					}
 
 					.uscat_pt {
-						color: #fff;
-						background: #1C8CE9;
+						color: #ff0000;
+						border:solid 1px #ff0000;
 						font-size: 12px;
-						padding: 4px 3px;
+						padding: 3px 10px;
 						display: inline-block;
 						border-radius: 3px;
-						margin-left: 10px;
+						margin-right: 10px;
 					}
 				}
 

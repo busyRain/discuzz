@@ -439,10 +439,10 @@
 				this.getDetailReply(this.$route.params.id);
 				this.getDetail(this.$route.params.id);
 			},
-			cancel(val,showLogin) {
+			cancel(val, showLogin) {
 				this.replyDialog = val
-				if(showLogin=='showLogin'){
-					this.loginVisible=true
+				if (showLogin == 'showLogin') {
+					this.loginVisible = true
 				}
 			},
 			reply(id) { //发表回复
@@ -610,8 +610,9 @@
 			})
 		},
 		created() {
-			this.updateCount(this.$route.params.id)
-			this.$store.dispatch('getUser')
+			this.updateCount(this.$route.params.id);
+			if (this.islogin)
+				this.$store.dispatch('getUser');
 			this.getDetail(this.$route.params.id);
 			this.getCollected();
 			if (this.$route.query.floor) {
@@ -684,8 +685,8 @@
 				}
 
 				.probar {
-					width: 150px; 
-					margin: 15px auto 0 auto; 
+					width: 150px;
+					margin: 15px auto 0 auto;
 				}
 
 				.followBtn {
@@ -702,9 +703,9 @@
 						background: #ebf5ff;
 						cursor: pointer;
 						box-sizing: border-box;
-						
-						&.followed{
-							background:#f3f3f3;
+
+						&.followed {
+							background: #f3f3f3;
 							color: #a0a0a0;
 							border-color: #ccc;
 						}

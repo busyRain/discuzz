@@ -31,7 +31,7 @@ export default new Vuex.Store({
 		email: localStorage.getItem("email") || "",
 		member: localStorage.getItem("member") || "",
 		getUsers: {},
-		userId:localStorage.getItem("userId") || "",
+		userId: localStorage.getItem("userId") || "",
 	},
 	mutations: {
 		SET_HTTPAUTH: function(state, value) {
@@ -57,7 +57,7 @@ export default new Vuex.Store({
 			state.username = username;
 			state.auth = auth;
 		},
-		SET_URSERID:function(state,value){
+		SET_URSERID: function(state, value) {
 			localStorage.setItem("userId", value);
 			state.userId = value;
 		},
@@ -87,11 +87,11 @@ export default new Vuex.Store({
 			state.member = value;
 		},
 		GET_SECTIONID: (state, params) => {
-			
-			localStorage.removeItem("sectionIds");			
+
+			localStorage.removeItem("sectionIds");
 			var dateExpire = new Date(),
 				siteCookies = document.cookie.split("; ");
-			
+
 			dateExpire.setTime(dateExpire.getTime() - 100000);
 			for (var idx = 0; idx < siteCookies.length; idx++) {
 				var itemCookie = siteCookies[idx],
@@ -101,7 +101,7 @@ export default new Vuex.Store({
 						";path=/;";
 				}
 			}
-			
+
 			state.sectionIds = params;
 			localStorage.setItem("sectionIds", params);
 			var exdate = new Date();
@@ -160,8 +160,7 @@ export default new Vuex.Store({
 				function(response) {
 					if (response.code == 0) {
 						var user = response.data;
-						console.log(response.data)
-						commit("SET_URSERID",user.id)
+						commit("SET_URSERID", user.id)
 						if (user.imgurl)
 							user.imgurl = _IMG_URL + user.imgurl;
 
@@ -215,10 +214,10 @@ export default new Vuex.Store({
 			dispatch
 		}, params) {
 			await apiLogin.getUser().then(res => {
-				if (res.code == 0) {
+				if (res && res.code == 0) {
 					dispatch('Login', res.data.sectionid);
 					commit('GET_USER', res.data);
-					commit("SET_URSERID",res.data.id)
+					commit("SET_URSERID", res.data.id)
 					if (res.data.imgurl)
 						res.data.imgurl = _IMG_URL + res.data.imgurl;
 
@@ -227,13 +226,14 @@ export default new Vuex.Store({
 					commit("SET_MOBILE", res.data.tel);
 					commit("SET_EMAIL", res.data.loginname);
 					commit("SET_MEMBER", res.data);
+				} else {
+					commit("CLEAR");
 				}
 			})
 		}
 	},
 	getters: {
 		disList: state => {
-			console.log(state.disList);
 			return state.disList;
 		},
 		isShowAdd: state => {
