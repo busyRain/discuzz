@@ -30,7 +30,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="detailRight fr">
+				<div class="detailRight fr" :style="'background:url('+imgUrl+') no-repeat center center;backgroundSize:10%'" >
 					<div class="detailRight_info">
 						<div class="detailRight_info_title">{{detail.title}}</div>
 						<div class="detailRight_info_content ov" ref="detailRight_info_content">
@@ -166,10 +166,14 @@
 	import showReply from '@/components/common/showReply'
 	import voteBlock from '@/components/detail/voteBlock'
 	import loginBlock from '@/components/common/login'
+	import orginUrl from '@/assets/images/original.png'
+	import boUrl from "@/assets/images/bo.png"
+	import boutiqueUrl from "@/assets/images/boutique.png"
 	export default {
 		name: "detail",
 		data() {
 			return {
+				//orginUrl:'@/assets/images/original.png',
 				topCid: '', //发贴人id
 				detail: [],
 				defaultMsg: '',
@@ -244,6 +248,16 @@
 			loginBlock
 		},
 		computed: {
+			imgUrl:function(){
+					if(!!this.detail.isessence && !!this.detail.isHomeRecommend){
+						return boUrl
+					}else if(!!this.detail.isessence){
+						return boutiqueUrl
+					}else if(!!this.detail.isHomeRecommend){
+						return orginUrl
+					}
+					
+			},
 			islogin: {
 				get: function() {
 					return !!this.$store.state.token;
@@ -780,7 +794,7 @@
 			width: 1019px;
 			min-height: 400px;
 			border-left: 1px solid #CDCDCD;
-
+			
 			.detailRight_info {
 				margin-bottom: 40px;
 

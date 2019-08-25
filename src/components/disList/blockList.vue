@@ -270,7 +270,6 @@
 		width: 40px;
 		z-index: 99;
 		margin-left: 1210px;
-
 		li {
 			width: 45px;
 			height: 50px;
