@@ -151,6 +151,9 @@
 		<show-reply :replyDialog="replyDialog" :topicid="topicid" @cancel="cancel" :replyContent="replyContent" :noShow="noShow"
 		 @getNewList="getNewList" :sectionid="sectionid"></show-reply>
 		<div class="scroll-top-btn">
+			<el-button type="text"  class="el-button-goTop" @click="goTop">
+				<img src="@/assets/images/goTop.png" />
+			</el-button>
 			<el-button type="text" class="el-button-collect" :disabled="colDisabled" @click="doCollected">
 				<img src="@/assets/images/addCollect.png" v-show="!isCollected" />
 				<img src="@/assets/images/delCollect.png" v-show="isCollected" />
@@ -283,6 +286,9 @@
 			}
 		},
 		methods: {
+			goTop(){
+				document.body.scrollTop = document.documentElement.scrollTop = 0;
+			},
 			async getCollected() { //查看当前是否收藏
 				if (this.islogin) {
 					await api.getCollected({
@@ -976,5 +982,8 @@
 		width: 40px;
 		z-index: 99;
 		margin-left: 1210px;
+	}
+	.el-button-goTop {
+		margin-left: 10px;
 	}
 </style>
