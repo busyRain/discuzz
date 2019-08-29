@@ -25,7 +25,7 @@
 									border-radius: 50%;
 									margin-right: 10px;
 									cursor: pointer;"
-								 :src="$IMG_URL+ item.userImgUrl" :fit="'contain'">
+								 :src="$IMG_URL+ item.userImgUrl" :fit="'cover'">
 									<div slot="error" class="image-slot">
 										<i class="el-icon-picture-outline"></i>
 									</div>

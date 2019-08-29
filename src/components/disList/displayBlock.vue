@@ -268,14 +268,12 @@
 					border: 3px solid #fff;
 					border-radius: 50%;
 					background: #fff;
+					box-shadow: 0px 0px 6px rgba(0,0,0,0.12);
 				}
 
 				.join-circle {
 					display: block;
-					margin: 66px 0 0 10px;
-					// width: 80px;
-					// height: 28px;
-					// border-radius: 5px;
+					margin: 66px 0 0 10px; 
 					color: #1C8CE9;
 					border: 1px solid #1C8CE9;
 				}
@@ -346,16 +344,9 @@
 				float: right;
 				display: block;
 				margin: 41px auto 0;
-				margin-right: 20px;
-				/* width: 100px; */
-				/* height: 38px; */
-				border: 1px solid #1C8CE9;
-				/* border-radius: 5px; */
-				color: #1C8CE9;
-				/* text-align: center; */
-				/* font-size: 14px; */
-				/* line-height: 36px; */
-				/* cursor: pointer; */
+				margin-right: 20px; 
+				border: 1px solid #1C8CE9; 
+				color: #1C8CE9; 
 			}
 		}
 	}

@@ -8,35 +8,14 @@
 						<span class="pipe">|</span>
 						<span>回复：<span class="highlight-color">{{detail.replycount}}</span></span>
 					</div>
-					<div class="detailLeft_content">
-						<div class="avatar" :class="{1:'is-admin',2:'is-writer'}[detail.systemUser]">
-							<el-image style="width: 130px; height: 130px" :src="$IMG_URL+ detail.userImgUrl" :fit="'cover'">
-								<div slot="error" class="image-slot">
-									<i class="el-icon-picture-outline"></i>
-								</div>
-							</el-image>
-						</div>
-						<div class="userTopic">
-							<span class="author">{{detail.nickName}}</span>
-							<span class="level"><img src="@/assets/images/icon-level.png" />Lv{{detail.userLvl}}</span>
-						</div>
-						<div class="probar">
-							<progress-bar :current="detail.userPoints" :total="detail.nextLvlPoints"></progress-bar>
-						</div>
-						<div class="followBtn">
-							<!-- <span class="follow" v-if="!islogin" @click="goLogin"><i class="el-icon-plus"></i>&nbsp;未关注</span> -->
-							<span class="follow" v-if="islogin || !detail.isfollow" @click="getFollow(detail.cid,'detail')"><i class="el-icon-plus"></i>&nbsp;关注</span>
-							<span class="follow followed" v-else-if="islogin && detail.isfollow" @click="delFollow(detail.cid,'detail')">已关注</span>
-						</div>
-					</div>
+					<user-card class="detailLeft_content" :user="detail" :from="'list'" @reload="reloadDetail"></user-card>
 				</div>
-				<div class="detailRight fr" :style="'background:url('+imgUrl+') no-repeat center center;backgroundSize:10%'" >
+				<div class="detailRight fr" :style="'background:url('+imgUrl+') no-repeat center center;backgroundSize:10%'">
 					<div class="detailRight_info">
 						<div class="detailRight_info_title">{{detail.title}}</div>
 						<div class="detailRight_info_content ov" ref="detailRight_info_content">
 							<div class="pi" @click="selectText(1)">
-								<img src="@/assets/images/ico_lz.png" class="authincn vm">
-								<em>楼主 | 发表于 <span class="highlight-color">{{detail.ctime|dateComment}}</span></em>
+								<em>楼主&nbsp;|&nbsp;发表于&nbsp;<span class="highlight-color">{{detail.ctime|dateComment}}</span></em>
 								<strong>楼主</strong>
 							</div>
 							<div class="contentDetail">
@@ -61,39 +40,33 @@
 			</div>
 			<div class="ov commit replay" v-for="(item,index) in replyList" :key="index.toString()" :id="'floor__'+((page-1)*limit+index+2)">
 				<div class="detailLeft fl">
-					<div class="detailLeft_content">
-
+					<user-card class="detailLeft_content" :user="item" :from="'list'" @reload="getDetailReply"></user-card>
+					<!-- <div class="detailLeft_content">
 						<div class="avatar" :class="{1:'is-admin',2:'is-writer'}[item.systemUser]">
-							<a href="">
-								<el-image style="width: 130px; height: 130px" :src="$IMG_URL+ item.userImgUrl" :fit="'cover'">
-									<div slot="error" class="image-slot">
-										<i class="el-icon-picture-outline"></i>
-									</div>
-								</el-image>
-							</a>
+							<el-image style="width: 130px; height: 130px" :src="$IMG_URL+ item.userImgUrl" :fit="'cover'">
+								<div slot="error" class="image-slot">
+									<i class="el-icon-picture-outline"></i>
+								</div>
+							</el-image>
 						</div>
 						<div class="userTopic">
 							<h3 class="author">{{item.nickname}}</h3>
-							<span class="level"><img src="@/assets/images/icon-level.png" />Lv{{item.userLvl}}</span>
+							<span class="level">Lv{{item.userLvl}}</span>
 						</div>
 						<div class="probar">
 							<progress-bar :current="item.userPoints" :total="item.nextLvlPoints"></progress-bar>
 						</div>
 						<div class="followBtn">
-							<!-- <span class="follow" v-if="!islogin" @click="goLogin"><i class="el-icon-plus"></i>&nbsp;未关注</span> -->
-
 							<span class="follow" v-if="islogin || !item.isfollow" @click="getFollow(item.userId,'list')"><i class="el-icon-plus"></i>&nbsp;关注</span>
 							<span class="follow followed" v-else-if="islogin && item.isfollow" @click="delFollow(item.userId,'list')">已关注</span>
-
 						</div>
-					</div>
+					</div> -->
 				</div>
 				<div class="detailRight fr">
 					<div class="detailRight_info">
 						<div class="detailRight_info_content">
 							<div class="pi" @click="selectText((page-1)*limit+index+2)">
-								<img src="@/assets/images/ico_lz.png" class="authincn vm">
-								<em>{{item.nickname}} | 发表于 <span class="highlight-color">{{item.ctime|dateComment}}</span></em>
+								<em>{{item.nickname}}&nbsp;|&nbsp;发表于&nbsp;<span class="highlight-color">{{item.ctime|dateComment}}</span></em>
 								<strong>{{(page-1)*limit+index+2}}楼</strong>
 							</div>
 							<div class="contentDetail">
@@ -128,13 +101,11 @@
 			<el-pagination class="pagination" @current-change="handleCurrentChange" background layout="prev,pager,next,jumper"
 			 :page-size="50" :total="count"></el-pagination>
 		</div>
-		<editortwo :defaultMsg='defaultMsg' :config='config' ref='ue' id="editorTwo">
-		</editortwo>
-		<el-row :gutter="20">
-			<el-col :span="4">
-				<el-button class="add" @click="reply(detail.id)" type="primary" size="medium">发表回复</el-button>
-			</el-col>
-		</el-row>
+		<el-card>
+			<editortwo :defaultMsg='defaultMsg' :config='config' ref='ue' id="editorTwo">
+			</editortwo>
+			<el-button class="add" @click="reply(detail.id)" type="primary" size="medium">发表回复</el-button>
+		</el-card>
 		<el-dialog title="禁言时间" :visible.sync="noAddDialog" width="30%">
 			<el-form :model="ruleForm" :rules="rulesForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
 				<el-form-item prop="time">
@@ -151,7 +122,7 @@
 		<show-reply :replyDialog="replyDialog" :topicid="topicid" @cancel="cancel" :replyContent="replyContent" :noShow="noShow"
 		 @getNewList="getNewList" :sectionid="sectionid"></show-reply>
 		<div class="scroll-top-btn">
-			<el-button type="text"  class="el-button-goTop" @click="goTop">
+			<el-button type="text" class="el-button-goTop" @click="goTop">
 				<img src="@/assets/images/goTop.png" />
 			</el-button>
 			<el-button type="text" class="el-button-collect" :disabled="colDisabled" @click="doCollected">
@@ -163,12 +134,13 @@
 	</div>
 </template>
 <script>
-	import progressBar from '@/components/common/progressBar'
 	import editortwo from "@/components/common/ueditortwo"
 	import * as api from "@/api/detail"
 	import showReply from '@/components/common/showReply'
-	import voteBlock from '@/components/detail/voteBlock'
+	import voteBlock from '@/components/detail/voteBlock';
+	import userCard from '@/components/detail/userCard'
 	import loginBlock from '@/components/common/login'
+
 	import orginUrl from '@/assets/images/original.png'
 	import boUrl from "@/assets/images/bo.png"
 	import boutiqueUrl from "@/assets/images/boutique.png"
@@ -246,20 +218,20 @@
 		components: {
 			showReply,
 			editortwo,
-			progressBar,
 			voteBlock,
-			loginBlock
+			loginBlock,
+			userCard
 		},
 		computed: {
-			imgUrl:function(){
-					if(!!this.detail.isessence && !!this.detail.isHomeRecommend){
-						return boUrl
-					}else if(!!this.detail.isessence){
-						return boutiqueUrl
-					}else if(!!this.detail.isHomeRecommend){
-						return orginUrl
-					}
-					
+			imgUrl: function() {
+				if (!!this.detail.isessence && !!this.detail.isHomeRecommend) {
+					return boUrl
+				} else if (!!this.detail.isessence) {
+					return boutiqueUrl
+				} else if (!!this.detail.isHomeRecommend) {
+					return orginUrl
+				}
+
 			},
 			islogin: {
 				get: function() {
@@ -286,7 +258,7 @@
 			}
 		},
 		methods: {
-			goTop(){
+			goTop() {
 				document.body.scrollTop = document.documentElement.scrollTop = 0;
 			},
 			async getCollected() { //查看当前是否收藏
@@ -359,37 +331,7 @@
 						});
 					}
 				});
-			},
-			async getFollow(id, type) { //关注
-				if (this.islogin) {
-					await api.getFollow(id).then(res => {
-						if (res.code == 0) {
-							this.$message({
-								message: '关注成功~',
-								type: 'success'
-							})
-							type == 'detail' ?
-								this.getDetail(this.$route.params.id) :
-								this.getDetailReply(this.$route.params.id)
-						}
-					})
-				} else {
-					this.goLogin();
-				}
-			},
-			async delFollow(id, type) {
-				await api.delFollow(id).then(res => {
-					if (res.code == 0) {
-						this.$message({
-							message: '取消关注成功~',
-							type: 'success'
-						})
-						type == 'detail' ?
-							this.getDetail(this.$route.params.id) :
-							this.getDetailReply(this.$route.params.id)
-					}
-				})
-			},
+			},			
 			goLogin() {
 				this.loginVisible = true
 			},
@@ -410,10 +352,7 @@
 			},
 			loginCancel(data) {
 				this.loginVisible = data
-			},
-			goReplyTopic() {
-
-			},
+			}, 
 			getDetailNew() {
 				this.getDetail(this.$route.params.id)
 			},
@@ -566,6 +505,10 @@
 					this.loginVisible = true
 				}
 			},
+			reloadDetail(id){
+				this.getDetail(id);
+				this.getDetailReply(id);
+			},
 			async getDetail(id) {
 				await api.getDetail(id).then(res => {
 					const data = res.data
@@ -685,122 +628,14 @@
 				font-size: 14px;
 			}
 
-			.detailLeft_content {
-				.author {
-					font-weight: 700;
-					padding-left: 10px;
-					overflow: hidden;
-					text-overflow: ellipsis;
-					white-space: nowrap;
-					width: 90px;
-					display: inline-block;
-				}
-
-				.level {
-					background: #ffbe24;
-					padding: 1px 5px;
-					border-radius: 4px;
-					color: #fff;
-					margin-left: 5px;
-
-					img {
-						margin-right: 5px;
-					}
-				}
-
-				.probar {
-					width: 150px;
-					margin: 15px auto 0 auto;
-				}
-
-				.followBtn {
-					text-align: center;
-					padding-top: 15px;
-
-					.follow {
-						color: #409eff;
-						border: 1px solid #409eff;
-						display: inline-block;
-						text-align: center;
-						padding: 8px 10px;
-						border-radius: 4px;
-						background: #ebf5ff;
-						cursor: pointer;
-						box-sizing: border-box;
-
-						&.followed {
-							background: #f3f3f3;
-							color: #a0a0a0;
-							border-color: #ccc;
-						}
-					}
-				}
-
-				.avatar {
-					width: 130px;
-					margin: 10px 20px;
-					position: relative;
-
-					img {
-						border: 5px solid #e6e6e6;
-					}
-
-					&.is-admin {
-						&::after {
-							display: block;
-							content: "";
-							position: absolute;
-							background: url("../../assets/images/icon-admin-flag.png") no-repeat 22px -17px;
-							width: 95px;
-							height: 70px;
-							position: absolute;
-							top: 0;
-							right: 0;
-						}
-					}
-
-					&.is-writer {
-						&::after {
-							display: block;
-							content: "";
-							position: absolute;
-							background: url("../../assets/images/icon-writer-flag.png") no-repeat 32px -5px;
-							width: 95px;
-							height: 70px;
-							position: absolute;
-							top: 0;
-							right: 0;
-						}
-					}
-				}
-
-				.otherinfo {
-					overflow: hidden;
-					margin: 5px 10px 5px 20px;
-
-					li {
-						overflow: hidden;
-						// height: 28px;
-						line-height: 28px;
-						position: relative;
-
-						label {
-							width: 80px;
-						}
-
-						.proNum {
-							// margin-left:-5px;
-						}
-					}
-				}
-			}
+			// .detailLeft_content 
 		}
 
 		.detailRight {
 			width: 1019px;
 			min-height: 400px;
 			border-left: 1px solid #CDCDCD;
-			
+
 			.detailRight_info {
 				margin-bottom: 40px;
 
@@ -826,14 +661,11 @@
 						border-bottom: 1px dashed #E6E7E1;
 						position: relative;
 						cursor: pointer;
-
-						img {
-							width: 16px;
-							margin-top: 4px;
-							position: relative;
-							top: 5px;
-							margin-right: 10px;
-						}
+						background-image: url(../../assets/images/ico_lz.png);
+						background-repeat: no-repeat;
+						background-position: 0px 10px;
+						background-size: 15px;
+						padding-left: 25px;
 
 						em {
 							font-style: normal;
@@ -865,7 +697,7 @@
 							zoom: 1;
 
 							blockquote {
-								display: inline-block;
+								display: block;
 								margin: 0;
 								padding: 0 65px 10px 0;
 								background: url(../../assets/images/icon_quote_e.gif) no-repeat 100% 100%;
@@ -983,6 +815,7 @@
 		z-index: 99;
 		margin-left: 1210px;
 	}
+
 	.el-button-goTop {
 		margin-left: 10px;
 	}

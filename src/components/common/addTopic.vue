@@ -30,7 +30,7 @@
 						<el-button @click.prevent="removeDomain(domain)">删除</el-button>
 					</el-form-item>
 					<el-form-item>
-						<el-button @click="addDomain">新增投票选项</el-button>
+						<el-button @click="addDomain" type="primary" plain>新增投票选项</el-button>
 						<el-button @click="resetForm('ruleForm')">重置</el-button>
 					</el-form-item>
 				</div>
@@ -66,6 +66,7 @@
 					domains: [{
 						value: ''
 					}],
+					votetype:""
 				},
 				isvote: false,
 				defaultMsg: '',
@@ -178,8 +179,7 @@
 					if (valid) {
 						if (this.isvote) {
 							let test = []
-							this.ruleForm.domains.map(index => {
-								console.log(index.value)
+							this.ruleForm.domains.map(index => { 
 								test.push(index.value)
 							})
 
@@ -231,7 +231,7 @@
 </script>
 <style lang="scss" scoped>
 	.addTop {
-		margin-top: 40px;
+		padding:15px 20px;
 	}
 
 	.add {

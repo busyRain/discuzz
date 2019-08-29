@@ -51,7 +51,7 @@ export default new Router({
 				},
 				{
 					path: "addTop",
-					component: () => import("./components/disList/showAdd")
+					component: () => import("./views/DisAdd")
 				},
 				{
 					path: "disDetail/:id",
@@ -59,7 +59,11 @@ export default new Router({
 				},
 				{
 					path:"editTopic",
-					component:() =>import("./components/detail/editContent")
+					component:() =>import("./views/DisEdit")
+				},
+				{
+					path:"userhome/:id",
+					component:() =>import("./views/UserHome")
 				}
 			]
 		},		 

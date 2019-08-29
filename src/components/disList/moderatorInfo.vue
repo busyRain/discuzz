@@ -3,7 +3,7 @@
     <h3>版主</h3>
     <ul>
         <li v-for="(item,index) in infoData" :key="index">
-           <el-image :src="$IMG_URL+item.imgurl">
+           <el-image :src="$IMG_URL+item.imgurl" :fit="'cover'">
                 <div slot="error" class="image-slot">
                     <i class="el-icon-picture-outline"></i>
                 </div>

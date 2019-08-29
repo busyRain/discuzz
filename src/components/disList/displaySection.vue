@@ -6,9 +6,8 @@
 				<span>{{item.name}}</span>
 			</label>
 			<div class="childUL" v-if="item.childList.length>0">
-				<router-link v-for="(childItem,childIndex) in item.childList" 
-				:key="childIndex" :to="{path:`/disList/${childItem.id}`}"
-				:class="{ 'is-active': selectId == childItem.id }">{{childItem.name}}</router-link>
+				<router-link v-for="(childItem,childIndex) in item.childList" :key="childIndex" :to="{path:`/disList/${childItem.id}`}"
+				 :class="{ 'is-active': selectId == childItem.id }">{{childItem.name}}</router-link>
 			</div>
 		</div>
 	</div>
@@ -47,9 +46,11 @@
 <style lang="scss" scoped>
 	.sectionList {
 		display: flex;
+
 		.listLi {
-			padding: 20px 30px;
+			padding: 20px 25px;
 			position: relative;
+
 			label {
 				font-size: 20px;
 				padding-bottom: 10px;
@@ -62,27 +63,34 @@
 					font-size: 16px;
 				}
 			}
-			&:not(:last-child){
+
+			&:not(:last-child) {
 				&::after {
 					content: "";
-					border-right: 1px solid #c0c0c3; 
+					border-right: 1px solid #e6e6ea;
 					display: block;
 					position: absolute;
 					right: 0;
-					top:25%;
+					top: 25%;
 					bottom: 25%;
 				}
 			}
-			
+
 			.childUL {
 				text-align: left;
 
 				a {
 					margin: 9px 8px 9px 0px;
 					display: inline-block;
-					padding: 5px;
+					padding: 5px 8px;
 					border-radius: 2px;
 					font-size: 16px;
+
+					&.is-active {
+						border: 1px solid #409eff;
+						color: #409eff;
+						// background: #d7eafe;
+					}
 				}
 			}
 		}
@@ -121,16 +129,10 @@
 			.childUL {
 				margin-left: 12px;
 			}
-		} 
+		}
 
 		.listLi:last-child>.childUL::after {
 			border-right: 0px;
 		}
-	}
-
-	.is-active {
-		border: 1px solid #409eff;
-		color: #409eff;
-		background: #d7eafe;
 	}
 </style>
