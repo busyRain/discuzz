@@ -141,6 +141,7 @@
 		margin: -20px 0 0 0;
 		text-align: left;
 		padding: 20px 20px 20px 0px;
+
 		ul.post-list {
 			>li {
 				padding: 18px 0px 0px 0px;
@@ -186,7 +187,7 @@
 
 					.uscat_pt {
 						color: #ff0000;
-						border:solid 1px #ff0000;
+						border: solid 1px #ff0000;
 						font-size: 12px;
 						padding: 3px 10px;
 						display: inline-block;

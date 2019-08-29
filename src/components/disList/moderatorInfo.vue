@@ -9,8 +9,7 @@
                 </div>
             </el-image>
             <label>{{item.nickname}}</label>
-            <span class="lvicon">
-                <img src="@/assets/images/lvicon.png" />
+            <span class="lvicon"> 
                 Lv{{item.userlvl}}
             </span>
         </li>
@@ -59,7 +58,7 @@ export default {
     }
     label {
         position: relative;
-        bottom: 18px;
+        bottom: 14px;
         left: 15px;
         display: inline-block;
         width: 60px;
@@ -71,18 +70,16 @@ export default {
         white-space: nowrap;
     }
     .lvicon {
-        background: #ffbe24;
+        background-color: #ffbe24;
         border-radius: 3px;
-        padding: 1px 9px;
+        padding: 4px 8px 4px 18px;
         color: #fff;
         position: absolute;
-        bottom: 26px;
-        right: 0;
-        img {
-            width:17px;
-            height:15px;
-        }
-        color:#fff;
+        bottom: 17px;
+        right: 0; 
+		background-image: url(../../assets/images/lvicon.png);
+		background-repeat: no-repeat;
+		background-position: 5px 5px;
     }
     
 }

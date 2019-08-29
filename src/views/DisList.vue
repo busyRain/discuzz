@@ -4,14 +4,11 @@
 	</div>
 </template>
 <script>
-	import displayBlock from '@/components/disList/displayBlock'
-	import blockList from '@/components/disList/blockList'
+	import displayBlock from '@/components/disList/displayBlock' 
 	export default {
 		name: "display",
 		components: {
-			displayBlock,
-			blockList,
-
+			displayBlock, 
 		}
 	}
 </script>

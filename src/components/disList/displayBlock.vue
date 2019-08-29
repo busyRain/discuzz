@@ -15,7 +15,6 @@
 						<div class="club-desc">{{blockTop.synopsis}}</div>
 						<div class="club-desc-line"></div>
 						<div class="club-fan">
-
 							<p class="fan-numb">
 								<span class="fan-text">贴数</span>
 								<b>{{blockTop.topiccount}}</b>
@@ -155,7 +154,7 @@
 					window.open('/addTop?id=' + this.$route.params.id)
 					this.id = this.$route.params.id
 				} else {
-					this.loginVisible = true 
+					this.loginVisible = true
 				}
 			},
 			async getBlockList() {
@@ -178,8 +177,7 @@
 					}
 				})
 			},
-			async getBlockTop(id) {
-				console.log(id)
+			async getBlockTop(id) { 
 				await api.getBlockTop(id).then(res => {
 					const {
 						data
@@ -191,8 +189,7 @@
 							url: this.$route.path,
 							name: this.blockTop.name
 						})
-						sessionStorage.setItem('navList', JSON.stringify(list))
-						console.log(JSON.parse(sessionStorage.getItem('navList')))
+						sessionStorage.setItem('navList', JSON.stringify(list)) 
 					}
 				})
 			},
