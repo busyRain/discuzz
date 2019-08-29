@@ -2,6 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 import Default from "@/layout/master/Default.vue";
 import SubDefault from "@/layout/master/SubDefault.vue";
+import UserDefault from "@/layout/master/UserDefault.vue";
 import store from './store';
 
 Vue.use(Router);
@@ -23,8 +24,7 @@ let limitNotLogin = (to, from, next) => {
 export default new Router({
 	mode: "history",
 	// base: process.env.BASE_URL,
-	routes: [ 
-		{
+	routes: [{
 			path: "/",
 			redirect: 'home',
 			component: Default,
@@ -35,7 +35,7 @@ export default new Router({
 				},
 				{
 					path: "search",
-					name:'search',
+					name: 'search',
 					component: () => import("./views/Search")
 				}
 			]
@@ -44,8 +44,7 @@ export default new Router({
 			path: "/",
 			redirect: 'home',
 			component: SubDefault,
-			children: [
-				{
+			children: [{
 					path: "disList/:id",
 					component: () => import("./views/DisList")
 				},
@@ -58,15 +57,20 @@ export default new Router({
 					component: () => import("./views/DisDetail")
 				},
 				{
-					path:"editTopic",
-					component:() =>import("./views/DisEdit")
+					path: "editTopic",
+					component: () => import("./views/DisEdit")
 				},
-				{
-					path:"userhome/:id",
-					component:() =>import("./views/UserHome")
-				}
 			]
-		},		 
+		},
+		{
+			path: "/",
+			redirect: 'home',
+			component: UserDefault,
+			children: [{
+				path: "userhome/:id",
+				component: () => import("./views/UserHome")
+			}]
+		},
 		{
 			path: '*',
 			name: '404',

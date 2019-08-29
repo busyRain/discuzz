@@ -169,7 +169,7 @@ body {
 }
 .inner {
   width: 1200px;
-  margin: 0 auto;
+  margin: 0 auto 20px auto;
 }
 .fl,.fr {
   display: inline
@@ -344,7 +344,6 @@ body {
   }
 }
 .bottom {
-  margin-top: 20px;
 	box-shadow: 0px -2px 5px 0px rgba(195, 195, 195, 0.4);
 	.bottom-pane {
 		background-color: #fff;

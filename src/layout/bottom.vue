@@ -36,9 +36,3 @@
 		</div>
 	</div>
 </template>
-
-<script>
-	export default {
-		name: "footerWrapper"
-	}
-</script>
