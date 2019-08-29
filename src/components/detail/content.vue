@@ -30,7 +30,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="detailRight fr">
+				<div class="detailRight fr" :style="'background:url('+imgUrl+') no-repeat center center;backgroundSize:10%'" >
 					<div class="detailRight_info">
 						<div class="detailRight_info_title">{{detail.title}}</div>
 						<div class="detailRight_info_content ov" ref="detailRight_info_content">
@@ -151,6 +151,9 @@
 		<show-reply :replyDialog="replyDialog" :topicid="topicid" @cancel="cancel" :replyContent="replyContent" :noShow="noShow"
 		 @getNewList="getNewList" :sectionid="sectionid"></show-reply>
 		<div class="scroll-top-btn">
+			<el-button type="text"  class="el-button-goTop" @click="goTop">
+				<img src="@/assets/images/goTop.png" />
+			</el-button>
 			<el-button type="text" class="el-button-collect" :disabled="colDisabled" @click="doCollected">
 				<img src="@/assets/images/addCollect.png" v-show="!isCollected" />
 				<img src="@/assets/images/delCollect.png" v-show="isCollected" />
@@ -166,10 +169,14 @@
 	import showReply from '@/components/common/showReply'
 	import voteBlock from '@/components/detail/voteBlock'
 	import loginBlock from '@/components/common/login'
+	import orginUrl from '@/assets/images/original.png'
+	import boUrl from "@/assets/images/bo.png"
+	import boutiqueUrl from "@/assets/images/boutique.png"
 	export default {
 		name: "detail",
 		data() {
 			return {
+				//orginUrl:'@/assets/images/original.png',
 				topCid: '', //发贴人id
 				detail: [],
 				defaultMsg: '',
@@ -244,6 +251,16 @@
 			loginBlock
 		},
 		computed: {
+			imgUrl:function(){
+					if(!!this.detail.isessence && !!this.detail.isHomeRecommend){
+						return boUrl
+					}else if(!!this.detail.isessence){
+						return boutiqueUrl
+					}else if(!!this.detail.isHomeRecommend){
+						return orginUrl
+					}
+					
+			},
 			islogin: {
 				get: function() {
 					return !!this.$store.state.token;
@@ -269,6 +286,9 @@
 			}
 		},
 		methods: {
+			goTop(){
+				document.body.scrollTop = document.documentElement.scrollTop = 0;
+			},
 			async getCollected() { //查看当前是否收藏
 				if (this.islogin) {
 					await api.getCollected({
@@ -780,7 +800,7 @@
 			width: 1019px;
 			min-height: 400px;
 			border-left: 1px solid #CDCDCD;
-
+			
 			.detailRight_info {
 				margin-bottom: 40px;
 
@@ -962,5 +982,8 @@
 		width: 40px;
 		z-index: 99;
 		margin-left: 1210px;
+	}
+	.el-button-goTop {
+		margin-left: 10px;
 	}
 </style>
