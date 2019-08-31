@@ -7,11 +7,12 @@ import store from '../store';
 
 let service = axios.create({
 	baseURL: process.env.VUE_APP_BASE_API,
-	timeout: 10000,
+	timeout: 30000,
 	headers: {
 		"X-Requested-With": "XMLHttpRequest",
 		"Content-Type": "application/json;charset=utf-8"
-	}
+	},
+	retryDelay:10000
 });
 //请求
 service.interceptors.request.use(config => {
@@ -39,12 +40,23 @@ error => {
 	return Promise.reject(error);
 };
 service.interceptors.response.use(
-
 	response => {
-		return response.data;
+		if (response.data.status == 403) { 
+			Message({
+				message: "请重新登录",
+				type: 'error',
+				duration: 5000
+			});
+			console.log(store)
+			store.dispatch("Logout");
+			return Promise.reject(response);
+		} else {
+			return response.data;
+		}
 	},
 	err => {
-
+		console.log("err");
+		console.log(err);
 		if (err && err.response) {
 			switch (err.response.status) {
 				case 400:
@@ -96,7 +108,7 @@ service.interceptors.response.use(
 			err.message = "连接到服务器失败";
 		}
 
-		return Promise.resolve(err.response);
+		return Promise.reject(err.response);
 	}
 );
 export default service;

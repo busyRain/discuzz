@@ -32,6 +32,7 @@ export default new Vuex.Store({
 		member: localStorage.getItem("member") || "",
 		getUsers: {},
 		userId: localStorage.getItem("userId") || "",
+		imgurl:_IMG_URL
 	},
 	mutations: {
 		SET_HTTPAUTH: function(state, value) {

@@ -40,27 +40,7 @@
 			</div>
 			<div class="ov commit replay" v-for="(item,index) in replyList" :key="index.toString()" :id="'floor__'+((page-1)*limit+index+2)">
 				<div class="detailLeft fl">
-					<user-card class="detailLeft_content" :user="item" :from="'list'" @reload="getDetailReply"></user-card>
-					<!-- <div class="detailLeft_content">
-						<div class="avatar" :class="{1:'is-admin',2:'is-writer'}[item.systemUser]">
-							<el-image style="width: 130px; height: 130px" :src="$IMG_URL+ item.userImgUrl" :fit="'cover'">
-								<div slot="error" class="image-slot">
-									<i class="el-icon-picture-outline"></i>
-								</div>
-							</el-image>
-						</div>
-						<div class="userTopic">
-							<h3 class="author">{{item.nickname}}</h3>
-							<span class="level">Lv{{item.userLvl}}</span>
-						</div>
-						<div class="probar">
-							<progress-bar :current="item.userPoints" :total="item.nextLvlPoints"></progress-bar>
-						</div>
-						<div class="followBtn">
-							<span class="follow" v-if="islogin || !item.isfollow" @click="getFollow(item.userId,'list')"><i class="el-icon-plus"></i>&nbsp;关注</span>
-							<span class="follow followed" v-else-if="islogin && item.isfollow" @click="delFollow(item.userId,'list')">已关注</span>
-						</div>
-					</div> -->
+					<user-card class="detailLeft_content" :user="item" :from="'list'" @reload="getDetailReply"></user-card>					
 				</div>
 				<div class="detailRight fr">
 					<div class="detailRight_info">
@@ -129,14 +109,13 @@
 				<img src="@/assets/images/addCollect.png" v-show="!isCollected" />
 				<img src="@/assets/images/delCollect.png" v-show="isCollected" />
 			</el-button>
-
 		</div>
 	</div>
 </template>
 <script>
 	import editortwo from "@/components/common/ueditortwo"
 	import * as api from "@/api/detail"
-	import showReply from '@/components/common/showReply'
+	import showReply from '@/components/common/replyTopic'
 	import voteBlock from '@/components/detail/voteBlock';
 	import userCard from '@/components/detail/userCard'
 	import loginBlock from '@/components/common/login'
@@ -725,7 +704,7 @@
 		margin: 0 20px;
 		width: 972px;
 		cursor: pointer;
-		opacity: 0.2;
+		opacity: 0.4;
 
 		span {
 			margin: 0 5px;

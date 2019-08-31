@@ -1,15 +1,18 @@
 <template>
 	<div class="user-card">
-		<div class="avatar" :class="{1:'is-admin',2:'is-writer'}[user.systemUser]">
-			<el-image style="height: 130px" :src="$IMG_URL+ user.userImgUrl" :fit="'cover'">
-				<div slot="error" class="image-slot">
-					<i class="el-icon-picture-outline"></i>
-				</div>
-			</el-image>
+		<div class="avatar" :class="{'is-admin':user.systemUser==1,'is-writer':user.systemUser==2,'is-auth':user.authenticationname}">
+			<router-link tag="a" :to="'/userhome/'+user.userId">
+				<el-image style="height: 130px" :src="$IMG_URL+ user.userImgUrl" :fit="'cover'">
+					<div slot="error" class="image-slot">
+						<i class="el-icon-picture-outline"></i>
+					</div>
+				</el-image>
+				<div v-if="user.authenticationname" class="title-auth">{{user.authenticationname}}</div>
+			</router-link>			
 		</div>
 		<div class="userTopic">
-			<span class="author">{{user.nickName || user.nickname}}</span>
-			<span class="level">Lv{{user.userLvl}}</span>
+			<span class="author">{{user.nickName || user.nickname}}</span> 
+			<user-level :level="user.userLvl"></user-level>
 		</div>
 		<div class="probar">
 			<progress-bar :current="user.userPoints" :total="user.nextLvlPoints"></progress-bar>
@@ -23,7 +26,8 @@
 
 <script>
 	import * as api from "@/api/detail";
-	import progressBar from '@/components/common/progressBar'
+	import progressBar from '@/components/common/progressBar';
+	import userLevel from '@/components/common/user-level';
 	export default {
 		props: ["user", "from"],
 		computed: {
@@ -36,6 +40,7 @@
 		},
 		components: {
 			progressBar,
+			userLevel
 		},
 		methods: {
 			reload() {
@@ -72,27 +77,30 @@
 </script>
 
 <style lang="scss" scoped>
-	.author {
-		font-weight: 700;
-		padding-left: 10px;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		width: 90px;
-		display: inline-block;
-	}
-
-	.level {
-		background-color: #ffbe24;
-		padding: 2px 8px 2px 30px;
-		border-radius: 4px;
-		color: #fff;
-		margin-left: 5px;
-		background-image: url(../../assets/images/icon-level.png);
-		background-repeat: no-repeat;
-		background-position: 6px 5px;
-	}
-
+	.userTopic{ 
+		padding:0 15px;
+		overflow:hidden;
+		.author {
+			font-weight: 700; 
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			width: 90px;
+			display: inline-block;
+			line-height: 1.5;
+			float: left;
+		} 
+		 
+		.user-level{
+			display: inline-block; 
+			float: right;
+		}
+		&::after{
+			content: " ";
+			clear: both;
+			display: block;
+		}
+	} 
 	.probar {
 		width: 150px;
 		margin: 15px auto 0 auto;
@@ -121,20 +129,49 @@
 		}
 	}
 
-	.avatar { 
-		margin: 10px 20px;
+	.avatar {
+		padding: 10px 20px;
 		position: relative;
-		font-size: 0;
-		.el-image{
+		
+		>a{
+			display: block;
+		} 
+		.el-image {
 			width: 100%;
 			height: 100%;
 			border: 1px solid #e6e6e6;
 			box-sizing: border-box;
-			img{
+
+			img {
 				font-size: 0;
 			}
-		} 
-
+		}
+		&.is-auth{
+			background-image:url(../../assets/images/bg-auth-avatar.png);
+			background-repeat:no-repeat;
+			background-size:170px 138px;
+			background-position:5px 5px;
+			.title-auth{
+				position: absolute;
+				bottom: 20px;  
+				left: 20px;
+				width: 140px;
+				box-sizing: border-box;
+				text-align: center;
+				background-image:url(../../assets/images/icon-auth-flag.png);
+				background-position: -10px;
+				background-size: 160px 50px;
+				background-repeat: no-repeat;
+				padding:5px 8px;
+				font-size: 14px;
+				color: #fff;
+				font-weight: bold;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+		}
+		
 		&.is-admin {
 			&::after {
 				display: block;
@@ -144,8 +181,8 @@
 				width: 95px;
 				height: 70px;
 				position: absolute;
-				top: 0;
-				right: 0;
+				top: 10px;
+				right: 20px;
 			}
 		}
 
@@ -158,8 +195,8 @@
 				width: 95px;
 				height: 70px;
 				position: absolute;
-				top: 0;
-				right: 0;
+				top: 10px;
+				right: 20px;
 			}
 		}
 	}
@@ -169,18 +206,13 @@
 		margin: 5px 10px 5px 20px;
 
 		li {
-			overflow: hidden;
-			// height: 28px;
+			overflow: hidden; 
 			line-height: 28px;
 			position: relative;
 
 			label {
 				width: 80px;
-			}
-
-			.proNum {
-				// margin-left:-5px;
-			}
+			} 
 		}
 	}
 </style>
