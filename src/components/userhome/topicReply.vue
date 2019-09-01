@@ -1,7 +1,7 @@
 <template>
-	<div class="widget-topic">
-		<router-link class="widget-topic__link" :to="'/disDetail/' + topic.id" target="_blank">
-			<div class="widget-topic__subject">
+	<div class="widget-topic-reply">
+		<router-link class="widget-topic-reply__link" :to="'/disDetail/' + topic.topicid" target="_blank">
+			<div class="widget-topic-reply__subject">
 				<div class="is-left">
 					<span class="is-top" v-if="topic.isrecommend">置顶</span>
 					<span class="title" v-text="topic.title"></span>
@@ -10,19 +10,21 @@
 					<span>{{topic.ctime|dateTime}}</span>
 				</div>
 			</div>
-			<div class="widget-topic__content">
-				{{topic.content|subString(50)}}
-				<el-link type="primary">查看更多>></el-link>
+			<div class="widget-topic-reply__content">
+				{{topic.topiccontent|subString(80)}}<el-link type="primary">查看更多>></el-link>
 			</div>
-			<div class="widget-topic__other">
+			<div class="widget-topic-reply__content--reply">
+				<p class="label">回帖说:</p><p>{{topic.content|subString(80)}}</p>
+			</div>
+			<div class="widget-topic-reply__other">
 				<div class="is-left section">
-					<span class="widget-topic__meta meta__section" v-text="topic.sectionText"></span>
+					<span class="widget-topic-reply__meta meta__section" v-text="topic.sectionText"></span>
 				</div>
 				<div class="is-right meta">
-					<span class="widget-topic__meta meta__view">
+					<span class="widget-topic-reply__meta meta__view">
 						浏览（<span v-text="topic.viewcount"></span>）
 					</span>
-					<span class="widget-topic__meta meta__reply">
+					<span class="widget-topic-reply__meta meta__reply">
 						回复（<span v-text="topic.replycount"></span>）
 					</span>
 				</div>
@@ -49,7 +51,7 @@
 	$font-blue: #409eff;
 	$font-white:#fff;
 
-	.widget-topic {
+	.widget-topic-reply {
 		padding: 15px 0;
 		position: relative;
 		border-bottom: solid 1px $borderColor;
@@ -75,7 +77,7 @@
 			display: block;
 		}
 
-		.widget-topic__subject {
+		.widget-topic-reply__subject {
 			display: flex;
 			justify-content: space-between;
 
@@ -106,19 +108,28 @@
 			}
 		}
 
-		.widget-topic__content {
+		.widget-topic-reply__content {
 			font-size: 16px;
 			color: $font-gray;
 			line-height: 1.8;
 			word-break: break-word;
 			padding: 8px 0;
-
-			.el-link {
+			.el-link{
 				font-size: 16px;
 			}
 		}
-
-		.widget-topic__other {
+		.widget-topic-reply__content--reply{
+			background: #f5f7fa;
+			padding:15px;
+			line-height: 1.5;
+			font-size: 14px;
+			.label{
+				font-weight: bold;
+				line-height: 2;
+				color: $font-blue;
+			}
+		}
+		.widget-topic-reply__other {
 			display: flex;
 			justify-content: space-between;
 			color: $font-gray;
@@ -132,7 +143,7 @@
 			.meta {
 				font-size: 16px;
 
-				.widget-topic__meta {
+				.widget-topic-reply__meta {
 					>span {
 						color: $font-blue;
 					}

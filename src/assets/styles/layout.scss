@@ -167,7 +167,7 @@ body {
 									color: $font-black;
 									padding: 8px 10px;
 								}
-								.user-level {
+								.user-exp {
 									.inline {
 										display: inline-block;
 										&.lv {
@@ -449,11 +449,15 @@ body {
 				flex-basis: 50%;
 				border-bottom: solid $borderColor 1px;
 				.title {
-					width: 50%;
+					width: 60%;
 					text-align: center;
 					color: #333333;
 					font-size: 16px;
 					line-height: 3;
+					
+					&:last-child{
+						width: 40%;
+					}
 				}
 			}
 			.pane-content {

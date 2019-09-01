@@ -30,3 +30,10 @@ export function getUserReplyTopicList(params) {
 		params: params
 	});
 }
+
+
+export function addblacklist(data) {
+	return request("/usersCenter/addblacklist?touserid=" + data.touserid, {
+		method: "post"
+	});
+}

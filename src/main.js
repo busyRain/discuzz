@@ -8,7 +8,7 @@ import "@/assets/styles/common.scss";
 import "@/assets/styles/layout.scss";
 import "@/assets/icon/iconfont.css";
 import { formatDate } from "@/utils/formatDate";
-import baseFilter from "@/utils/date";
+import baseFilter from "@/utils/filter";
 
 if (process.env.NODE_ENV == 'development') {
 	Vue.prototype.$IMG_URL = 'https://images.feileyuan.club/';

@@ -1,17 +1,17 @@
 <template>
 	<div class="user-card">
 		<div class="avatar" :class="{'is-admin':user.systemUser==1,'is-writer':user.systemUser==2,'is-auth':user.authenticationname}">
-			<router-link tag="a" :to="'/userhome/'+user.userId">
-				<el-image style="height: 130px" :src="$IMG_URL+ user.userImgUrl" :fit="'cover'">
+			<router-link tag="a" :to="'/userhome/'+user.userId" target="_blank">
+				<el-image :src="$IMG_URL+ user.userImgUrl" :fit="'cover'">
 					<div slot="error" class="image-slot">
 						<i class="el-icon-picture-outline"></i>
 					</div>
 				</el-image>
 				<div v-if="user.authenticationname" class="title-auth">{{user.authenticationname}}</div>
-			</router-link>			
+			</router-link>
 		</div>
 		<div class="userTopic">
-			<span class="author">{{user.nickName || user.nickname}}</span> 
+			<span class="author">{{user.nickName || user.nickname}}</span>
 			<user-level :level="user.userLvl"></user-level>
 		</div>
 		<div class="probar">
@@ -77,11 +77,12 @@
 </script>
 
 <style lang="scss" scoped>
-	.userTopic{ 
-		padding:0 15px;
-		overflow:hidden;
+	.userTopic {
+		padding: 0 15px;
+		overflow: hidden;
+
 		.author {
-			font-weight: 700; 
+			font-weight: 700;
 			overflow: hidden;
 			text-overflow: ellipsis;
 			white-space: nowrap;
@@ -89,18 +90,20 @@
 			display: inline-block;
 			line-height: 1.5;
 			float: left;
-		} 
-		 
-		.user-level{
-			display: inline-block; 
+		}
+
+		.user-level {
+			display: inline-block;
 			float: right;
 		}
-		&::after{
+
+		&::after {
 			content: " ";
 			clear: both;
 			display: block;
 		}
-	} 
+	}
+
 	.probar {
 		width: 150px;
 		margin: 15px auto 0 auto;
@@ -132,37 +135,41 @@
 	.avatar {
 		padding: 10px 20px;
 		position: relative;
-		
-		>a{
-			display: block;
-		} 
-		.el-image {
-			width: 100%;
-			height: 100%;
-			border: 1px solid #e6e6e6;
-			box-sizing: border-box;
 
-			img {
-				font-size: 0;
+		>a {
+			display: block;
+			border: 1px solid #e6e6e6;
+
+			.el-image {
+				width: 100%;
+				height: 130px;
+				box-sizing: border-box;
+				border: solid 5px #FFFFFF;
+
+				img {
+					font-size: 0;
+				}
 			}
 		}
-		&.is-auth{
-			background-image:url(../../assets/images/bg-auth-avatar.png);
-			background-repeat:no-repeat;
-			background-size:170px 138px;
-			background-position:5px 5px;
-			.title-auth{
+
+		&.is-auth {
+			background-image: url(../../assets/images/bg-auth-avatar.png);
+			background-repeat: no-repeat;
+			background-size: 169px 138px;
+			background-position: 5px 5px;
+
+			.title-auth {
 				position: absolute;
-				bottom: 20px;  
+				bottom: 20px;
 				left: 20px;
 				width: 140px;
 				box-sizing: border-box;
 				text-align: center;
-				background-image:url(../../assets/images/icon-auth-flag.png);
+				background-image: url(../../assets/images/icon-auth-flag.png);
 				background-position: -10px;
 				background-size: 160px 50px;
 				background-repeat: no-repeat;
-				padding:5px 8px;
+				padding: 5px 8px;
 				font-size: 14px;
 				color: #fff;
 				font-weight: bold;
@@ -171,32 +178,36 @@
 				text-overflow: ellipsis;
 			}
 		}
-		
+
 		&.is-admin {
-			&::after {
-				display: block;
-				content: "";
-				position: absolute;
-				background: url("../../assets/images/icon-admin-flag.png") no-repeat 22px -17px;
-				width: 95px;
-				height: 70px;
-				position: absolute;
-				top: 10px;
-				right: 20px;
+			>a {
+				&::after {
+					display: block;
+					content: "";
+					position: absolute;
+					background: url("../../assets/images/icon-admin-flag.png") no-repeat 22px -17px;
+					width: 95px;
+					height: 70px;
+					position: absolute;
+					top: 10px;
+					right: 20px;
+				}
 			}
 		}
 
 		&.is-writer {
-			&::after {
-				display: block;
-				content: "";
-				position: absolute;
-				background: url("../../assets/images/icon-writer-flag.png") no-repeat 32px -5px;
-				width: 95px;
-				height: 70px;
-				position: absolute;
-				top: 10px;
-				right: 20px;
+			>a {
+				&::after {
+					display: block;
+					content: "";
+					position: absolute;
+					background: url("../../assets/images/icon-writer-flag.png") no-repeat 32px -5px;
+					width: 95px;
+					height: 70px;
+					position: absolute;
+					top: 10px;
+					right: 20px;
+				}
 			}
 		}
 	}
@@ -206,13 +217,13 @@
 		margin: 5px 10px 5px 20px;
 
 		li {
-			overflow: hidden; 
+			overflow: hidden;
 			line-height: 28px;
 			position: relative;
 
 			label {
 				width: 80px;
-			} 
+			}
 		}
 	}
 </style>
