@@ -10,7 +10,7 @@
 				<div v-if="user.authenticationname" class="title-auth">{{user.authenticationname}}</div>
 			</router-link>
 		</div>
-		<div class="userTopic">
+		<div class="userTopic" v-if="user.systemUser!=66">
 			<span class="author">{{user.nickName || user.nickname}}</span>
 			<user-level :level="user.userLvl"></user-level>
 		</div>
