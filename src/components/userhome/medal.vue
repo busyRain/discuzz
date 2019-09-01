@@ -18,7 +18,7 @@
 		.icon {
 			width: 105px;
 			height: 105px;
-			border: solid 1px #409eff;
+			// border: solid 1px #409eff;
 			background: #fff;
 
 			img {

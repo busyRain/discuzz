@@ -13,6 +13,14 @@ let isLogin = () => { //判断是否登录
 		return false;
 	}
 }
+let limitLogin = (to, from, next) => { //登陆限制 
+	if (isLogin()) {
+		next();
+	} else {
+		location.href = "http://www.feileyuan.com/login";
+	}
+};
+
 let limitNotLogin = (to, from, next) => {
 	if (isLogin()) {
 		next('/');
@@ -66,8 +74,10 @@ export default new Router({
 			path: "/",
 			redirect: 'home',
 			component: UserDefault,
+			beforeEnter: limitLogin,
 			children: [{
 				path: "userhome/:id",
+				beforeEnter: limitLogin,
 				component: () => import("./views/UserHome")
 			}]
 		},

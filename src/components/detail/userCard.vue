@@ -1,6 +1,6 @@
 <template>
 	<div class="user-card">
-		<div class="avatar" :class="{'is-admin':user.systemUser==1,'is-writer':user.systemUser==2,'is-auth':user.authenticationname}">
+		<div class="avatar" :class="{'is-admin':user.systemUser==1,'is-writer':user.systemUser==2,'is-auth':user.authenticationname,'is-host':user.systemUser==66,}">
 			<router-link tag="a" :to="'/userhome/'+user.userId" target="_blank">
 				<el-image :src="$IMG_URL+ user.userImgUrl" :fit="'cover'">
 					<div slot="error" class="image-slot">
@@ -207,6 +207,21 @@
 					position: absolute;
 					top: 10px;
 					right: 20px;
+				}
+			}
+		}
+		&.is-host {
+			>a {
+				&::after {
+					display: block;
+					content: "";
+					position: absolute;
+					background: url("../../assets/images/icon-host-flag.png") no-repeat 32px -5px;
+					width: 95px;
+					height: 70px;
+					position: absolute;
+					top: 9px;
+					right: 18px;
 				}
 			}
 		}
