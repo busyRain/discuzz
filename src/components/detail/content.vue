@@ -32,15 +32,18 @@
 						<!-- <a class="editBtn" v-if="loginStatus">编辑</a> -->
 						<p class="fr">
 							<a class="editBtn" v-if="topCid==getUserId" @click="goEdit(detail.id)">编辑</a>
-							<!-- <span>删除</span>
-                <span>禁言</span> -->
+							<!-- <span>删除</span> -->
+							<span v-if="islogin && ismon" @click="noAdd(detail.userId)">禁言</span>
 						</p>
 					</div>
+					<template v-if="!!detail.isessence || !!detail.isHomeRecommend">
+						<div class="is-flag" :class="{'is-b':!!detail.isessence,'is-o':!!detail.isHomeRecommend,'is-b-o':(!!detail.isessence && !!detail.isHomeRecommend)}"></div>
+					</template>
 				</div>
 			</div>
 			<div class="ov commit replay" v-for="(item,index) in replyList" :key="index.toString()" :id="'floor__'+((page-1)*limit+index+2)">
 				<div class="detailLeft fl">
-					<user-card class="detailLeft_content" :user="item" :from="'list'" @reload="getDetailReply"></user-card>					
+					<user-card class="detailLeft_content" :user="item" :from="'list'" @reload="getDetailReply"></user-card>
 				</div>
 				<div class="detailRight fr">
 					<div class="detailRight_info">
@@ -120,9 +123,9 @@
 	import userCard from '@/components/detail/userCard'
 	import loginBlock from '@/components/common/login'
 
-	import orginUrl from '@/assets/images/original.png'
-	import boUrl from "@/assets/images/bo.png"
-	import boutiqueUrl from "@/assets/images/boutique.png"
+	// import orginUrl from '@/assets/images/original.png'
+	// import boUrl from "@/assets/images/bo.png"
+	// import boutiqueUrl from "@/assets/images/boutique.png"
 	export default {
 		name: "detail",
 		data() {
@@ -203,13 +206,13 @@
 		},
 		computed: {
 			imgUrl: function() {
-				if (!!this.detail.isessence && !!this.detail.isHomeRecommend) {
-					return boUrl
-				} else if (!!this.detail.isessence) {
-					return boutiqueUrl
-				} else if (!!this.detail.isHomeRecommend) {
-					return orginUrl
-				}
+				// if (!!this.detail.isessence && !!this.detail.isHomeRecommend) {
+				// 	return boUrl
+				// } else if (!!this.detail.isessence) {
+				// 	return boutiqueUrl
+				// } else if (!!this.detail.isHomeRecommend) {
+				// 	return orginUrl
+				// }
 
 			},
 			islogin: {
@@ -310,7 +313,7 @@
 						});
 					}
 				});
-			},			
+			},
 			goLogin() {
 				this.loginVisible = true
 			},
@@ -331,7 +334,7 @@
 			},
 			loginCancel(data) {
 				this.loginVisible = data
-			}, 
+			},
 			getDetailNew() {
 				this.getDetail(this.$route.params.id)
 			},
@@ -484,7 +487,7 @@
 					this.loginVisible = true
 				}
 			},
-			reloadDetail(id){
+			reloadDetail(id) {
 				this.getDetail(id);
 				this.getDetailReply(id);
 			},
@@ -614,6 +617,7 @@
 			width: 1019px;
 			min-height: 400px;
 			border-left: 1px solid #CDCDCD;
+			position: relative;
 
 			.detailRight_info {
 				margin-bottom: 40px;
@@ -689,6 +693,26 @@
 							}
 						}
 					}
+				}
+			}
+
+			.is-flag {
+				position: absolute;
+				top: 15px;
+				right: 65px;
+				height: 100px;
+				width: 200px;
+				background-repeat: no-repeat;
+				background-position: right top;
+
+				&.is-o {
+					background-image: url(../../assets/images/flag-topic-original.png);
+				}
+				&.is-b {
+					background-image: url(../../assets/images/flag-topic-boutique.png);
+				}
+				&.is-b-o {
+					background-image: url(../../assets/images/flag-topic-b-o.png);
 				}
 			}
 		}
