@@ -20,7 +20,7 @@ service.interceptors.request.use(config => {
 		config.url += "&_t=" + new Date().getTime();
 	} else {
 		config.url += "?_t=" + new Date().getTime();
-	}
+	} 
 	//token放到header里
 	try {
 
@@ -43,20 +43,17 @@ service.interceptors.response.use(
 	response => {
 		if (response.data.status == 403) { 
 			Message({
-				message: "请重新登录",
+				message: "登录信息失效，请重新登录", 
 				type: 'error',
 				duration: 5000
-			});
-			console.log(store)
+			}); 
 			store.dispatch("Logout");
 			return Promise.reject(response);
 		} else {
 			return response.data;
 		}
 	},
-	err => {
-		console.log("err");
-		console.log(err);
+	err => { 
 		if (err && err.response) {
 			switch (err.response.status) {
 				case 400:

@@ -1,15 +1,14 @@
 <template>
-	<div class="editTopic">
-
-		<div class="title">
-			<span>贴子标题：</span>
-			<span>{{detail.title}}</span>
+	<div class="editTopic  board-box">
+		<div class="editor-container">
+			<div class="title">
+				<span>贴子标题：</span>
+				<span>{{detail.title}}</span>
+			</div>
+			<ueditor :defaultMsg=defaultMsg :config=config ref="ue">
+			</ueditor>
+			<el-button type="primary" @click="updateTopic">确 定</el-button>
 		</div>
-		<ueditor :defaultMsg=defaultMsg :config=config ref="ue">
-		</ueditor>
-
-		<el-button type="primary" @click="updateTopic">确 定</el-button>
-
 	</div>
 </template>
 <script>
@@ -103,7 +102,7 @@
 <style lang="scss" scoped>
 	.editTopic {
 		margin-top: 20px;
-
+		padding:15px;
 		.title {
 			padding: 20px 0;
 			font-size: 16px;

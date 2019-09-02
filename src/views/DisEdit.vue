@@ -6,7 +6,7 @@
 	import editTopic from '@/components/common/editTopic';
 	export default {
 		components:{
-			addTopic
+			editTopic
 		}
 	}
 </script>

@@ -32,16 +32,19 @@ export default new Vuex.Store({
 		member: localStorage.getItem("member") || "",
 		getUsers: {},
 		userId: localStorage.getItem("userId") || "",
-		imgurl:_IMG_URL
+		imgurl: _IMG_URL
 	},
 	mutations: {
 		SET_HTTPAUTH: function(state, value) {
+			localStorage.removeItem("auth");
 			var auth = escape(Base64.encode(JSON.stringify(value)));
 			localStorage.setItem("auth", auth);
 
+			localStorage.removeItem("token");
 			var token = escape(Base64.encode(value.token));
 			localStorage.setItem("token", token);
 
+			localStorage.removeItem("username");
 			var username = escape(Base64.encode(value.username));
 			localStorage.setItem("username", username);
 
@@ -59,10 +62,12 @@ export default new Vuex.Store({
 			state.auth = auth;
 		},
 		SET_URSERID: function(state, value) {
+			localStorage.removeItem("userId");
 			localStorage.setItem("userId", value);
 			state.userId = value;
 		},
 		SET_NICKNAME: function(state, value) {
+			localStorage.removeItem("nickname");
 			localStorage.setItem("nickname", value);
 			state.nickname = value;
 		},
@@ -118,8 +123,8 @@ export default new Vuex.Store({
 		},
 
 		GET_USERINFO: (state, params) => {
-			state.token = params.token
-			state.username = params.username
+			state.token = params.token;
+			state.username = params.username;
 			localStorage.setItem("token", state.token)
 			localStorage.setItem("username", state.username)
 		},
@@ -240,7 +245,6 @@ export default new Vuex.Store({
 		isShowAdd: state => {
 			return state.isShowAdd;
 		},
-
 		userInfo: state => {
 			return userInfo
 		}

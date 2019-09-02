@@ -1,5 +1,4 @@
-import request from "@/utils/request";
-import postForm from "@/utils/postFormData";
+import request from "@/utils/request"; 
 export function getDetail(id) {
 	//获取主楼详情
 	return request(`/topic/${id}`, {
@@ -8,9 +7,21 @@ export function getDetail(id) {
 }
 export function addDis(data) {
 	//发贴子
-	return postForm("/topiclogin/addtopic", {
+	return request("/topiclogin/addtopic", {
 		method: "post",
-		data
+		data,
+		transformRequest: [
+			function(data) {
+				let ret = "";
+				for (let it in data) {
+					ret += encodeURIComponent(it) + "=" + encodeURIComponent(data[it]) + "&";
+				}
+				return ret;
+			}
+		],
+		headers: {
+			"Content-Type": "application/x-www-form-urlencoded"
+		}
 	});
 }
 export function getReplay(data) {
@@ -54,7 +65,6 @@ export function deletebymoderator(data) {
 	})
 }
 export function noAddTopic(data) {
-	console.log(data)
 	//禁言
 	return request(`/section/banned/${data.id}`, {
 		method: "post",
@@ -68,36 +78,36 @@ export function addVoteTop(data) {
 	})
 }
 export function updateTopic(data) { //更新贴子详情
-	return request('/topiclogin/updatnewetopic',{
-		method:"post",
+	return request('/topiclogin/updatnewetopic', {
+		method: "post",
 		data
 	})
 }
-export function getFollow(data){ //用户关注贴子
-	return request(`/usersCenter/addfollow/${data}`,{
-		method:'get'
+export function getFollow(data) { //用户关注贴子
+	return request(`/usersCenter/addfollow/${data}`, {
+		method: 'get'
 	})
 }
-export function delFollow(data){ //用户关注贴子
-	return request(`/usersCenter/delfollow/${data}`,{
-		method:'get'
+export function delFollow(data) { //用户关注贴子
+	return request(`/usersCenter/delfollow/${data}`, {
+		method: 'get'
 	})
 }
 export function getCollected(data) { //检测收藏
-	return request("collect/getcollect",{
-		method:"get",
+	return request("collect/getcollect", {
+		method: "get",
 		params: data
 	});
 }
 export function setCollected(data) { //收藏
-	return request("collect/addCollect",{
-		method:"post",
+	return request("collect/addCollect", {
+		method: "post",
 		data
 	});
 }
 export function cancelCollected(data) { //取消收藏
-	return request("/collect/cancelcollect",{
-		method:"post",
+	return request("/collect/cancelcollect", {
+		method: "post",
 		data
 	});
 }

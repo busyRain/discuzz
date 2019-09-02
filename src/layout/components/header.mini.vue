@@ -60,6 +60,9 @@
 		},
 		computed: {
 			isLogin: function() {
+				if (!this.$store.state.auth) {
+					this.$store.dispatch('Logout');
+				}
 				return !!this.$store.state.auth;
 			},
 			me: function() {
@@ -75,7 +78,7 @@
 				return _me;
 			}
 		},
-		components:{
+		components: {
 			userLevel
 		},
 		methods: {
