@@ -10,7 +10,8 @@
 					</div>
 					<user-card class="detailLeft_content" :user="detail" :from="'list'" @reload="reloadDetail"></user-card>
 				</div>
-				<div class="detailRight fr" :style="'background:url('+imgUrl+') no-repeat center center;backgroundSize:10%'">
+				<!-- :style="'background:url('+imgUrl+') no-repeat center center;backgroundSize:10%'" -->
+				<div class="detailRight fr">
 					<div class="detailRight_info">
 						<div class="detailRight_info_title">{{detail.title}}</div>
 						<div class="detailRight_info_content ov" ref="detailRight_info_content">
@@ -205,16 +206,16 @@
 			userCard
 		},
 		computed: {
-			imgUrl: function() {
-				// if (!!this.detail.isessence && !!this.detail.isHomeRecommend) {
-				// 	return boUrl
-				// } else if (!!this.detail.isessence) {
-				// 	return boutiqueUrl
-				// } else if (!!this.detail.isHomeRecommend) {
-				// 	return orginUrl
-				// }
-
-			},
+			// 			imgUrl: function() {
+			// if (!!this.detail.isessence && !!this.detail.isHomeRecommend) {
+			// 	return boUrl
+			// } else if (!!this.detail.isessence) {
+			// 	return boutiqueUrl
+			// } else if (!!this.detail.isHomeRecommend) {
+			// 	return orginUrl
+			// }
+			// 
+			// 			},
 			islogin: {
 				get: function() {
 					return !!this.$store.state.token;
@@ -708,9 +709,11 @@
 				&.is-o {
 					background-image: url(../../assets/images/flag-topic-original.png);
 				}
+
 				&.is-b {
 					background-image: url(../../assets/images/flag-topic-boutique.png);
 				}
+
 				&.is-b-o {
 					background-image: url(../../assets/images/flag-topic-b-o.png);
 				}

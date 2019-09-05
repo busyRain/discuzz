@@ -1,22 +1,21 @@
 <template>
 	<div>
 		<div v-if="!!content.isvote && content.userisvote==false">
-			<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-				<div v-if="content.votetype==1">
-					<el-form-item label="单选投票" prop="votevals">
-						<el-radio-group v-model="ruleForm.votevals">
-							<el-radio :label="item.id" :key="item.id" v-for="item in content.topicvotelist">{{item.votename}}</el-radio>
-						</el-radio-group>
-					</el-form-item>
-				</div>
-				<div v-else>
-					<el-form-item label="多选投票" prop="votevals">
-						<el-checkbox-group v-model="ruleForm.votevalsChk">
-							<el-checkbox v-for="(value,index) in  content.topicvotelist" :label="value.id" name="votevals" @change="chooseItem(value.id)">{{value.votename}}</el-checkbox>
-						</el-checkbox-group>
-					</el-form-item>
-				</div>
-				<el-button @click="submitForm('ruleForm')">保存投票</el-button>
+			<el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm" :label-position="'top'">
+				<el-form-item label="单选投票" prop="votevals" v-if="content.votetype==1">
+					<el-radio-group v-model="ruleForm.votevals">
+						<el-radio :label="item.id" :key="item.id" v-for="item in content.topicvotelist">{{item.votename}}</el-radio>
+					</el-radio-group>
+				</el-form-item>
+				<el-form-item label="多选投票" prop="votevals" v-else>
+					<el-checkbox-group v-model="ruleForm.votevalsChk">
+						<el-checkbox v-for="(value,index) in  content.topicvotelist" :key="index.toString()" :label="value.id" name="votevals"
+						 @change="chooseItem(value.id)">{{value.votename}}</el-checkbox>
+					</el-checkbox-group>
+				</el-form-item>
+				<el-form-item>
+					<el-button @click="submitForm('ruleForm')">保存投票</el-button>
+				</el-form-item>
 			</el-form>
 		</div>
 		<div v-else-if="!!content.userisvote" class="demo-ruleForm">
@@ -24,7 +23,8 @@
 			<ul>
 				<li v-for="(value,index) in content.topicvotelist">
 					{{value.votename}}: <span class="voteblock" :style="{width:value.votecount+'px'}"></span>
-					{{value.votecount}}票</li>
+					{{value.votecount}}票
+				</li>
 			</ul>
 		</div>
 	</div>
@@ -89,8 +89,6 @@
 			chooseItem(data) {
 				console.log(data)
 			}
-
-
 		}
 	}
 </script>
@@ -98,6 +96,13 @@
 	.demo-ruleForm {
 		border-top: 2px solid #E6E6E6;
 		margin-top: 20px;
+
+		.el-radio-group {
+			.el-radio {
+				padding: 10px;
+				display: block;
+			}
+		}
 	}
 
 	.voteblock {
