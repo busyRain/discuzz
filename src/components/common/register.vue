@@ -13,7 +13,7 @@
                     <div class="title">会员注册</div>
                     <div class="sub-title">
                         <span>Welcome to</span>&nbsp;
-                        <span>Fei Paradise.</span>
+                        <span>Fei Le Yuan.</span>
                     </div>
                </div> 
             </div>
@@ -31,7 +31,7 @@
                             <el-form-item prop="vCode">
                                 <el-input v-model="formMobile.vCode" type="text" placeholder="验证码">
                                     <template slot="append">
-                                        <div class="get-code cursor" @click="sendMobileMessage"><span v-text="formMobile.counter.text"></span></div>
+										<el-button size="medium"  @click="sendMobileMessage">{{formMobile.counter.text}}</el-button> 
                                     </template>
                                 </el-input>
                             </el-form-item>
@@ -63,7 +63,7 @@
                             <el-form-item prop="emailCode">
                                 <el-input v-model="formEmail.emailCode" type="text" placeholder="邮箱验证码">
                                     <template slot="append">
-                                        <div class="get-code cursor" @click="sendEmailMessage"><span v-text="formEmail.counter.text"></span></div>
+										<el-button @click="sendEmailMessage">{{formEmail.counter.text}}</el-button> 
                                     </template>
                                 </el-input>
                             </el-form-item>
@@ -149,7 +149,7 @@ export default {
 					surePassword: '',
 					vCode: '',
 					counter: {
-						text: '验证码',
+						text: '发送手机验证码',
 						seconds: 120,
 						func: null
 					}
@@ -160,7 +160,7 @@ export default {
 					surePassword: '',
 					emailCode: '',
 					counter: {
-						text: '邮箱验证码',
+						text: '发送邮箱验证码',
 						seconds: 120,
 						func: null
 					}
@@ -174,10 +174,10 @@ export default {
 					userPhone: [{
 						validator: (rule, value, callback) => {
 							if (!value) {
-								return callback(new Error('请输入10位手机号,如 1234567890'));
+								return callback(new Error('请输入10位手机号,如 096699998888'));
 								// } else if (!/^(13[0-9]|14[0-9]|15[0-9]|17[0-9]|18[0-9]|19[0-9]|16[0-9])\d{8}$/.test(value)) {
 							} else if (!/^(\+?\d{10})$/.test(value)) {
-								return callback(new Error('请输入10位手机号,如 1234567890'));
+								return callback(new Error('请输入10位手机号,如 096699998888'));
 							}
 							callback && callback();
 						},
