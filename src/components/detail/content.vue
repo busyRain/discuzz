@@ -23,7 +23,7 @@
 								<p v-html="detail.content" ref="contentDetail"></p>
 								<div ref="openfullbtn" class="open-full-btn" v-if="isShowReplay==true">
 									<i class="el-icon-unlock"></i>
-									<a href="#editorTwo"> 回贴查看隐藏内容</a></div>
+									<a href="#editorTwo"> 回帖查看隐藏内容</a></div>
 								<vote-block :content="detail" @getDetailNew="getDetailNew"></vote-block>
 							</div>
 						</div>
@@ -132,7 +132,7 @@
 		data() {
 			return {
 				//orginUrl:'@/assets/images/original.png',
-				topCid: '', //发贴人id
+				topCid: '', //发帖人id
 				detail: [],
 				defaultMsg: '',
 				replyList: [],
@@ -144,7 +144,7 @@
 				//loginStatus:false,
 				noShow: false,
 				limit: 50,
-				sectionid: 0, //贴子id
+				sectionid: 0, //帖子id
 				time: "", //禁言时间
 				noAddDialog: false,
 				userId: "",
@@ -284,7 +284,7 @@
 					} else {
 						this.colDisabled = true;
 						this.$message({
-							message: '收藏贴子失败~',
+							message: '收藏帖子失败~',
 							type: 'warning',
 
 						});
@@ -308,7 +308,7 @@
 					} else {
 						this.colDisabled = true;
 						this.$message({
-							message: '取消贴子失败~',
+							message: '取消帖子失败~',
 							type: 'warning',
 
 						});

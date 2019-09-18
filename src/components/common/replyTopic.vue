@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<el-dialog :visible="replyDialog" title="回复贴子" center :before-close="cancel">
+		<el-dialog :visible="replyDialog" title="回复帖子" center :before-close="cancel">
 			<div class="editor-container">
 				<div class="reply" v-if="noShow">
 					<div class="replyname">

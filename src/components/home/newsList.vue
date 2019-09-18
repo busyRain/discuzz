@@ -3,7 +3,7 @@
         <div class="tab">
             <div class="tab-title">
                 <ul class="fr">
-                    <li :class="tabIndex == 1? 'current':''" @click="exchange(1)">热门贴</li>
+                    <li :class="tabIndex == 1? 'current':''" @click="exchange(1)">热门帖</li>
                     <li :class="tabIndex == 2? 'current':''" @click="exchange(2)">新主题</li>
                 </ul>
             </div>

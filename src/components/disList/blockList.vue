@@ -60,7 +60,7 @@
 				</li>
 				<li @click="addBlock">
 					<em>快速</em>
-					<em>发贴</em>
+					<em>发帖</em>
 				</li>
 			</ul>
 		</div>

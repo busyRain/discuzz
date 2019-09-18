@@ -6,7 +6,7 @@ export function getDetail(id) {
 	});
 }
 export function addDis(data) {
-	//发贴子
+	//发帖子
 	return request("/topiclogin/addtopic", {
 		method: "post",
 		data,
@@ -25,7 +25,7 @@ export function addDis(data) {
 	});
 }
 export function getReplay(data) {
-	//获取回复贴子
+	//获取回复帖子
 	return request(`/topic/getreplylist`, {
 		method: "get",
 		params: data
@@ -39,14 +39,14 @@ export function addReply(data) {
 	});
 }
 export function deleteDis(data) {
-	//删除贴子
+	//删除帖子
 	return request(`/topiclogin/deletebyuser/${data.id}`, {
 		method: "post",
 		data
 	});
 }
 export function updateCount(data) {
-	//更新贴子点击数
+	//更新帖子点击数
 	return request(`/topic/update/count/${data}`, {
 		method: "post"
 	})
@@ -77,18 +77,18 @@ export function addVoteTop(data) {
 		data
 	})
 }
-export function updateTopic(data) { //更新贴子详情
+export function updateTopic(data) { //更新帖子详情
 	return request('/topiclogin/updatnewetopic', {
 		method: "post",
 		data
 	})
 }
-export function getFollow(data) { //用户关注贴子
+export function getFollow(data) { //用户关注帖子
 	return request(`/usersCenter/addfollow/${data}`, {
 		method: 'get'
 	})
 }
-export function delFollow(data) { //用户关注贴子
+export function delFollow(data) { //用户关注帖子
 	return request(`/usersCenter/delfollow/${data}`, {
 		method: 'get'
 	})

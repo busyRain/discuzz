@@ -17,9 +17,9 @@
 									<router-link :to="{path:`/disList/${childItem.id}`}" tag="a" target="_blank">{{childItem.name}}</router-link>
 								</dt>
 								<dd>
-									<em>主题：{{childItem.topiccount}}</em>
+									<em>主帖：{{childItem.topiccount}}</em>
 									<span class="pipe">|</span>
-									<em>贴数：{{childItem.commentcount}}</em>
+									<em>回帖：{{childItem.commentcount}}</em>
 								</dd>
 								<dd>{{childItem.synopsis}}</dd>
 							</dl>

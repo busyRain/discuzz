@@ -9,8 +9,8 @@
 				<el-form-item label="标题" prop="title">
 					<el-input v-model="ruleForm.title" style="width: 50%;"></el-input>
 				</el-form-item>
-				<el-form-item label="投票贴" prop="isvote">
-					<el-checkbox v-model="isvote" @change="handleChange">是否投票贴</el-checkbox>
+				<el-form-item label="投票帖" prop="isvote">
+					<el-checkbox v-model="isvote" @change="handleChange">是否投票帖</el-checkbox>
 				</el-form-item>
 				<div v-if="!!isvote">
 					<el-form-item label="投票形式" prop="votetype">
@@ -37,7 +37,7 @@
 			</el-form>
 			<ueditor :defaultMsg=defaultMsg :config=config ref="ue">
 			</ueditor>
-			<el-button class="add" @click="save('ruleForm')" type="primary" size="medium">发表贴子</el-button>
+			<el-button class="add" @click="save('ruleForm')" type="primary" size="medium">发表帖子</el-button>
 		</div>
 	</div>
 </template>
@@ -215,7 +215,7 @@
 						this.defaultMsg = ''
 						this.$refs.ue.clearContent()
 						this.$message({
-							message: '发贴成功',
+							message: '发帖成功',
 							type: 'success'
 						})
 						this.$router.push(`/disDetail/${res.data}`)

@@ -2,7 +2,7 @@
 	<div class="editTopic  board-box">
 		<div class="editor-container">
 			<div class="title">
-				<span>贴子标题：</span>
+				<span>帖子标题：</span>
 				<span>{{detail.title}}</span>
 			</div>
 			<ueditor :defaultMsg=defaultMsg :config=config ref="ue">

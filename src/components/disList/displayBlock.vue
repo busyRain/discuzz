@@ -8,7 +8,7 @@
 				<div class="desc-left fl">
 					<div class="circle-img fl">
 						<img class="board-icon" :src="$IMG_URL+blockTop.imgurl" />
-						<el-button class="join-circle" size="medium" round @click="openDialog">发新贴</el-button>
+						<el-button class="join-circle" size="medium" round @click="openDialog">发新帖</el-button>
 					</div>
 					<div class="circle-name fl">
 						<div class="club-name">{{blockTop.name}}</div>
@@ -16,8 +16,12 @@
 						<div class="club-desc-line"></div>
 						<div class="club-fan">
 							<p class="fan-numb">
-								<span class="fan-text">贴数</span>
+								<span class="fan-text">主帖</span>
 								<b>{{blockTop.topiccount}}</b>
+							</p>
+							<p class="fan-numb">
+								<span class="fan-text">回帖</span>
+								<b>{{blockTop.commentcount}}</b>
 							</p>
 							<p class="fan-numb">
 								<span class="fan-text">今日</span>
@@ -30,14 +34,14 @@
 			</div>
 			<div class="classify-list " style="margin-left:20px;">
 				<div class="classify-item">
-					<span class="classify-title">看贴：</span>
+					<span class="classify-title">看帖：</span>
 					<div class="classify-list-out">
 						<ul class="classify-ul">
 							<li :class="['classify-li',isessence == false ?'on':'']" @click="toggleTab(false)">
-								<a href="javascript:;" class="classify-letter">全部贴</a>
+								<a href="javascript:;" class="classify-letter">全部帖</a>
 							</li>
 							<li :class="['classify-li',isessence == true ?'on':'']" @click="toggleTab(true)">
-								<a href="javascript:;" class="classify-letter">精华贴</a>
+								<a href="javascript:;" class="classify-letter">精华帖</a>
 							</li>
 						</ul>
 					</div>
